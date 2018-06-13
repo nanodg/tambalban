@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "177589236879",
+    "firebase_url": "https://tambalban-ecd4b.firebaseio.com",
+    "project_id": "tambalban-ecd4b",
+    "storage_bucket": "tambalban-ecd4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177589236879:android:a2a887041eda1e36",
+        "android_client_info": {
+          "package_name": "com.example.nanodg.tambalban"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "177589236879-t6s6ap7o4jnannpm60d7hvoh2lc7j2kn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nanodg.tambalban",
+            "certificate_hash": "8b57f1b6a59fc4e724af247765b992e20d7c85ea"
+          }
+        },
+        {
+          "client_id": "177589236879-e6ts693lsbct36cgeqrg4nk0u80u3d45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsugAzTd8e3EgFlNqTgP1YLhOGZ-ZY4rA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "177589236879-e6ts693lsbct36cgeqrg4nk0u80u3d45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

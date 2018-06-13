@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Tambal Ban</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="register">Register</string>
+    <string name="input_error_name">Tambahkan nama</string>
+    <string name="input_error_email">Tambahkan Email</string>
+    <string name="input_error_password">Tambahkan Password</string>
+    <string name="input_error_password_length">Password Harus 8 Karakter / Lebih</string>
+    <string name="registration_success">Pendaftaran Berhasil</string>
+    <string name="input_error_email_invalid">Masukan Email Yang Benar</string>
+
+</resources>

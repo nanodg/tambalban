@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.nanodg.tambalban.DtltambalActivity">
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:weightSum="1">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/slider_bg">
+
+                <ir.apend.slider.ui.Slider
+                    android:id="@+id/slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:animateIndicators="true"
+                    app:defaultIndicators="circle"
+                    app:indicatorSize="8dp"
+                    app:intervalSecond="5"
+                    app:loopSlides="true" />
+            </FrameLayout>
+            <EditText
+                android:id="@+id/et_namatambal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nama Tambal"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/et_nohp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="No Tlpn"
+                android:inputType="number" />
+
+            <EditText
+            android:id="@+id/et_jambuka"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Jam Buka"
+            android:inputType="text" />
+            <EditText
+                android:id="@+id/et_jamtutup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Jam Tutup"
+                android:inputType="text" />
+            <EditText
+                android:id="@+id/et_hsl1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ban"
+                android:inputType="text" />
+            <EditText
+                android:id="@+id/et_hsl2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Kendaraan"
+                android:inputType="text" />
+            <EditText
+                android:id="@+id/et_alamat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Alamat"
+                android:inputType="text" />
+            <EditText
+                android:id="@+id/et_lat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Lat"
+                android:inputType="text" />
+            <EditText
+                android:id="@+id/et_long"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Long"
+                android:inputType="text" />
+
+                <fragment
+                    android:id="@+id/map"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_above="@+id/panelInfo"
+                    android:layout_alignParentTop="true"
+                    class="com.example.nanodg.tambalban.WorkaroundMapFragment"/>
+                <LinearLayout
+                    android:id="@+id/panelInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:orientation="vertical"
+                    android:layout_alignParentBottom="true"
+                    android:background="@android:color/white">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Route Information :"
+                        android:textSize="18sp"/>
+                    <TextView
+                        android:id="@+id/tvStartAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="start address : Jl. Hidupku Cuma Kamu :'"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/tvEndAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="end address : Jl. Hidupku Cuma Kamu :'"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/tvDistance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="distance : 0 km"
+                        android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/tvDuration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="duration : 0 hours"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:id="@+id/uri1" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:id="@+id/uri2" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:id="@+id/uri3" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tlpn"
+                android:text="TLPN"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sms"
+                android:text="SMS"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
