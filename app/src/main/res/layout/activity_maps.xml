@@ -16,55 +16,80 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="124dp">
 
             <TextView
                 android:id="@+id/jenisban"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Jenis Ban :"
-                android:textSize="18dp"
                 android:textColor="#ffff"
-                android:layout_above="@+id/spinner"
+                android:textSize="16dp"
+                android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/spinner" />
 
             <TextView
                 android:id="@+id/jeniskendaraan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/jenisban"
+                android:layout_alignBottom="@+id/jenisban"
+                android:layout_alignStart="@+id/spinner2"
                 android:text="Jenis Kendaraan :"
-                android:textSize="18dp"
                 android:textColor="#ffff"
-                android:layout_above="@+id/spinner2"
-                android:layout_alignStart="@+id/spinner2" />
+                android:textSize="16dp" />
 
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="150dp"
                 android:layout_height="35dp"
-                android:background="#fff"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/jenisban"
+                android:layout_marginStart="18dp"
                 android:paddingTop="100dp"
-                android:layout_marginStart="16dp"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true" />
+                android:background="@drawable/spinner_border"/>
 
             <Spinner
                 android:id="@+id/spinner2"
                 android:layout_width="150dp"
                 android:layout_height="35dp"
-                android:background="#fff"
-                android:paddingTop="100dp"
-                android:layout_marginEnd="21dp"
+                android:layout_alignParentEnd="true"
                 android:layout_alignTop="@+id/spinner"
-                android:layout_alignParentEnd="true" />
+                android:layout_marginEnd="21dp"
+                android:paddingTop="100dp"
+                android:background="@drawable/spinner_border"/>
+
             <Button
+                android:id="@+id/tampil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tampil"
-                android:id="@+id/tampil"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="7dp" />
+                android:text="Cari"
+                android:background="@drawable/bg_rectangle_button"
+                android:textColor="#fff"
+                android:layout_below="@+id/spinner2"
+                android:layout_alignEnd="@+id/spinner2" />
+
+            <SeekBar
+                android:id="@+id/radius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner"
+                android:layout_marginTop="9dp"
+                android:max="3000"
+                android:layout_alignStart="@+id/spinner"
+                android:layout_toStartOf="@+id/numradius"
+                 android:backgroundTint="#ffff"
+                android:progressBackgroundTint="#ffff"
+                android:progressTint="@color/colorPrimary" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/numradius"
+                android:textColor="#ffff"
+                android:text="0"
+                android:textSize="16dp"
+                android:layout_alignTop="@+id/radius"
+                android:layout_toStartOf="@+id/tampil" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -74,8 +99,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.84"
-        android:layout_below="@+id/cardView"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/cardView" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
