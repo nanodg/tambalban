@@ -340,6 +340,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
                 android:id="@+id/uri3" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:id="@+id/tvpemilik"
+                android:text=""/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:id="@+id/tvstatus"
+                android:text=" "/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:id="@+id/tvverif"
+                android:text=""/>
             <Button
                 android:id="@+id/simpan"
                 android:layout_width="match_parent"

@@ -50,6 +50,7 @@ import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,LocationListener,GoogleMap.OnMarkerClickListener{
 
+    public static final String DATA = "com.example.nanodg.tambalban";
     private GoogleMap mMap;
     DatabaseReference mTambah;
     private ArrayList<Tambah> daftarTambal = new ArrayList<> ();
@@ -104,17 +105,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 numradius.setText(radiusValue);
             }
-        @Override
-        public void onStartTrackingTouch(SeekBar radius) {
-        }
-        @Override
-        public void onStopTrackingTouch(SeekBar radius) {
+            @Override
+            public void onStartTrackingTouch(SeekBar radius) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar radius) {
 
-        }
-    });
+            }
+        });
 
 
-    lingkaran = Float.valueOf(numradius.getText().toString());
+        lingkaran = Float.valueOf(numradius.getText().toString());
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,11 +124,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-       tampil.setOnClickListener(new View.OnClickListener() {
+        tampil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // kelas yang akan dijalankan ketika tombol Create/Insert Data diklik
-               //refreshmap();
+                //refreshmap();
                 lingkaran = Float.valueOf(numradius.getText().toString());
                 updateWithNewLocation(location);
             }
@@ -155,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (spinner1.getSelectedItem()==("Biasa")){
-                   jnban = ("1");
+                    jnban = ("1");
                 }
                 if (spinner1.getSelectedItem()==("Tubles")){
                     jnban = ("2");
@@ -277,7 +278,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mOptions = new CircleOptions()
                 .center(new LatLng(lat, lang)).radius(lingkaran)
                 .strokeColor(0x110000FF).strokeWidth(1).fillColor(0x110000FF);
-      circle = mMap.addCircle(mOptions);
+        circle = mMap.addCircle(mOptions);
         mMap.addCircle(mOptions);
         if (mCurrentPosition != null)
             mCurrentPosition.remove();
@@ -351,7 +352,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             //mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
                         }
-                       markersOrderNumbers.put(marker, position);
+                        markersOrderNumbers.put(marker, position);
                         position++;
 
                         final Integer index = markersOrderNumbers.get(marker);
@@ -362,12 +363,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
                             public void onInfoWindowClick(Marker marker) {
-                                Log.e("Data snapshot", "barang4" + tambah);
+                                String id = marker.getTitle().toString();
+                                Log.e("Data snapshot", "barang45" + id);
                                 Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
                                 //String reference = mMarkerPlaceLink.get(id);
                                 //daftarBarang.add(barang);
                                 //Integer index = markersOrderNumbers.get(marker);
-                                edit.putExtra("data", daftarTambal.get(index));
+//                                edit.putExtra("data", daftarTambal.get(index));
+
+                                edit.putExtra(DATA, id);
 
 
                                 //Log.e("Data snapshot","barang1"+daftarBarang.get(position));
@@ -409,7 +413,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mPosisi.title(tambah.getNama());
                             mPosisi.snippet("Berjarak = " +formatDesimal.format(jarak)+ " km dari anda");
                             mMap.addMarker(mPosisi);
-                           // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                            // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
                         }
                         markersOrderNumbers.put(marker, position);
@@ -423,12 +427,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
                             public void onInfoWindowClick(Marker marker) {
-                                Log.e("Data snapshot", "barang4" + tambah);
+                                String id = marker.getTitle().toString();
+                                Log.e("Data snapshot", "barang45" + id);
                                 Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
                                 //String reference = mMarkerPlaceLink.get(id);
                                 //daftarBarang.add(barang);
                                 //Integer index = markersOrderNumbers.get(marker);
-                                edit.putExtra("data", daftarTambal.get(index));
+//                                edit.putExtra("data", daftarTambal.get(index));
+                                edit.putExtra(DATA, id);
 
 
                                 //Log.e("Data snapshot","barang1"+daftarBarang.get(position));
@@ -448,10 +454,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
     }
-
-    /**
-    * MAPS
-     */
-
 
 }

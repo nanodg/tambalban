@@ -1,6 +1,7 @@
 package com.example.nanodg.tambalban;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,11 +20,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nanodg.tambalban.Model.Tambah;
+import com.example.nanodg.tambalban.Model.User;
 import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
@@ -43,6 +46,11 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.PolyUtil;
 import com.example.nanodg.tambalban.network.ApiServices;
 import com.example.nanodg.tambalban.network.InitLibrary;
@@ -50,6 +58,7 @@ import com.example.nanodg.tambalban.response.Distance;
 import com.example.nanodg.tambalban.response.Duration;
 import com.example.nanodg.tambalban.response.LegsItem;
 import com.example.nanodg.tambalban.response.ReponseRoute;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,10 +67,10 @@ import retrofit2.Response;
 
 
 
-public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
+public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener  {
 
     private Button bttlpn,btsms;
-    private EditText nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,lat,lon;
+    EditText nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,lat,lon;
     private TextView uri1,uri2,uri3;
     private Slider slider;;
     private GoogleMap mMap;
@@ -69,16 +78,17 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     String provider = null;
     Marker mCurrentPosition = null;
     ScrollView mScrollView;
+    String hasil,verif;
+    ImageView imgverif;
+
 
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
 
-    //private LatLng pickUpLatLng = new LatLng(-6.175110, 106.865039); // Jakarta
-    //private LatLng locationLatLng = new LatLng(-6.197301,106.795951); // Cirebon
 
     private TextView tvStartAddress, tvEndAddress, tvDuration, tvDistance;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dtltambal);
         nama = (EditText) findViewById(R.id.et_namatambal);
@@ -96,6 +106,108 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         bttlpn = (Button) findViewById(R.id.tlpn);
         btsms = (Button) findViewById(R.id.sms);
         slider = (Slider) findViewById(R.id.slider);
+        imgverif = (ImageView) findViewById(R.id.imgverif);
+
+        lat.setText("-7.248651474442163");
+        lon.setText("112.62898944318295");
+
+        final ProgressDialog loading = ProgressDialog.show(this,"Mengambil data","Tunggu Sebentar...",false,false);
+
+        nama.setEnabled(false);
+        tlp.setEnabled(false);
+        jmbuka.setEnabled(false);
+        jmtutup.setEnabled(false);
+        hsl1.setEnabled(false);
+        hsl2.setEnabled(false);
+        alamat.setEnabled(false);
+        lat.setEnabled(false);
+        lon.setEnabled(false);
+        //btSubmit.setVisibility(View.GONE);
+
+        //Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
+        Intent intent = getIntent();
+        hasil = intent.getStringExtra(MapsActivity.DATA);
+            DatabaseReference mUserContactsRef = FirebaseDatabase.getInstance().getReference().child("tambah");
+            mUserContactsRef.orderByChild("nama").equalTo(hasil).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(final DataSnapshot dataSnapshot) {
+
+                    Log.e("barang1", dataSnapshot.toString());
+                    for (DataSnapshot userContact : dataSnapshot.getChildren()) {
+
+                        Tambah tambah = userContact.getValue(Tambah.class);
+                        loading.dismiss();
+                        nama.setText(tambah.getNama());
+                        tlp.setText(tambah.getNo());
+                        jmbuka.setText(tambah.getBuka());
+                        jmtutup.setText(tambah.getTutup());
+                        hsl1.setText(tambah.getBan());
+                        hsl2.setText(tambah.getKendaraan());
+                        alamat.setText(tambah.getAlamat());
+                        lat.setText(Double.toString(tambah.getLat()));
+                        lon.setText(Double.toString(tambah.getLongt()));
+                        uri1.setText(tambah.getFoto1());
+                        uri2.setText(tambah.getFoto2());
+                        uri3.setText(tambah.getFoto3());
+                        verif = tambah.getVerif();
+                        if(tambah.getVerif().equals("0")){
+                           imgverif.setVisibility(View.GONE);
+
+                        } if(tambah.getVerif().equals("1")) {
+                            imgverif.setVisibility(View.VISIBLE);
+
+                        }
+                        //coba(la1,lo2);
+
+                        final List<Slide> slideList = new ArrayList<>();
+                        slideList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                        slideList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                        slideList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+
+                        slider.setItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                //do what you want
+                                Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        slider.addSlides(slideList);
+
+                        //TLPN
+                        bttlpn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String phoneNo = tlp.getText().toString();
+                                if(!TextUtils.isEmpty(phoneNo)) {
+                                    String dial = "tel:" + phoneNo;
+                                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
+                                }else {
+                                    Toast.makeText(DtltambalActivity.this, "Enter a phone number", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        //SMS
+                        btsms.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //String message = messagetEt.getText().toString();
+                                String phoneNo = tlp.getText().toString();
+                                if(!TextUtils.isEmpty(phoneNo)) {
+                                    Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNo));
+                                    smsIntent.putExtra("sms_body", "");
+                                    startActivity(smsIntent);
+                                }
+                            }
+                        });
+
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
 
 
         if (mMap == null) {
@@ -114,80 +226,17 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
         }
 
-        getSupportActionBar().setTitle("Direction Maps API");
-        // Inisialisasi Widget
         widgetInit();
-        // jalankan method
 
-
-        nama.setEnabled(false);
-        tlp.setEnabled(false);
-        jmbuka.setEnabled(false);
-        jmtutup.setEnabled(false);
-        hsl1.setEnabled(false);
-        hsl2.setEnabled(false);
-        alamat.setEnabled(false);
-        lat.setEnabled(false);
-        lon.setEnabled(false);
-        //btSubmit.setVisibility(View.GONE);
-
-        Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
-        if(tambah != null){
-            nama.setText(tambah.getNama());
-            tlp.setText(tambah.getNo());
-            jmbuka.setText(tambah.getBuka());
-            jmtutup.setText(tambah.getTutup());
-            hsl1.setText(tambah.getBan());
-            hsl2.setText(tambah.getKendaraan());
-            alamat.setText(tambah.getAlamat());
-            lat.setText(Double.toString(tambah.getLat()));
-            lon.setText(Double.toString(tambah.getLongt()));
-            uri1.setText(tambah.getFoto1());
-            uri2.setText(tambah.getFoto2());
-            uri3.setText(tambah.getFoto3());
-
-            final List<Slide> slideList = new ArrayList<>();
-            slideList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-            slideList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-            slideList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-
-            slider.setItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    //do what you want
-                    Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
-                }
-            });
-            slider.addSlides(slideList);
-        }
-
-        //TLPN
-        bttlpn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String phoneNo = tlp.getText().toString();
-                if(!TextUtils.isEmpty(phoneNo)) {
-                    String dial = "tel:" + phoneNo;
-                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
-                }else {
-                    Toast.makeText(DtltambalActivity.this, "Enter a phone number", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        //SMS
-        btsms.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //String message = messagetEt.getText().toString();
-                String phoneNo = tlp.getText().toString();
-                if(!TextUtils.isEmpty(phoneNo)) {
-                    Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNo));
-                    smsIntent.putExtra("sms_body", "");
-                    startActivity(smsIntent);
-                }
-            }
-        });
     }
+
+//    public void coba(String la2, String lo3){
+//
+//        la4 = la2;
+//        lo5 = lo3;
+//        Log.e("barang23", la4);
+//        Log.e("barang23", lo5);
+//    }
 
 
     private void widgetInit() {
@@ -198,17 +247,20 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void actionRoute(double laat, double lang) {
+        final ProgressDialog loading = ProgressDialog.show(this,"Mengambil data Rute","Tunggu Sebentar...",false,false);
         double tujuanlat = Double.parseDouble(lat.getText().toString().trim());
         double tujuanlong = Double.parseDouble(lon.getText().toString().trim());
         final LatLng awal = new LatLng(laat, lang);
         final LatLng tujuan = new LatLng(tujuanlat,tujuanlong);
+        Log.e("barang23", Double.toString(tujuanlat));
+        Log.e("barang23",Double.toString(tujuanlong));
 
         String lokasiAwal = awal.latitude + "," + awal.longitude;
         String lokasiAkhir = tujuan.latitude + "," + tujuan.longitude;
 
         Log.e("Data snapshot","barang1"+lokasiAwal);
         Log.e("Data snapshot","barang2"+lokasiAkhir);
-        
+
         // Panggil Retrofit
         ApiServices api = InitLibrary.getInstance();
         // Siapkan request
@@ -218,7 +270,8 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         routeRequest.enqueue(new Callback<ReponseRoute>() {
             @Override
             public void onResponse(Call<ReponseRoute> call, Response<ReponseRoute> response) {
-
+                mMap.clear();
+                loading.dismiss();
                 if (response.isSuccessful()){
                     // tampung response ke variable
                     ReponseRoute dataDirection = response.body();
@@ -356,23 +409,6 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
             Log.d("Location error", "Something went wrong");
         }
     }
-//    private void addBoundaryToCurrentPosition(double lat, double lang) {
-//
-//        MarkerOptions mMarkerOptions = new MarkerOptions();
-//        mMarkerOptions.position(new LatLng(lat, lang));
-////        mMarkerOptions.icon(BitmapDescriptorFactory
-////                .fromResource(R.drawable.ic_place_black_24dp));
-//        mMarkerOptions.anchor(0.5f, 0.5f);
-//
-//        CircleOptions mOptions = new CircleOptions()
-//                .center(new LatLng(lat, lang)).radius(1000)
-//                .strokeColor(0x110000FF).strokeWidth(1).fillColor(0x110000FF);
-//        mMap.addCircle(mOptions);
-//        if (mCurrentPosition != null)
-//            mCurrentPosition.remove();
-//        mCurrentPosition = mMap.addMarker(mMarkerOptions);
-//    }
-
 
     @Override
     public void onLocationChanged(Location location) {

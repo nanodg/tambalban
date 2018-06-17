@@ -2,6 +2,7 @@ package com.example.nanodg.tambalban;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import java.util.Calendar;
 import android.widget.Toast;
 
 import com.example.nanodg.tambalban.Model.Tambah;
+import com.example.nanodg.tambalban.Model.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,8 +50,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -67,7 +72,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
     String FileName1,FileName2,FileName3;
 
     EditText pembuat, nama, no, alamat,image1,image2,image3;
-    TextView tvjambuka, tvjamtutup, lat, longt, useremail,uri1,uri2,uri3,hsl1,hsl2,proses1,proses2,proses3;
+    TextView tvjambuka, tvjamtutup, lat, longt, useremail,uri1,uri2,uri3,hsl1,hsl2,proses1,proses2,proses3,pemilik,status,verif;
     Button btbuka, bttutup, btlogout,pilih1,pilih2,pilih3,simpan;
     TimePickerDialog timePickerDialog1,timePickerDialog2;
     CheckBox biasa, tubles, Motor, Mobil;
@@ -94,12 +99,14 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        final ProgressDialog loading = ProgressDialog.show(this,"Mengambil data Rute","Tunggu Sebentar...",false,false);
         pembuat = (EditText) findViewById(R.id.addusername);
         nama = (EditText) findViewById(R.id.addnama);
         no = (EditText) findViewById(R.id.addno_tlp);
         alamat = (EditText) findViewById(R.id.alamat);
-
+        pemilik = (TextView) findViewById(R.id.tvpemilik);
+        status = (TextView) findViewById(R.id.tvstatus);
+        verif = (TextView) findViewById(R.id.tvverif);
         // mengambil referensi ke Firebase Database
         database = FirebaseDatabase.getInstance().getReference();
         simpan = (Button) findViewById(R.id.simpan);
@@ -180,6 +187,32 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
         btlogout = (Button) findViewById(R.id.buttonLogout);
         //displaying logged in user name
         useremail.setText(user.getEmail());
+        final String email = useremail.getText().toString().trim();
+        ///
+        DatabaseReference  mUserContactsRef =  FirebaseDatabase.getInstance().getReference().child("Users");
+        mUserContactsRef.orderByChild("email").equalTo(email).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                loading.dismiss();
+                Log.e("barang1", dataSnapshot.toString());
+                for (DataSnapshot userContact : dataSnapshot.getChildren()) {
+                    User user = userContact.getValue(User.class);
+                    if(user.getPemilik().equals("0")){
+                       pemilik.setText("0");
+                        verif.setText("0");
+
+                    } if(user.getPemilik().equals("1")) {
+                       pemilik.setText("1");
+                        verif.setText("1");
+                        Log.e("Data snapshot", "barang1" + user.getPemilik());
+
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
         btlogout.setOnClickListener(this);
 
         /**
@@ -219,22 +252,25 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
                         && isEmpty(alamat.getText().toString()) && isEmpty(lat.getText().toString())
                         && isEmpty(hsl1.getText().toString()) && isEmpty(hsl2.getText().toString())
                         && isEmpty(longt.getText().toString()) && isEmpty(uri1.getText().toString())
-                        && isEmpty(uri2.getText().toString()) && isEmpty(uri3.getText().toString())) {
+                        && isEmpty(uri2.getText().toString()) && isEmpty(uri3.getText().toString())
+                        && isEmpty(pemilik.getText().toString()) && isEmpty(verif.getText().toString())) {
                     TastyToast.makeText(getApplicationContext(), "Semua Data Harus diIsi", TastyToast.LENGTH_LONG, TastyToast.WARNING);
                 }else if(!isEmpty(pembuat.getText().toString()) && !isEmpty(nama.getText().toString())
                         && !isEmpty(no.getText().toString()) && !isEmpty(tvjambuka.getText().toString())
                         && !isEmpty(tvjamtutup.getText().toString()) && !isEmpty(hsl1.getText().toString())
                         && !isEmpty(hsl2.getText().toString()) && !isEmpty(alamat.getText().toString())
                         && !isEmpty(lat.getText().toString()) && !isEmpty(longt.getText().toString())
-                        && !isEmpty(uri1.getText().toString())&& !isEmpty(uri2.getText().toString())&& !isEmpty(uri3.getText().toString()))
+                        && !isEmpty(uri1.getText().toString())&& !isEmpty(uri2.getText().toString())&& !isEmpty(uri3.getText().toString())
+                        && !isEmpty(pemilik.getText().toString())&& !isEmpty(status.getText().toString())&& !isEmpty(verif.getText().toString()))
                     submitTambah(new Tambah(pembuat.getText().toString(), nama.getText().toString(),
                             no.getText().toString(), tvjambuka.getText().toString(),
                             tvjamtutup.getText().toString(), hsl1.getText().toString(),
                             hsl2.getText().toString(), alamat.getText().toString(),
                             Double.parseDouble(lat.getText().toString().trim()) , Double.parseDouble(longt.getText().toString().trim()),
-                            uri1.getText().toString(),uri2.getText().toString(),uri3.getText().toString()));
+                            uri1.getText().toString(),uri2.getText().toString(),uri3.getText().toString(),
+                            pemilik.getText().toString(),status.getText().toString(),verif.getText().toString()));
                 else
-                    TastyToast.makeText(getApplicationContext(), "Semua Data Harus diIsi", TastyToast.LENGTH_LONG, TastyToast.WARNING);
+                    TastyToast.makeText(getApplicationContext(), "Semua Data Harus diIsi2", TastyToast.LENGTH_LONG, TastyToast.WARNING);
 
                 InputMethodManager imm = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -322,7 +358,6 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
             FileName2 = data.getData().getLastPathSegment();
             image2.setText(FileName2);
             uploadFile2();
-
         }
         if (requestCode == PICK_IMAGE_REQUEST3 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath3 = data.getData();
@@ -733,4 +768,11 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
         timePickerDialog2.show();
     }
 
+    public void onBackPressed() {
+        // save data first
+
+        Intent PnlPemilikActivityIntent = new Intent(TambahActivity.this, PnlPemilikActivity.class);
+        finish();
+        super.onBackPressed();
+    }
 }

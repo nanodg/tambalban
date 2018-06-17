@@ -24,6 +24,9 @@ public class Tambah implements Serializable{
     public String foto1;
     public String foto2;
     public String foto3;
+    public String pemilik;
+    public String status;
+    public String verif;
     public String key;
 
     public Tambah(){
@@ -112,6 +115,24 @@ public class Tambah implements Serializable{
     public void setFoto3(String foto3){
         this.foto3 = foto3;
     }
+    public String getPemilik() {
+        return pemilik;
+    }
+    public void setPemilik(String pemilik){
+        this.pemilik = pemilik;
+    }
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status){
+        this.status = status;
+    }
+    public String getVerif() {
+        return verif;
+    }
+    public void setVerif(String verif){
+        this.verif = verif;
+    }
 
     @Override
     public String toString(){
@@ -127,10 +148,13 @@ public class Tambah implements Serializable{
                 " "+longt+"\n" +
                 " "+foto1+"\n" +
                 " "+foto2+"\n" +
-                " "+foto3;
+                " "+foto3+"\n" +
+                " "+pemilik+"\n" +
+                " "+status+"\n" +
+                " "+verif;
     }
 
-    public Tambah(String pm, String nm, String n, String bk, String tp, String bn, String kn, String al, double la, double lo, String ft1, String ft2, String ft3){
+    public Tambah(String pm, String nm, String n, String bk, String tp, String bn, String kn, String al, double la, double lo, String ft1, String ft2, String ft3, String pml, String sts, String vf){
         pembuat = pm;
         nama = nm;
         no = n;
@@ -144,5 +168,8 @@ public class Tambah implements Serializable{
         foto1 = ft1;
         foto2 = ft2;
         foto3 = ft3;
+        pemilik = pml;
+        status = sts;
+        verif = vf;
     }
 }

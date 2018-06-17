@@ -32,13 +32,25 @@
                     app:intervalSecond="5"
                     app:loopSlides="true" />
             </FrameLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/et_namatambal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nama Tambal"
-                android:inputType="text" />
-
+                android:inputType="text"
+                android:layout_toEndOf="@+id/imgverif" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_check_black_24dp"
+                    android:id="@+id/imgverif"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:visibility="gone"/>
+            </RelativeLayout>
             <EditText
                 android:id="@+id/et_nohp"
                 android:layout_width="match_parent"

@@ -71,8 +71,8 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                             startActivity(new Intent(getApplicationContext(), TambahActivity.class));
                             finish();
                         } if(user.getPemilik().equals("1")) {
-                            TastyToast.makeText(getApplicationContext(), "User", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                            startActivity(new Intent(getApplicationContext(), TambahActivity.class));
+                            TastyToast.makeText(getApplicationContext(), "Pemilik", TastyToast.LENGTH_LONG, TastyToast.INFO);
+                            startActivity(new Intent(getApplicationContext(), PnlPemilikActivity.class));
                             Log.e("Data snapshot", "barang1" + user.getPemilik());
                             finish();
                         }
@@ -135,7 +135,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                                             finish();
                                         } if(user.getPemilik().equals("1")) {
                                             TastyToast.makeText(getApplicationContext(), "Pemilik", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                                            startActivity(new Intent(getApplicationContext(), TambahActivity.class));
+                                            startActivity(new Intent(getApplicationContext(), PnlPemilikActivity.class));
                                             Log.e("Data snapshot", "barang1" + user.getPemilik());
                                             finish();
                                         }
