@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -73,11 +74,11 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
 
     EditText pembuat, nama, no, alamat,image1,image2,image3;
     TextView tvjambuka, tvjamtutup, lat, longt, useremail,uri1,uri2,uri3,hsl1,hsl2,proses1,proses2,proses3,pemilik,status,verif;
-    Button btbuka, bttutup, btlogout,pilih1,pilih2,pilih3,simpan;
+    Button btbuka, bttutup, btlogout,simpan;
     TimePickerDialog timePickerDialog1,timePickerDialog2;
     CheckBox biasa, tubles, Motor, Mobil;
     ProgressBar androidProgressBar1,androidProgressBar2,androidProgressBar3;
-
+    ImageButton pilih1,pilih2,pilih3;
     // variable yang merefers ke Firebase Realtime Database
     private DatabaseReference database;
     //maps
@@ -218,13 +219,13 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
         /**
          * Upload Images
          */
-        pilih1 = (Button) findViewById(R.id.buttonChoose1);
+        pilih1 = (ImageButton) findViewById(R.id.buttonChoose1);
         uri1= (TextView) findViewById(R.id.uri1);
         proses1 = (TextView) findViewById(R.id.proses1);
-        pilih2 = (Button) findViewById(R.id.buttonChoose2);
+        pilih2 = (ImageButton) findViewById(R.id.buttonChoose2);
         uri2= (TextView) findViewById(R.id.uri2);
         proses2 = (TextView) findViewById(R.id.proses2);
-        pilih3 = (Button) findViewById(R.id.buttonChoose3);
+        pilih3 = (ImageButton) findViewById(R.id.buttonChoose3);
         uri3= (TextView) findViewById(R.id.uri3);
         proses3 = (TextView) findViewById(R.id.proses3);
         image1 = (EditText) findViewById(R.id.image1);
@@ -405,7 +406,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
                             //calculating progress percentage
                             double progress = (100.0 * taskSnapshot1.getBytesTransferred()) / taskSnapshot1.getTotalByteCount();
                             androidProgressBar1.setProgress((int) progress);
-                            proses1.setText("Status: " + (int) progress + "/" + androidProgressBar1.getMax());
+                            proses1.setText((int) progress + "%");
 
                         }
                     });
@@ -447,7 +448,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
                             //calculating progress percentage
                             double progress = (100.0 * taskSnapshot2.getBytesTransferred()) / taskSnapshot2.getTotalByteCount();
                             androidProgressBar2.setProgress((int) progress);
-                            proses2.setText("Status: " + (int) progress + "/" + androidProgressBar2.getMax());
+                            proses2.setText((int) progress + "%");
 
                         }
                     });
@@ -488,7 +489,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
                             //calculating progress percentage
                             double progress = (100.0 * taskSnapshot3.getBytesTransferred()) / taskSnapshot3.getTotalByteCount();
                             androidProgressBar3.setProgress((int) progress);
-                            proses3.setText("Status: " + (int) progress + "/" + androidProgressBar3.getMax());
+                            proses3.setText((int) progress + "%");
 
                         }
                     });

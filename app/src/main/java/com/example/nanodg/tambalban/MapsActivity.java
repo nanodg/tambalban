@@ -453,6 +453,132 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
+        mUserContactsRef.orderByChild("ban").equalTo("3").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                Log.e("barang1", dataSnapshot.toString());
+                for (DataSnapshot s : dataSnapshot.getChildren()){
+                    final Tambah tambah = s.getValue(Tambah.class);
+                        if(tambah.getKendaraan().equals(jnkendaraan)) {
+                            daftarTambal.add(tambah);
+                            final Object row = (Object) tambah.getNama();
+
+//                    Log.e("Data snapshot","barang1"+daftarTambal);
+                            LatLng location = new LatLng(tambah.getLat(), tambah.getLongt());
+                            lokMarker.setLatitude(tambah.getLat());
+                            lokMarker.setLongitude(tambah.getLongt());
+                            jarak = saatIni.distanceTo(lokMarker);
+                            if (lingkaran >= jarak) {
+                                jarak = saatIni.distanceTo(lokMarker) / 1000;
+                                mPosisi.position(location);
+                                mPosisi.anchor(0.3f, 0.3f);
+                                mPosisi.title(tambah.getNama());
+                                mPosisi.snippet("Berjarak = " + formatDesimal.format(jarak) + " km dari anda");
+                                mMap.addMarker(mPosisi);
+                                // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+
+                            }
+                            markersOrderNumbers.put(marker, position);
+                            position++;
+
+                            final Integer index = markersOrderNumbers.get(marker);
+//                    list.add(index);
+//                    final String name = daftarTambal.get(index).getNama();
+                            Log.e("Data snapshot", "barang4" + tambah);
+
+                            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                                public void onInfoWindowClick(Marker marker) {
+                                    String id = marker.getTitle().toString();
+                                    Log.e("Data snapshot", "barang45" + id);
+                                    Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
+                                    //String reference = mMarkerPlaceLink.get(id);
+                                    //daftarBarang.add(barang);
+                                    //Integer index = markersOrderNumbers.get(marker);
+//                                edit.putExtra("data", daftarTambal.get(index));
+                                    edit.putExtra(DATA, id);
+
+
+                                    //Log.e("Data snapshot","barang1"+daftarBarang.get(position));
+                                    //Log.e("Data snapshot","barang2"+daftarBarang);
+                                    startActivity(edit);
+
+                                }
+
+                            });
+                        }
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        mUserContactsRef.orderByChild("kendaraan").equalTo("3").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                Log.e("barang1", dataSnapshot.toString());
+                for (DataSnapshot s : dataSnapshot.getChildren()) {
+                    final Tambah tambah = s.getValue(Tambah.class);
+                    if (tambah.getBan().equals(jnban)) {
+                        daftarTambal.add(tambah);
+                        final Object row = (Object) tambah.getNama();
+
+//                    Log.e("Data snapshot","barang1"+daftarTambal);
+                        LatLng location = new LatLng(tambah.getLat(), tambah.getLongt());
+                        lokMarker.setLatitude(tambah.getLat());
+                        lokMarker.setLongitude(tambah.getLongt());
+                        jarak = saatIni.distanceTo(lokMarker);
+                        if (lingkaran >= jarak) {
+                            jarak = saatIni.distanceTo(lokMarker) / 1000;
+                            mPosisi.position(location);
+                            mPosisi.anchor(0.3f, 0.3f);
+                            mPosisi.title(tambah.getNama());
+                            mPosisi.snippet("Berjarak = " + formatDesimal.format(jarak) + " km dari anda");
+                            mMap.addMarker(mPosisi);
+                            // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+
+                        }
+                        markersOrderNumbers.put(marker, position);
+                        position++;
+
+                        final Integer index = markersOrderNumbers.get(marker);
+//                    list.add(index);
+//                    final String name = daftarTambal.get(index).getNama();
+                        Log.e("Data snapshot", "barang4" + tambah);
+
+                        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                            public void onInfoWindowClick(Marker marker) {
+                                String id = marker.getTitle().toString();
+                                Log.e("Data snapshot", "barang45" + id);
+                                Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
+                                //String reference = mMarkerPlaceLink.get(id);
+                                //daftarBarang.add(barang);
+                                //Integer index = markersOrderNumbers.get(marker);
+//                                edit.putExtra("data", daftarTambal.get(index));
+                                edit.putExtra(DATA, id);
+
+
+                                //Log.e("Data snapshot","barang1"+daftarBarang.get(position));
+                                //Log.e("Data snapshot","barang2"+daftarBarang);
+                                startActivity(edit);
+
+                            }
+
+                        });
+
+                    }
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
     }
 
 }

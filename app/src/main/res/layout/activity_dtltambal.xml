@@ -203,7 +203,7 @@
 
                             <ImageView
                                 android:id="@+id/imgmotor"
-                                android:layout_width="5dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:src="@drawable/ic_scooter" />
 
@@ -243,6 +243,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
@@ -251,7 +252,8 @@
                                 android:id="@+id/imgbiasa"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_wheel" />
+                                android:src="@drawable/ic_wheel"
+                                android:visibility="visible" />
 
                             <TextView
                                 android:id="@+id/tvbiasa"
@@ -259,7 +261,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="5dp"
-                                android:text="Biasa" />
+                                android:text="Biasa"
+                                android:visibility="visible" />
 
                             <ImageView
                                 android:id="@+id/imgtub"

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:weightSum="7"
-    android:background="#f5f5f5">
+    android:background="#f1f1f1">
 
 
     <ScrollView
@@ -20,356 +21,521 @@
             android:padding="10dp"
             android:weightSum="1">
 
-            <EditText
-                android:id="@+id/addusername"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Username"
-                android:padding="8dp"
-                android:editable="false"
-                android:textColor="#505050"
-                android:textColorHint="#8c8c8c" />
+                android:layout_height="350dp"
+                android:padding="5dp">
 
-            <EditText
-                android:id="@+id/addnama"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Nama Tambal ban / Nama Pemilik"
-                android:padding="8dp"
-                android:textColor="#505050"
-                android:textColorHint="#8c8c8c" />
-
-            <EditText
-                android:id="@+id/addno_tlp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="No.Hp Pemilik"
-                android:padding="8dp"
-                android:textColor="#505050"
-                android:textColorHint="#8c8c8c" />
-
-            <TableLayout
-                android:id="@+id/tl2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:layout_gravity="center">
-
-
-                <TableRow
-                    android:layout_width="match_parent">
-
-                    <Button
-                        android:id="@+id/jambuka"
-                        android:text="Jam Buka"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <Button
-                        android:id="@+id/kosong"
-                        android:text="Jam Tutup"
-                        android:visibility="invisible"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <Button
-                        android:id="@+id/jamtutup"
-                        android:text="Jam Tutup"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </TableRow>
-                <TableRow>
-
-                    <TextView
-                        android:text="-"
-                        android:id="@+id/tv_jambuka"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"/>
-                    <TextView
-                        android:text=""
-                        android:id="@+id/tv_kosong"
-                        android:visibility="invisible"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <TextView
-                        android:text="-"
-                        android:id="@+id/tv_jamtutup"
-                        android:layout_width="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_height="wrap_content" />
-
-                </TableRow>
-
-
-
-                <TableRow>
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Jenis Ban"
-                        android:textSize="15dp"
-                        android:layout_marginRight="30dp"/>
-
-                    <CheckBox
-                        android:id="@+id/cb_biasa"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:text="Biasa"
-                        android:onClick="itemClicked"
-                        />
-
-                </TableRow>
-                <TableRow>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/hsl1"
-                        android:textSize="15dp"
-                        android:layout_marginRight="30dp"/>
-
-                    <CheckBox
-                        android:id="@+id/cb_tubles"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Tubles"
-                        android:onClick="itemClicked" />
-                </TableRow>
-                <TableRow
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Jenis Kendaraan"
-                        android:textSize="15dp" />
-                    <CheckBox
-                        android:id="@+id/cb_sepedamotor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Speda Motor"
-                        android:onClick="itemClicked" />
-
-                </TableRow>
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/hsl2"
-                        android:textSize="15dp"
-                        android:layout_marginRight="30dp"/>
-                    <CheckBox
-                        android:id="@+id/cb_roda4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mobil/Truck"
-                        android:onClick="itemClicked" />
-
-                </TableRow>
-            </TableLayout>
-
-            <EditText
-                android:id="@+id/alamat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="Alamat dan detail lokasi"
-                android:padding="8dp"
-                android:textColor="#505050"
-                android:textColorHint="#8c8c8c" />
-
-            <fragment
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_marginTop="8dp"
-                tools:context="com.example.nanodg.tambalban.TambahActivity"
-                class="com.example.nanodg.tambalban.WorkaroundMapFragment"/>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:gravity="center">
-
-                <Button
-                    android:id="@+id/gps"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:padding="5dp">
+
+                    <EditText
+                        android:id="@+id/addusername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/bg_rectangle_edittext1"
+                        android:editable="false"
+                        android:hint="Email"
+                        android:padding="8dp"
+                        android:textColor="#696969"
+                        android:textColorHint="#808080" />
+
+                    <EditText
+                        android:id="@+id/addnama"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/addusername"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_rectangle_edittext1"
+                        android:hint="Nama Tambal ban / Nama Pemilik"
+                        android:padding="8dp"
+                        android:textColor="#696969"
+                        android:textColorHint="#808080" />
+
+                    <EditText
+                        android:id="@+id/addno_tlp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/addnama"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_rectangle_edittext1"
+                        android:hint="No.Hp Pemilik"
+                        android:padding="8dp"
+                        android:textColor="#696969"
+                        android:textColorHint="#808080" />
+                </RelativeLayout>
+
+                <TableLayout
+                    android:id="@+id/tl2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_weight="0"
-                    android:text="Get GPS"></Button>
+                    android:layout_marginTop="95dp">
 
-                <EditText
-                    android:id="@+id/edlat"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:hint="latitude"
-                    android:editable="false"/>
 
-                <EditText
-                    android:id="@+id/edlong"
-                    android:layout_width="130dp"
-                    android:layout_height="wrap_content"
-                    android:hint="longitude"
-                    android:editable="false"/>
-            </TableRow>
-            <TableLayout
-                android:id="@+id/tl3"
+                    <TableRow android:layout_width="match_parent">
+
+                        <Button
+                            android:id="@+id/jambuka"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rectangle_button2"
+                            android:text="Jam Buka"
+                            android:textColor="#ffff" />
+
+                        <Button
+                            android:id="@+id/kosong"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Jam Tutup"
+                            android:visibility="invisible" />
+
+                        <Button
+                            android:id="@+id/jamtutup"
+                            android:layout_width="113dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rectangle_button2"
+                            android:text="Jam Tutup"
+                            android:textColor="#ffff" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/tv_jambuka"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="-" />
+
+                        <TextView
+                            android:id="@+id/tv_kosong"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:visibility="invisible" />
+
+                        <TextView
+                            android:id="@+id/tv_jamtutup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="-" />
+
+                    </TableRow>
+
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="30dp"
+                            android:text="Jenis Ban"
+                            android:textSize="15dp" />
+
+                        <CheckBox
+                            android:id="@+id/cb_biasa"
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/abc_btn_check_material"
+                            android:buttonTint="@color/colorAccent"
+                            android:onClick="itemClicked"
+                            android:text="Biasa" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/hsl1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="30dp"
+                            android:textSize="15dp" />
+
+                        <CheckBox
+                            android:id="@+id/cb_tubles"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/abc_btn_check_material"
+                            android:buttonTint="@color/colorAccent"
+                            android:onClick="itemClicked"
+                            android:text="Tubles" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_marginTop="5dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Jenis Kendaraan"
+                            android:textSize="15dp" />
+
+                        <CheckBox
+                            android:id="@+id/cb_sepedamotor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/abc_btn_check_material"
+                            android:buttonTint="@color/colorAccent"
+                            android:onClick="itemClicked"
+                            android:text="Speda Motor" />
+
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/hsl2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="30dp"
+                            android:textSize="15dp" />
+
+                        <CheckBox
+                            android:id="@+id/cb_roda4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:button="@drawable/abc_btn_check_material"
+                            android:buttonTint="@color/colorAccent"
+                            android:onClick="itemClicked"
+                            android:text="Mobil/Truck" />
+
+                    </TableRow>
+                </TableLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp">
+                android:layout_height="310dp"
+                android:layout_marginTop="10dp">
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center">
 
-                <TableRow android:layout_width="match_parent">
-
-                    <Button
-                        android:id="@+id/buttonChoose1"
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/edlat"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
-                        android:text="Choose Image" />
+                        android:background="@drawable/bg_rectangle_edittext1"
+                        android:editable="false"
+                        android:hint="latitude"
+                        android:textColor="#696969"
+                        android:textColorHint="#808080"
+                        android:visibility="gone" />
+
+                    <EditText
+                        android:id="@+id/edlong"
+                        android:layout_width="130dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_rectangle_edittext1"
+                        android:editable="false"
+                        android:hint="longitude"
+                        android:textColor="#696969"
+                        android:textColorHint="#808080"
+                        android:visibility="gone" />
+                </TableRow>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:padding="5dp">
+
+                    <EditText
+                        android:id="@+id/alamat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_rectangle_edittext1"
+                        android:hint="Alamat dan detail lokasi"
+                        android:padding="8dp"
+                        android:textColor="#696969"
+                        android:textColorHint="#808080" />
+
+                    <fragment
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        class="com.example.nanodg.tambalban.WorkaroundMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="230dp"
+                        tools:context="com.example.nanodg.tambalban.TambahActivity"
+                        android:layout_below="@+id/alamat"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginTop="12dp" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginTop="10dp"
+                android:padding="10dp">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/buttonChoose1"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@drawable/bg_rectangle_button3"
+                        android:src="@drawable/ic_add_circle_outline_black_24dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/buttonChoose2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@drawable/bg_rectangle_button3"
+                        android:src="@drawable/ic_add_circle_outline_black_24dp"
+                        app:layout_constraintLeft_toRightOf="@+id/buttonChoose1"
+                        app:layout_constraintRight_toLeftOf="@+id/buttonChoose3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/buttonChoose3"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@drawable/bg_rectangle_button3"
+                        android:src="@drawable/ic_add_circle_outline_black_24dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/image1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="File Name"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/proses1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginTop="13dp"
                         android:text="Status"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/buttonChoose1" />
 
-                    <EditText
-                        android:id="@+id/image1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="File Name" />
-
-
-                </TableRow>
-
-                <ProgressBar
-                    android:id="@+id/horizontal_progress_bar1"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="10dp"
-                    android:indeterminate="false"
-                    android:max="100"
-                    android:minHeight="100dp"
-                    android:progress="0"
-                    android:progressBackgroundTint="@color/colorPrimaryDark" />
-
-                <TableRow android:layout_width="match_parent">
-
-                    <Button
-                        android:id="@+id/buttonChoose2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Choose Image" />
+                    <ProgressBar
+                        android:id="@+id/horizontal_progress_bar1"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@drawable/circle_shape"
+                        android:indeterminate="false"
+                        android:max="100"
+                        android:minHeight="100dp"
+                        android:progress="0"
+                        android:progressBackgroundTint="@color/colorPrimaryDark"
+                        android:progressDrawable="@drawable/circular_progress_bar"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/proses2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="13dp"
                         android:text="Status"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@+id/horizontal_progress_bar2"
+                        tools:layout_editor_absoluteX="186dp" />
+
                     <EditText
                         android:id="@+id/image2"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="File Name" />
+                        android:text="File Name"
+                        android:visibility="gone" />
 
-                </TableRow>
-                <ProgressBar
-                    android:id="@+id/horizontal_progress_bar2"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="10dp"
-                    android:indeterminate="false"
-                    android:max="100"
-                    android:minHeight="100dp"
-                    android:progress="0"
-                    android:progressBackgroundTint="@color/colorPrimaryDark" />
-                <TableRow android:layout_width="match_parent">
+                    <ProgressBar
+                        android:id="@+id/horizontal_progress_bar2"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@drawable/circle_shape"
+                        android:indeterminate="false"
+                        android:max="100"
+                        android:minHeight="100dp"
+                        android:progress="0"
+                        android:progressBackgroundTint="@color/colorPrimaryDark"
+                        android:progressDrawable="@drawable/circular_progress_bar"
+                        app:layout_constraintLeft_toRightOf="@+id/horizontal_progress_bar1"
+                        app:layout_constraintRight_toLeftOf="@+id/horizontal_progress_bar3"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <Button
-                        android:id="@+id/buttonChoose3"
-                        android:layout_width="wrap_content"
+                    <EditText
+                        android:id="@+id/image3"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Choose Image" />
+                        android:text="File Name"
+                        android:visibility="gone" />
+
+                    <ProgressBar
+                        android:id="@+id/horizontal_progress_bar3"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@drawable/circle_shape"
+                        android:indeterminate="false"
+                        android:max="100"
+                        android:minHeight="100dp"
+                        android:progress="0"
+                        android:progressBackgroundTint="@color/colorPrimaryDark"
+                        android:progressDrawable="@drawable/circular_progress_bar"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/proses3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="53dp"
+                        android:layout_marginTop="13dp"
                         android:text="Status"
-                        android:textSize="14sp" />
-                    <EditText
-                        android:id="@+id/image3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="File Name" />
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/buttonChoose3" />
 
-                </TableRow>
-                <ProgressBar
-                    android:id="@+id/horizontal_progress_bar3"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="fill_parent"
-                    android:layout_height="10dp"
-                    android:indeterminate="false"
-                    android:max="100"
-                    android:minHeight="100dp"
-                    android:progress="0"
-                    android:progressBackgroundTint="@color/colorPrimaryDark" />
-            </TableLayout>
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="57dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Foto1"
+                        app:layout_constraintBottom_toTopOf="@+id/horizontal_progress_bar1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="37dp"
+                        android:layout_height="17dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Foto2"
+                        app:layout_constraintBottom_toTopOf="@+id/horizontal_progress_bar2"
+                        app:layout_constraintHorizontal_bias="0.51"
+                        app:layout_constraintLeft_toRightOf="@+id/textView3"
+                        app:layout_constraintRight_toLeftOf="@+id/textView5"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginRight="55dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Foto3"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
 
             <TextView
+                android:id="@+id/uri1"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
-                android:id="@+id/uri1" />
+                android:visibility="gone"/>
+
             <TextView
+                android:id="@+id/uri2"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
-                android:id="@+id/uri2" />
+                android:visibility="gone"/>
+
             <TextView
+                android:id="@+id/uri3"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
-                android:id="@+id/uri3" />
+                android:visibility="gone"/>
+
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
                 android:id="@+id/tvpemilik"
-                android:text=""/>
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
+                android:text=""
+                android:visibility="gone"/>
+
+            <TextView
                 android:id="@+id/tvstatus"
-                android:text=" "/>
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
+                android:text=" "
+                android:visibility="gone"/>
+
+            <TextView
                 android:id="@+id/tvverif"
-                android:text=""/>
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:text=""
+                android:visibility="gone"/>
+
             <Button
                 android:id="@+id/simpan"
                 android:layout_width="match_parent"
-                android:layout_marginTop="15dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/bg_rectangle_button"
                 android:layout_weight="0"
+                android:textColor="#fff"
                 android:text="Simpan"></Button>
 
             <Button
+                android:id="@+id/buttonLogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Logout"
-                android:id="@+id/buttonLogout"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:text="Logout" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

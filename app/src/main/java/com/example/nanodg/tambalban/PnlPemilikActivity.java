@@ -25,7 +25,7 @@ import com.sdsmdg.tastytoast.TastyToast;
 public class PnlPemilikActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView tvslmt;
-    CardView tambah;
+    CardView tambah,btnlogout;
     FirebaseAuth firebaseAuth;
     String alias;
     @Override
@@ -35,6 +35,8 @@ public class PnlPemilikActivity extends AppCompatActivity implements View.OnClic
 
         tvslmt = (TextView)findViewById(R.id.tvslmt);
         tambah = (CardView) findViewById(R.id.btntambah) ;
+        btnlogout = (CardView)findViewById(R.id.btnlogout);
+        btnlogout.setOnClickListener(this);
         tambah.setOnClickListener(this);
         /**
          * FIREBASE LOGIN
@@ -76,6 +78,14 @@ public class PnlPemilikActivity extends AppCompatActivity implements View.OnClic
         if(view == tambah){
             finish();
             startActivity(new Intent(this, TambahActivity.class));
+        }
+        if (view == btnlogout) {
+            //logging out the user
+            firebaseAuth.signOut();
+            //closing activity
+            finish();
+            //starting login activity
+            startActivity(new Intent(this, LoginUserActivity.class));
         }
     }
     public static Intent getActIntent(Activity activity) {
