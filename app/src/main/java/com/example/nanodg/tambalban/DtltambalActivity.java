@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -69,8 +70,9 @@ import retrofit2.Response;
 
 public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener  {
 
-    private Button bttlpn,btsms;
-    EditText nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,lat,lon;
+//    private Button bttlpn,btsms;
+    TextView nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,tvbiasa,tvtubles,tvmotor,tvmobil,tvverif;
+    EditText lat,lon;
     private TextView uri1,uri2,uri3;
     private Slider slider;;
     private GoogleMap mMap;
@@ -79,7 +81,9 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     Marker mCurrentPosition = null;
     ScrollView mScrollView;
     String hasil,verif;
-    ImageView imgverif;
+    ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil;
+    ImageButton bttlpn,btsms;
+
 
 
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
@@ -91,37 +95,36 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dtltambal);
-        nama = (EditText) findViewById(R.id.et_namatambal);
-        tlp = (EditText) findViewById(R.id.et_nohp);
-        jmbuka = (EditText) findViewById(R.id.et_jambuka);
-        jmtutup = (EditText) findViewById(R.id.et_jamtutup);
-        hsl1 = (EditText) findViewById(R.id.et_hsl1);
-        hsl2 = (EditText) findViewById(R.id.et_hsl2);
-        alamat = (EditText) findViewById(R.id.et_alamat);
+        final ProgressDialog loading = ProgressDialog.show(this,"Mengambil data","Tunggu Sebentar...",false,false);
+        nama = (TextView) findViewById(R.id.et_namatambal);
+        tlp = (TextView) findViewById(R.id.et_nohp);
+        jmbuka = (TextView) findViewById(R.id.et_jambuka);
+        hsl2 = (TextView) findViewById(R.id.et_hsl2);
+        alamat = (TextView) findViewById(R.id.et_alamat);
         lat = (EditText) findViewById(R.id.et_lat);
         lon = (EditText) findViewById(R.id.et_long);
         uri1 = (TextView) findViewById(R.id.uri1);
         uri2 = (TextView) findViewById(R.id.uri2);
         uri3 = (TextView) findViewById(R.id.uri3);
-        bttlpn = (Button) findViewById(R.id.tlpn);
-        btsms = (Button) findViewById(R.id.sms);
+        tvbiasa = (TextView) findViewById(R.id.tvbiasa);
+        tvtubles = (TextView) findViewById(R.id.tvtubles);
+        tvmotor = (TextView) findViewById(R.id.tvmotor);
+        tvmobil = (TextView) findViewById(R.id.tvmobil);
+        tvverif = (TextView) findViewById(R.id.tvverif);
+        bttlpn = (ImageButton) findViewById(R.id.tlpn);
+        btsms = (ImageButton) findViewById(R.id.sms);
         slider = (Slider) findViewById(R.id.slider);
         imgverif = (ImageView) findViewById(R.id.imgverif);
+        imgbiasa = (ImageView) findViewById(R.id.imgbiasa);
+        imgtub = (ImageView) findViewById(R.id.imgtub);
+        imgmotor = (ImageView) findViewById(R.id.imgmotor);
+        imgmobil = (ImageView) findViewById(R.id.imgmobil);
 
         lat.setText("-7.248651474442163");
         lon.setText("112.62898944318295");
 
-        final ProgressDialog loading = ProgressDialog.show(this,"Mengambil data","Tunggu Sebentar...",false,false);
 
-        nama.setEnabled(false);
-        tlp.setEnabled(false);
-        jmbuka.setEnabled(false);
-        jmtutup.setEnabled(false);
-        hsl1.setEnabled(false);
-        hsl2.setEnabled(false);
-        alamat.setEnabled(false);
-        lat.setEnabled(false);
-        lon.setEnabled(false);
+
         //btSubmit.setVisibility(View.GONE);
 
         //Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
@@ -139,10 +142,10 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                         loading.dismiss();
                         nama.setText(tambah.getNama());
                         tlp.setText(tambah.getNo());
-                        jmbuka.setText(tambah.getBuka());
-                        jmtutup.setText(tambah.getTutup());
-                        hsl1.setText(tambah.getBan());
-                        hsl2.setText(tambah.getKendaraan());
+                        jmbuka.setText(tambah.getBuka()+" s/d "+(tambah.getTutup()));
+                        //jmtutup.setText(tambah.getTutup());
+//                        hsl1.setText(tambah.getBan());
+//                        hsl2.setText(tambah.getKendaraan());
                         alamat.setText(tambah.getAlamat());
                         lat.setText(Double.toString(tambah.getLat()));
                         lon.setText(Double.toString(tambah.getLongt()));
@@ -152,10 +155,32 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                         verif = tambah.getVerif();
                         if(tambah.getVerif().equals("0")){
                            imgverif.setVisibility(View.GONE);
-
+                            tvverif.setVisibility(View.GONE);
                         } if(tambah.getVerif().equals("1")) {
                             imgverif.setVisibility(View.VISIBLE);
-
+                            tvverif.setVisibility(View.VISIBLE);
+                        }if(tambah.getBan().equals("1")){
+                            imgtub.setVisibility(View.GONE);
+                            tvtubles.setVisibility(View.GONE);
+                        }if(tambah.getBan().equals("2")){
+                            imgbiasa.setVisibility(View.GONE);
+                            tvbiasa.setVisibility(View.GONE);
+                        }if(tambah.getBan().equals("3")){
+                            imgbiasa.setVisibility(View.VISIBLE);
+                            tvbiasa.setVisibility(View.VISIBLE);
+                            imgtub.setVisibility(View.VISIBLE);
+                            tvtubles.setVisibility(View.VISIBLE);
+                        }if(tambah.getKendaraan().equals("1")){
+                            imgmobil.setVisibility(View.GONE);
+                            tvmobil.setVisibility(View.GONE);
+                        }if(tambah.getKendaraan().equals("2")){
+                            imgmotor.setVisibility(View.GONE);
+                            tvmotor.setVisibility(View.GONE);
+                        }if(tambah.getKendaraan().equals("3")){
+                            imgmotor.setVisibility(View.VISIBLE);
+                            tvmotor.setVisibility(View.VISIBLE);
+                            imgmobil.setVisibility(View.VISIBLE);
+                            tvmobil.setVisibility(View.VISIBLE);
                         }
                         //coba(la1,lo2);
 
@@ -227,6 +252,8 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         }
 
         widgetInit();
+
+
 
     }
 
