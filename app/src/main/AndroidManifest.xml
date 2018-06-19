@@ -29,6 +29,8 @@
         <activity android:name=".PnlPemilikActivity"></activity>
         <activity android:name=".TambahActivity" />
         <activity android:name=".DtltambalActivity" />
+        <activity android:name=".FirebaseDBReadActivity"/>
+        <activity android:name=".FirebaseDBReadSingleActivity"/>
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"

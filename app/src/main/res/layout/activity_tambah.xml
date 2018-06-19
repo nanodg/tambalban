@@ -23,7 +23,7 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="400dp"
                 android:padding="5dp">
 
                 <RelativeLayout
@@ -75,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginTop="95dp">
+                    android:layout_marginTop="100dp">
 
 
                     <TableRow android:layout_width="match_parent">
@@ -210,9 +210,46 @@
                             android:text="Mobil/Truck" />
 
                     </TableRow>
-                </TableLayout>
-            </android.support.v7.widget.CardView>
+                    <TableRow>
 
+                        <TextView
+                            android:text="Status"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="15dp" />
+
+                       <Switch
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:id="@+id/status"/>
+                        <TextView
+                            android:text=""
+                            android:id="@+id/hsl3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="15dp" />
+
+                    </TableRow>
+                </TableLayout>
+
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <EditText
+                    android:id="@+id/edinfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_rectangle_edittext1"
+                    android:hint="Informasi"
+                    android:textColor="#696969"
+                    android:textColorHint="#808080"
+                    android:ems="10"
+                    android:inputType="textMultiLine"/>
+            </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="310dp"
