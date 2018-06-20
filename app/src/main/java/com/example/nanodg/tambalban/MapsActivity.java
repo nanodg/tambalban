@@ -96,6 +96,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         radius = (SeekBar)findViewById(R.id.radius);
         numradius = (TextView)findViewById(R.id.numradius);
 
+
+
         radius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -134,22 +136,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-    }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        googleMap.setOnMarkerClickListener(this);
-        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        if (isProviderAvailable() && (provider != null)) {
-            locateCurrentPosition();
-        }
 /**
  * =========================================SPINNER
  */
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(MapsActivity.this, R.layout.simple_list_item, jenisban);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MapsActivity.this, R.layout.simple_list_item,R.id.test, jenisban);
         spinner1.setAdapter(adapter);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(MapsActivity.this, R.layout.simple_list_item, jeniskendaraan);
+
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(MapsActivity.this, R.layout.simple_list_item,R.id.test, jeniskendaraan);
         spinner2.setAdapter(adapter2);
 
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -187,6 +182,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
  * ==============================================================SPINNER
  */
 
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        googleMap.setOnMarkerClickListener(this);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        if (isProviderAvailable() && (provider != null)) {
+            locateCurrentPosition();
+        }
     }
     private void locateCurrentPosition() {
 
@@ -241,7 +247,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             double lng = location.getLongitude();
             double lat = location.getLatitude();
 
-            addBoundaryToCurrentPosition(lat, lng);
+            //addBoundaryToCurrentPosition(lat, lng);
             refreshmap(lat,lng);
 
             CameraPosition camPosition = new CameraPosition.Builder()
@@ -265,25 +271,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return zoomLevel;
     }
 
-    private void addBoundaryToCurrentPosition(double lat, double lang) {
-
-        MarkerOptions mMarkerOptions = new MarkerOptions();
-        mMarkerOptions.position(new LatLng(lat, lang));
-        mMarkerOptions.icon(BitmapDescriptorFactory
-                .fromResource(R.drawable.ic_place_black_24dp));
-        mMarkerOptions.anchor(0.5f, 0.5f);
-        mMarkerOptions.title("ini lokasi anda");
-        mMarkerOptions.snippet("anda sekarang ada disini");
-
-        mOptions = new CircleOptions()
-                .center(new LatLng(lat, lang)).radius(lingkaran)
-                .strokeColor(0x110000FF).strokeWidth(1).fillColor(0x110000FF);
-        circle = mMap.addCircle(mOptions);
-        mMap.addCircle(mOptions);
-        if (mCurrentPosition != null)
-            mCurrentPosition.remove();
-        mCurrentPosition = mMap.addMarker(mMarkerOptions);
-    }
+//    private void addBoundaryToCurrentPosition(double lat, double lang) {
+//
+//        MarkerOptions mMarkerOptions = new MarkerOptions();
+//        mMarkerOptions.position(new LatLng(lat, lang));
+//        mMarkerOptions.icon(BitmapDescriptorFactory
+//                .fromResource(R.drawable.ic_place_black_24dp));
+//        mMarkerOptions.anchor(0.5f, 0.5f);
+//        mMarkerOptions.title("ini lokasi anda");
+//        mMarkerOptions.snippet("anda sekarang ada disini");
+//
+//        mOptions = new CircleOptions()
+//                .center(new LatLng(lat, lang)).radius(lingkaran)
+//                .strokeColor(0x110000FF).strokeWidth(1).fillColor(0x110000FF);
+//        circle = mMap.addCircle(mOptions);
+//        mMap.addCircle(mOptions);
+//        if (mCurrentPosition != null)
+//            mCurrentPosition.remove();
+//        mCurrentPosition = mMap.addMarker(mMarkerOptions);
+//    }
 
 
 
@@ -329,7 +335,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mUserContactsRef.orderByChild("ban").equalTo(jnban).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
-                Log.e("barang1", dataSnapshot.toString());
+                //Log.e("barang1", dataSnapshot.toString());
                 for (DataSnapshot s : dataSnapshot.getChildren()){
                     final Tambah tambah = s.getValue(Tambah.class);
                     if(tambah.getKendaraan().equals(jnkendaraan)){
@@ -352,19 +358,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             //mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
                         }
-                        markersOrderNumbers.put(marker, position);
-                        position++;
-
-                        final Integer index = markersOrderNumbers.get(marker);
-//                    list.add(index);
-//                    final String name = daftarTambal.get(index).getNama();
-                        Log.e("Data snapshot", "barang4" + tambah);
 
                         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
                             public void onInfoWindowClick(Marker marker) {
                                 String id = marker.getTitle().toString();
-                                Log.e("Data snapshot", "barang45" + id);
+                                //Log.e("Data snapshot", "barang45" + id);
                                 Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
                                 //String reference = mMarkerPlaceLink.get(id);
                                 //daftarBarang.add(barang);
@@ -393,7 +392,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mUserContactsRef.orderByChild("ban").equalTo("3").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
-                Log.e("barang1", dataSnapshot.toString());
+                //Log.e("barang1", dataSnapshot.toString());
                 for (DataSnapshot s : dataSnapshot.getChildren()){
                     final Tambah tambah = s.getValue(Tambah.class);
                     if(tambah.getKendaraan().equals("3")){
@@ -416,19 +415,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
                         }
-                        markersOrderNumbers.put(marker, position);
-                        position++;
 
-                        final Integer index = markersOrderNumbers.get(marker);
-//                    list.add(index);
-//                    final String name = daftarTambal.get(index).getNama();
-                        Log.e("Data snapshot", "barang4" + tambah);
 
                         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
                             public void onInfoWindowClick(Marker marker) {
                                 String id = marker.getTitle().toString();
-                                Log.e("Data snapshot", "barang45" + id);
+                               // Log.e("Data snapshot", "barang45" + id);
                                 Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
                                 //String reference = mMarkerPlaceLink.get(id);
                                 //daftarBarang.add(barang);
@@ -457,7 +450,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mUserContactsRef.orderByChild("ban").equalTo("3").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
-                Log.e("barang1", dataSnapshot.toString());
+                //Log.e("barang1", dataSnapshot.toString());
                 for (DataSnapshot s : dataSnapshot.getChildren()){
                     final Tambah tambah = s.getValue(Tambah.class);
                         if(tambah.getKendaraan().equals(jnkendaraan)) {
@@ -479,19 +472,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
                             }
-                            markersOrderNumbers.put(marker, position);
-                            position++;
-
-                            final Integer index = markersOrderNumbers.get(marker);
-//                    list.add(index);
-//                    final String name = daftarTambal.get(index).getNama();
-                            Log.e("Data snapshot", "barang4" + tambah);
 
                             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
                                 public void onInfoWindowClick(Marker marker) {
                                     String id = marker.getTitle().toString();
-                                    Log.e("Data snapshot", "barang45" + id);
+                                    //Log.e("Data snapshot", "barang45" + id);
                                     Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
                                     //String reference = mMarkerPlaceLink.get(id);
                                     //daftarBarang.add(barang);
@@ -519,7 +505,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mUserContactsRef.orderByChild("kendaraan").equalTo("3").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
-                Log.e("barang1", dataSnapshot.toString());
+                //Log.e("barang1", dataSnapshot.toString());
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
                     final Tambah tambah = s.getValue(Tambah.class);
                     if (tambah.getBan().equals(jnban)) {
@@ -541,19 +527,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
                         }
-                        markersOrderNumbers.put(marker, position);
-                        position++;
 
-                        final Integer index = markersOrderNumbers.get(marker);
-//                    list.add(index);
-//                    final String name = daftarTambal.get(index).getNama();
-                        Log.e("Data snapshot", "barang4" + tambah);
 
                         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
                             public void onInfoWindowClick(Marker marker) {
                                 String id = marker.getTitle().toString();
-                                Log.e("Data snapshot", "barang45" + id);
+                                //Log.e("Data snapshot", "barang45" + id);
                                 Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
                                 //String reference = mMarkerPlaceLink.get(id);
                                 //daftarBarang.add(barang);

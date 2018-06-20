@@ -200,7 +200,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 loading.dismiss();
-                Log.e("barang1", dataSnapshot.toString());
+                //Log.e("barang1", dataSnapshot.toString());
                 for (DataSnapshot userContact : dataSnapshot.getChildren()) {
                     User user = userContact.getValue(User.class);
                     if (user.getPemilik().equals("0")) {
@@ -211,7 +211,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
                     if (user.getPemilik().equals("1")) {
                         pemilik.setText("1");
                         verif.setText("1");
-                        Log.e("Data snapshot", "barang1" + user.getPemilik());
+                        //Log.e("Data snapshot", "barang1" + user.getPemilik());
 
                     }
                 }
@@ -781,7 +781,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
             double lng = location.getLongitude();
             double lat = location.getLatitude();
 
-            addBoundaryToCurrentPosition(lat, lng);
+//            addBoundaryToCurrentPosition(lat, lng);
 
             CameraPosition camPosition = new CameraPosition.Builder()
                     .target(new LatLng(lat, lng)).zoom(15f).build();
@@ -794,22 +794,22 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
         }
     }
 
-    private void addBoundaryToCurrentPosition(double lat, double lang) {
-
-        MarkerOptions mMarkerOptions = new MarkerOptions();
-        mMarkerOptions.position(new LatLng(lat, lang));
-        mMarkerOptions.icon(BitmapDescriptorFactory
-                .fromResource(R.drawable.ic_place_black_24dp));
-        mMarkerOptions.anchor(0.5f, 0.5f);
-
-        CircleOptions mOptions = new CircleOptions()
-                .center(new LatLng(lat, lang)).radius(1000)
-                .strokeColor(0x110000FF).strokeWidth(1).fillColor(0x110000FF);
-        mMap.addCircle(mOptions);
-        if (mCurrentPosition != null)
-            mCurrentPosition.remove();
-        mCurrentPosition = mMap.addMarker(mMarkerOptions);
-    }
+//    private void addBoundaryToCurrentPosition(double lat, double lang) {
+//
+//        MarkerOptions mMarkerOptions = new MarkerOptions();
+//        mMarkerOptions.position(new LatLng(lat, lang));
+//        mMarkerOptions.icon(BitmapDescriptorFactory
+//                .fromResource(R.drawable.ic_place_black_24dp));
+//        mMarkerOptions.anchor(0.5f, 0.5f);
+//
+//        CircleOptions mOptions = new CircleOptions()
+//                .center(new LatLng(lat, lang)).radius(1000)
+//                .strokeColor(0x110000FF).strokeWidth(1).fillColor(0x110000FF);
+//        mMap.addCircle(mOptions);
+//        if (mCurrentPosition != null)
+//            mCurrentPosition.remove();
+//        mCurrentPosition = mMap.addMarker(mMarkerOptions);
+//    }
 
 
     @Override

@@ -68,7 +68,7 @@ import retrofit2.Response;
 
 
 
-public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener  {
+public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener,View.OnClickListener  {
 
 //    private Button bttlpn,btsms;
     TextView nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,tvbiasa,tvtubles,tvmotor,tvmobil,tvverif,hsl3,status,status1;
@@ -81,9 +81,9 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     Marker mCurrentPosition = null;
     ScrollView mScrollView;
     String hasil,verif;
-    ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil;
+    ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil,stbuka,sttutup;
     ImageButton bttlpn,btsms;
-
+    Button aduan;
 
 
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
@@ -102,6 +102,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         hsl2 = (TextView) findViewById(R.id.et_hsl2);
         alamat = (TextView) findViewById(R.id.et_alamat);
         lat = (EditText) findViewById(R.id.et_lat);
+        aduan = (Button) findViewById(R.id.aduan);
         lon = (EditText) findViewById(R.id.et_long);
         uri1 = (TextView) findViewById(R.id.uri1);
         uri2 = (TextView) findViewById(R.id.uri2);
@@ -111,9 +112,8 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         tvmotor = (TextView) findViewById(R.id.tvmotor);
         tvmobil = (TextView) findViewById(R.id.tvmobil);
         tvverif = (TextView) findViewById(R.id.tvverif);
-        hsl3 = (TextView) findViewById(R.id.hsl3);
-        status = (TextView) findViewById(R.id.status);
-        status1 = (TextView) findViewById(R.id.status1);
+        stbuka = (ImageView) findViewById(R.id.stbuka);
+        sttutup= (ImageView) findViewById(R.id.sttutup);
         bttlpn = (ImageButton) findViewById(R.id.tlpn);
         btsms = (ImageButton) findViewById(R.id.sms);
         slider = (Slider) findViewById(R.id.slider);
@@ -126,7 +126,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         lat.setText("-7.248651474442163");
         lon.setText("112.62898944318295");
 
-
+        aduan.setOnClickListener(this);
 
         //btSubmit.setVisibility(View.GONE);
 
@@ -138,7 +138,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                 @Override
                 public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                    Log.e("barang1", dataSnapshot.toString());
+                    //Log.e("barang1", dataSnapshot.toString());
                     for (DataSnapshot userContact : dataSnapshot.getChildren()) {
 
                         Tambah tambah = userContact.getValue(Tambah.class);
@@ -165,9 +165,13 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                         }if(tambah.getBan().equals("1")){
                             imgtub.setVisibility(View.GONE);
                             tvtubles.setVisibility(View.GONE);
+                            imgbiasa.setVisibility(View.VISIBLE);
+                            tvbiasa.setVisibility(View.VISIBLE);
                         }if(tambah.getBan().equals("2")){
                             imgbiasa.setVisibility(View.GONE);
                             tvbiasa.setVisibility(View.GONE);
+                            imgtub.setVisibility(View.VISIBLE);
+                            tvtubles.setVisibility(View.VISIBLE);
                         }if(tambah.getBan().equals("3")){
                             imgbiasa.setVisibility(View.VISIBLE);
                             tvbiasa.setVisibility(View.VISIBLE);
@@ -176,22 +180,24 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                         }if(tambah.getKendaraan().equals("1")){
                             imgmobil.setVisibility(View.GONE);
                             tvmobil.setVisibility(View.GONE);
+                            imgmotor.setVisibility(View.VISIBLE);
+                            tvmotor.setVisibility(View.VISIBLE);
                         }if(tambah.getKendaraan().equals("2")){
                             imgmotor.setVisibility(View.GONE);
                             tvmotor.setVisibility(View.GONE);
+                            imgmobil.setVisibility(View.VISIBLE);
+                            tvmobil.setVisibility(View.VISIBLE);
                         }if(tambah.getKendaraan().equals("3")){
                             imgmotor.setVisibility(View.VISIBLE);
                             tvmotor.setVisibility(View.VISIBLE);
                             imgmobil.setVisibility(View.VISIBLE);
                             tvmobil.setVisibility(View.VISIBLE);
                         }if(tambah.getStatus().equals("1")){
-                            status.setVisibility(View.VISIBLE);
-                            status1.setVisibility(View.GONE);
-                            hsl3.setVisibility(View.VISIBLE);
+                            stbuka.setVisibility(View.VISIBLE);
+                            sttutup.setVisibility(View.GONE);
                         }if(tambah.getStatus().equals("0")){
-                            status.setVisibility(View.GONE);
-                            status1.setVisibility(View.VISIBLE);
-                            hsl3.setVisibility(View.VISIBLE);
+                            stbuka.setVisibility(View.GONE);
+                            sttutup.setVisibility(View.VISIBLE);
                         }
                         //coba(la1,lo2);
 
@@ -235,6 +241,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                                 }
                             }
                         });
+
 
 
                     }
@@ -285,27 +292,27 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
     private void actionRoute(double laat, double lang) {
-        final ProgressDialog loading = ProgressDialog.show(this,"Mengambil data Rute","Tunggu Sebentar...",false,false);
+        //final ProgressDialog loading = ProgressDialog.show(this,"Mengambil data Rute","Tunggu Sebentar...",false,false);
 
         double tujuanlat = Double.parseDouble(lat.getText().toString().trim());
         double tujuanlong = Double.parseDouble(lon.getText().toString().trim());
         final LatLng awal = new LatLng(laat, lang);
         final LatLng tujuan = new LatLng(tujuanlat,tujuanlong);
-        Log.e("barang23", Double.toString(tujuanlat));
-        Log.e("barang23",Double.toString(tujuanlong));
+       // Log.e("barang23", Double.toString(tujuanlat));
+        //Log.e("barang23",Double.toString(tujuanlong));
 
         String lokasiAwal = awal.latitude + "," + awal.longitude;
         String lokasiAkhir = tujuan.latitude + "," + tujuan.longitude;
 
-        Log.e("Data snapshot","barang1"+lokasiAwal);
-        Log.e("Data snapshot","barang2"+lokasiAkhir);
+        //Log.e("Data snapshot","barang1"+lokasiAwal);
+        //Log.e("Data snapshot","barang2"+lokasiAkhir);
 
         // Panggil Retrofit
         ApiServices api = InitLibrary.getInstance();
         // Siapkan request
         Call<ReponseRoute> routeRequest = api.request_route(lokasiAwal, lokasiAkhir, API_KEY);
         // kirim request
-        Log.e("Data snapshot","barang3"+routeRequest);
+        //Log.e("Data snapshot","barang3"+routeRequest);
         routeRequest.enqueue(new Callback<ReponseRoute>() {
             @Override
             public void onResponse(Call<ReponseRoute> call, Response<ReponseRoute> response) {
@@ -316,8 +323,8 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
                     LegsItem dataLegs = dataDirection.getRoutes().get(0).getLegs().get(0);
 
-                    loading.dismiss();
-                    Log.e("Data snapshot","barang4"+dataLegs);
+                    //loading.dismiss();
+                    //Log.e("Data snapshot","barang4"+dataLegs);
                     // Dapatkan garis polyline
                     String polylinePoint = dataDirection.getRoutes().get(0).getOverviewPolyline().getPoints();
                     // Decode
@@ -335,11 +342,11 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                     Duration dataDuration = dataLegs.getDuration();
 
                     // Set Nilai Ke Widget
-                    tvStartAddress.setText("start location : " + dataLegs.getStartAddress().toString());
-                    tvEndAddress.setText("end location : " + dataLegs.getEndAddress().toString());
+                    tvStartAddress.setText("Lokasi Awal : " + dataLegs.getStartAddress().toString());
+                    tvEndAddress.setText("Lokasi Tujuan : " + dataLegs.getEndAddress().toString());
 
-                    tvDistance.setText("distance : " + dataDistance.getText() + " (" + dataDistance.getValue() + ")");
-                    tvDuration.setText("duration : " + dataDuration.getText() + " (" + dataDuration.getValue() + ")");
+                    tvDistance.setText("Jarak : " + dataDistance.getText() + " (" + dataDistance.getValue() + ")");
+                    tvDuration.setText("Waktu : " + dataDuration.getText() + " (" + dataDuration.getValue() + ")");
                     /** START
                      * Logic untuk membuat layar berada ditengah2 dua koordinat
                      */
@@ -479,6 +486,13 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
+    public void onClick(View view) {
+
+        if(view == aduan){
+            finish();
+            startActivity(new Intent(this, AduanActivity.class));
+        }
+    }
     public static Intent getActIntent(Activity activity){
         return new Intent(activity, DtltambalActivity.class);
     }

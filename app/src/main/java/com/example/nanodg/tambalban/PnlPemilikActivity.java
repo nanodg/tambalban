@@ -60,7 +60,7 @@ public class PnlPemilikActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                Log.e("barang1", dataSnapshot.toString());
+                //Log.e("barang1", dataSnapshot.toString());
                 for (DataSnapshot userContact : dataSnapshot.getChildren()) {
 
                     User user = userContact.getValue(User.class);

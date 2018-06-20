@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,12 +32,13 @@ import java.util.HashMap;
  * Created by Hafizh Herdi on 10/8/2017.
  */
 
-public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBarangRecyclerView.ViewHolder> {
+public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBarangRecyclerView.ViewHolder>  {
 
     private ArrayList<Tambah> daftarTambah;
     private Context context;
     FirebaseDataListener listener;
     CardView kontener;
+    Switch status;
     private DatabaseReference database;
 
     public AdapterBarangRecyclerView(ArrayList<Tambah> tambahs, Context ctx){
@@ -55,16 +57,14 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
          * Di tutorial ini kita hanya menggunakan data String untuk tiap item
          * dan juga view nya hanyalah satu TextView
          */
-        TextView tvTitle,tvalamat,status,status1;
+        TextView tvTitle,tvalamat;
 
         ViewHolder(View v) {
             super(v);
             tvTitle = (TextView) v.findViewById(R.id.tv_namabarang);
             tvalamat = (TextView) v.findViewById(R.id.tv_alamat);
             kontener = (CardView) v.findViewById(R.id.kontener);
-            status = (TextView) v.findViewById(R.id.status);
-            status1 = (TextView) v.findViewById(R.id.status1);
-
+            status = (Switch) v.findViewById(R.id.status);
 
         }
     }
@@ -76,6 +76,7 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
          */
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_barang, parent, false);
         // mengeset ukuran view, margin, padding, dan parameter layout lainnya
+
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -87,17 +88,17 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
          */
         final String name = daftarTambah.get(position).getNama();
         final String alamat = daftarTambah.get(position).getAlamat();
-       final String hslstatus = daftarTambah.get(position).getStatus();
-        System.out.println("BARANG DATA one by one "+position+daftarTambah.size());
-        Log.e("Data snapshot","barang1"+position+daftarTambah.size());
-        Log.e("Data snapshot","barang1"+name);
+        final String hslstatus = daftarTambah.get(position).getStatus();
+        //System.out.println("BARANG DATA one by one "+position+daftarTambah.size());
+//        Log.e("Data snapshot","barang1"+position+daftarTambah.size());
+//        Log.e("Data snapshot","barang1"+name);
         kontener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 /**
                  *  Kodingan untuk tutorial Read detail data
                  */
-                Log.e("Data snapshot","Fetched Name"+daftarTambah);
+                //Log.e("Data snapshot","Fetched Name"+daftarTambah);
                 context.startActivity(FirebaseDBReadSingleActivity.getActIntent((Activity) context).putExtra("data", daftarTambah.get(position)));
             }
         });
@@ -140,19 +141,66 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
             }
         });
 
+        status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(status.isChecked()) {
+
+                    DatabaseReference  mUserContactsRef =  FirebaseDatabase.getInstance().getReference().child("tambah");
+                    mUserContactsRef.orderByChild("nama").equalTo(name).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(final DataSnapshot dataSnapshot) {
+
+                            //Log.e("benar", dataSnapshot.toString());
+                            for (DataSnapshot userContact : dataSnapshot.getChildren()) {
+                                String key = userContact.getKey();
+                                database = FirebaseDatabase.getInstance().getReference().child("tambah").child(key);
+                                HashMap<String, Object> result = new HashMap<>();
+                                result.put("status", "1");
+                                database.updateChildren(result);
+
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
+                else {
+                    DatabaseReference  mUserContactsRef =  FirebaseDatabase.getInstance().getReference().child("tambah");
+                    mUserContactsRef.orderByChild("nama").equalTo(name).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(final DataSnapshot dataSnapshot) {
+
+                            //Log.e("salah", dataSnapshot.toString());
+                            for (DataSnapshot userContact : dataSnapshot.getChildren()) {
+                                String key = userContact.getKey();
+                                database = FirebaseDatabase.getInstance().getReference().child("tambah").child(key);
+
+                                HashMap<String, Object> result = new HashMap<>();
+                                result.put("status", "0");
+                                database.updateChildren(result);
+
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+
+                }
+
+            }
+        });
+
         holder.tvTitle.setText(name);
         holder.tvalamat.setText(alamat);
         if(hslstatus.equals("1")){
-            holder.status.setVisibility(View.VISIBLE);
-            holder.status1.setVisibility(View.GONE);
-        }
-        if(hslstatus.equals("0")){
-            holder.status.setVisibility(View.GONE);
-            holder.status1.setVisibility(View.VISIBLE);
+            status.setChecked(true);
+        }if(hslstatus.equals("0")){
+            status.setChecked(false);
         }
     }
-
-
 
     @Override
     public int getItemCount() {

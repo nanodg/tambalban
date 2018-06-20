@@ -56,13 +56,13 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
             FirebaseUser user = firebaseAuth.getCurrentUser();
             String tvemail;
             tvemail=user.getEmail();
-            Log.e("barang1", tvemail.toString());
+            //Log.e("barang1", tvemail.toString());
             DatabaseReference  mUserContactsRef =  FirebaseDatabase.getInstance().getReference().child("Users");
             mUserContactsRef.orderByChild("email").equalTo(tvemail).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                    Log.e("barang1", dataSnapshot.toString());
+                    //Log.e("barang1", dataSnapshot.toString());
                     for (DataSnapshot userContact : dataSnapshot.getChildren()) {
 
                         User user = userContact.getValue(User.class);
@@ -73,7 +73,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                         } if(user.getPemilik().equals("1")) {
                             TastyToast.makeText(getApplicationContext(), "Pemilik", TastyToast.LENGTH_LONG, TastyToast.INFO);
                             startActivity(new Intent(getApplicationContext(), PnlPemilikActivity.class));
-                            Log.e("Data snapshot", "barang1" + user.getPemilik());
+                            //Log.e("Data snapshot", "barang1" + user.getPemilik());
                             finish();
                         }
                     }
@@ -125,7 +125,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                                 @Override
                                 public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                                    Log.e("barang1", dataSnapshot.toString());
+                                    //Log.e("barang1", dataSnapshot.toString());
                                     for (DataSnapshot userContact : dataSnapshot.getChildren()) {
 
                                         User user = userContact.getValue(User.class);
@@ -136,7 +136,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                                         } if(user.getPemilik().equals("1")) {
                                             TastyToast.makeText(getApplicationContext(), "Pemilik", TastyToast.LENGTH_LONG, TastyToast.INFO);
                                             startActivity(new Intent(getApplicationContext(), PnlPemilikActivity.class));
-                                            Log.e("Data snapshot", "barang1" + user.getPemilik());
+                                           // Log.e("Data snapshot", "barang1" + user.getPemilik());
                                             finish();
                                         }
                                     }

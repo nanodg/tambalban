@@ -46,309 +46,311 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
 
-                <RelativeLayout
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="261dp">
-
                     <ImageView
                         android:id="@+id/imageView7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_above="@+id/tl2"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="10dp"
-                        android:src="@drawable/ic_user" />
-
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_user"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent" />
                     <TextView
                         android:id="@+id/et_namatambal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_toEndOf="@+id/imageView7"
-                        android:padding="5dp"
+                        android:layout_width="170dp"
+                        android:layout_height="24dp"
                         android:text="Nama Tambal Ban:"
                         android:textSize="20dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/hsl3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Status :"
-                        android:layout_alignBaseline="@+id/et_namatambal"
-                        android:layout_alignBottom="@+id/et_namatambal"
-                        android:layout_alignEnd="@+id/hr1"
-                        android:layout_marginEnd="38dp"
-                        android:visibility="gone"/>
-
-                    <TextView
-                        android:id="@+id/status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Buka"
-                        android:textColor="@color/green"
                         android:textStyle="bold"
-                        android:layout_alignBaseline="@+id/et_namatambal"
-                        android:layout_alignBottom="@+id/et_namatambal"
-                        android:layout_alignStart="@+id/status1"
-                        android:visibility="gone"/>
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintLeft_toRightOf="@+id/imageView7"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0" />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/buka"
+                        android:id="@+id/stbuka"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/et_namatambal"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintHorizontal_bias="1.0" />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/tutup"
+                        android:id="@+id/sttutup"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintLeft_toRightOf="@+id/et_namatambal"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintHorizontal_bias="1.0" />
+
+                    <ImageView
+                        android:id="@+id/imgverif"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="top"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/ic_verified"
+                        android:visibility="visible"
+                        android:layout_marginLeft="40dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.072"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="32dp" />
+
                     <TextView
-                        android:id="@+id/status1"
+                        android:id="@+id/tvverif"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Tutup"
-                        android:textColor="@color/red"
+                        android:layout_gravity="center"
+                        android:text="Terverifikasi"
+                        android:textSize="14sp"
+                        android:textStyle="italic"
+                        app:layout_constraintLeft_toRightOf="@+id/imgverif"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        android:layout_marginTop="0dp"
+                        app:layout_constraintTop_toBottomOf="@+id/et_namatambal" />
+
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_telephone"
+                        android:visibility="visible"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.077"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="80dp" />
+                    <TextView
+                        android:id="@+id/et_nohp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="no hp"
+                        android:textSize="17dp"
+                        app:layout_constraintLeft_toRightOf="@+id/imageView3"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.021"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="83dp" />
+
+                    <ImageButton
+                        android:id="@+id/tlpn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_rectangle_button"
+                        android:src="@drawable/ic_call_answer"
+                        android:text="TLPN"
+                        android:padding="3dp"
+                        android:textColor="#ffff"
+                        app:layout_constraintLeft_toRightOf="@+id/et_nohp"
+                        android:layout_marginLeft="9dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="74dp" />
+
+                    <ImageButton
+                        android:id="@+id/sms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_rectangle_button"
+                        android:src="@drawable/ic_close_envelope"
+                        android:textColor="#ffff"
+                        android:padding="3dp"
+                        app:layout_constraintLeft_toRightOf="@+id/tlpn"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="74dp"
+                        app:layout_constraintHorizontal_bias="0.0" />
+
+                    <ImageView
+                        android:id="@+id/imageView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ic_repairing_service"
+                        android:visibility="visible"
+                        android:layout_marginTop="14dp"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.077" />
+                    <TextView
+                        android:id="@+id/et_hsl2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Layanan"
                         android:textStyle="bold"
-                        android:layout_alignBaseline="@+id/et_namatambal"
-                        android:layout_alignBottom="@+id/et_namatambal"
-                        android:layout_alignEnd="@+id/hr1"
-                        android:visibility="gone"/>
-                    <TableLayout
-                        android:id="@+id/tl2"
-                        android:layout_width="match_parent"
+                        android:textSize="18dp"
+                        app:layout_constraintLeft_toRightOf="@+id/imageView4"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="15dp"
+                        app:layout_constraintTop_toBottomOf="@+id/et_nohp"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0" />
+
+                    <ImageView
+                        android:id="@+id/imgmotor"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/et_namatambal"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="25dp">
+                        android:src="@drawable/ic_scooter"
+                        android:layout_marginTop="3dp"
+                        app:layout_constraintTop_toBottomOf="@+id/et_hsl2"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.155" />
 
-                        <TableRow android:layout_width="match_parent">
-
-                            <ImageView
-                                android:id="@+id/imgverif"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="top"
-                                android:layout_marginStart="10dp"
-                                android:background="@drawable/ic_verified"
-                                android:visibility="visible" />
-
-                            <TextView
-                                android:id="@+id/tvverif"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="Terverifikasi"
-                                android:textSize="14sp"
-                                android:textStyle="italic" />
-                        </TableRow>
-                    </TableLayout>
-
-                    <TableRow
-                        android:id="@+id/hr1"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_below="@+id/tl2"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="5dp"
-                        android:background="#a7a7a7"></TableRow>
-
-                    <TableLayout
-                        android:id="@+id/tl3"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvmotor"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tl2"
                         android:layout_gravity="center"
-                        android:layout_marginTop="20dp">
+                        android:text="Motor"
+                        android:layout_marginTop="9dp"
+                        app:layout_constraintTop_toBottomOf="@+id/et_hsl2"
+                        app:layout_constraintLeft_toRightOf="@+id/imgmotor"
+                        android:layout_marginLeft="8dp" />
 
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-
-                            <ImageView
-                                android:id="@+id/imageView3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="10dp"
-                                android:background="@drawable/ic_telephone"
-                                android:visibility="visible" />
-
-                            <TextView
-                                android:id="@+id/et_nohp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:padding="5dp"
-                                android:text=""
-                                android:textSize="17dp" />
-
-                            <ImageButton
-                                android:id="@+id/tlpn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/bg_rectangle_button"
-                                android:padding="8dp"
-                                android:src="@drawable/ic_call_answer"
-                                android:text="TLPN"
-                                android:textColor="#ffff" />
-
-                            <ImageButton
-                                android:id="@+id/sms"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/bg_rectangle_button"
-                                android:padding="8dp"
-                                android:layout_marginLeft="5dp"
-                                android:src="@drawable/ic_close_envelope"
-                                android:textColor="#ffff" />
-                        </TableRow>
-                    </TableLayout>
-
-                    <TableLayout
-                        android:id="@+id/tl4"
-                        android:layout_width="match_parent"
+                    <ImageView
+                        android:id="@+id/imgmobil"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/tl3"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="10dp">
+                        android:src="@drawable/ic_car"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.432"
+                        android:layout_marginTop="2dp"
+                        app:layout_constraintTop_toBottomOf="@+id/et_hsl2" />
 
-                        <TableRow android:layout_width="match_parent">
-                            <ImageView
-                                android:id="@+id/imageView4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="10dp"
-                                android:background="@drawable/ic_repairing_service"
-                                android:visibility="visible" />
-                            <TextView
-                                android:id="@+id/et_hsl2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:text="Layanan"
-                                android:textStyle="bold"
-                                android:textSize="18dp" />
-                        </TableRow>
-
-                        <TableRow android:layout_width="wrap_content">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <ImageView
-                                android:id="@+id/imgmotor"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_scooter" />
-
-                            <TextView
-                                android:id="@+id/tvmotor"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"
-                                android:text="Motor" />
-
-                            <ImageView
-                                android:id="@+id/imgmobil"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:src="@drawable/ic_car" />
-
-                            <TextView
-                                android:id="@+id/tvmobil"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"
-                                android:text="Mobil" />
-                        </TableRow>
-
-                        <TableRow android:layout_width="match_parent">
-
-
-                        </TableRow>
-
-                        <TableRow
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <ImageView
-                                android:id="@+id/imgbiasa"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_wheel"
-                                android:visibility="visible" />
-
-                            <TextView
-                                android:id="@+id/tvbiasa"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"
-                                android:text="Biasa"
-                                android:visibility="visible" />
-
-                            <ImageView
-                                android:id="@+id/imgtub"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:src="@drawable/ic_tire" />
-
-                            <TextView
-                                android:id="@+id/tvtubles"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="5dp"
-                                android:text="Tubles" />
-                        </TableRow>
-
-                    </TableLayout>
-
-                    <TableLayout
-                        android:id="@+id/tl7"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tvmobil"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/tl4"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"
-                        android:paddingBottom="10dp">
+                        android:text="Mobil"
+                        app:layout_constraintLeft_toRightOf="@+id/imgmobil"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/et_hsl2" />
 
-                        <TableRow android:layout_width="match_parent">
+                    <ImageView
+                        android:id="@+id/imgbiasa"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_wheel"
+                        android:visibility="visible"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.155"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="177dp" />
 
-                            <ImageView
-                                android:id="@+id/imageView6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/et_jambuka"
-                                android:layout_marginLeft="10dp"
-                                android:background="@drawable/ic_alarm_clock"
-                                android:visibility="visible"
-                                android:layout_gravity="center"/>
+                    <TextView
+                        android:id="@+id/tvbiasa"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Biasa"
+                        app:layout_constraintLeft_toRightOf="@+id/imgbiasa"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="184dp" />
 
-                            <TextView
-                                android:id="@+id/et_jambuka"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_toEndOf="@+id/imageView4"
-                                android:padding="5dp"
-                                android:text=""
-                                android:textSize="17dp" />
+                    <ImageView
+                        android:id="@+id/imgtub"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_tire"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginTop="36dp"
+                        app:layout_constraintTop_toBottomOf="@+id/et_hsl2"
+                        app:layout_constraintHorizontal_bias="0.432" />
 
-                        </TableRow>
-                    </TableLayout>
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tvtubles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Tubles"
+                        app:layout_constraintLeft_toRightOf="@+id/imgtub"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="44dp"
+                        app:layout_constraintTop_toBottomOf="@+id/et_hsl2"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0" />
+
+                    <ImageView
+                        android:id="@+id/imageView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_alarm_clock"
+                        android:visibility="visible"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="73dp"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.077" />
+
+                    <TextView
+                        android:id="@+id/et_jambuka"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="jam"
+                        android:textSize="17dp"
+                        app:layout_constraintLeft_toRightOf="@+id/imageView6"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="215dp" />
+                </android.support.constraint.ConstraintLayout>
 
             </android.support.v7.widget.CardView>
 
@@ -480,23 +482,33 @@
                 android:layout_height="15dp"
                 android:visibility="gone" />
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:weightSum="1">
 
 
                 <Button
                     android:id="@+id/chat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="36dp"
                     android:background="@drawable/bg_rectangle_button"
                     android:text="Chat"
+                    android:textColor="#ffff"
+                    android:layout_weight="0.56" />
+
+                <Button
+                    android:id="@+id/aduan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="62dp"
+                    android:background="@drawable/bg_rectangle_button"
+                    android:text="Aduan"
                     android:textColor="#ffff" />
-            </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

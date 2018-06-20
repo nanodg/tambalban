@@ -81,7 +81,7 @@ public class FirebaseDBReadActivity extends AppCompatActivity implements Adapter
         database.child("tambah").orderByChild("pembuat").equalTo(alias).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.e("Data snapshot", "data" + dataSnapshot);
+                //Log.e("Data snapshot", "data" + dataSnapshot);
                 /**
                  * Saat ada data baru, masukkan datanya ke ArrayList
                  */

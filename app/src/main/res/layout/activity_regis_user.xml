@@ -5,6 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_gradient">
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:weightSum="1">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -108,4 +119,6 @@
             android:textColor="#ffffff"
             android:textSize="18dp"/>
     </android.support.v7.widget.CardView>
+    </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

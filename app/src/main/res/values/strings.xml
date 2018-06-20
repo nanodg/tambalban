@@ -9,5 +9,12 @@
     <string name="input_error_password_length">Password Harus 8 Karakter / Lebih</string>
     <string name="registration_success">Pendaftaran Berhasil</string>
     <string name="input_error_email_invalid">Masukan Email Yang Benar</string>
-
+    <string-array name="PilihanBan">
+        <item>Biasa</item>
+        <item>Tubles</item>
+    </string-array>
+    <string-array name="PilihanKen">
+        <item>Motor</item>
+        <item>Mobil</item>
+    </string-array>
 </resources>

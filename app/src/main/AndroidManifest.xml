@@ -26,17 +26,18 @@
         </activity>
         <activity android:name=".RegisUserActivity" />
         <activity android:name=".LoginUserActivity" />
-        <activity android:name=".PnlPemilikActivity"></activity>
+        <activity android:name=".PnlPemilikActivity" />
         <activity android:name=".TambahActivity" />
         <activity android:name=".DtltambalActivity" />
-        <activity android:name=".FirebaseDBReadActivity"/>
-        <activity android:name=".FirebaseDBReadSingleActivity"/>
+        <activity android:name=".FirebaseDBReadActivity" />
+        <activity android:name=".FirebaseDBReadSingleActivity" />
+        <activity android:name=".AduanActivity" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw" />
 
-
+        <activity android:name=".AduanActivity"></activity>
     </application>
 
 </manifest>

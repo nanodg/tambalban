@@ -141,7 +141,7 @@ public class RegisUserActivity extends AppCompatActivity implements View.OnClick
                                             @Override
                                             public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                                                Log.e("barang1", dataSnapshot.toString());
+                                               // Log.e("barang1", dataSnapshot.toString());
                                                 for (DataSnapshot userContact : dataSnapshot.getChildren()) {
 
                                                     User user = userContact.getValue(User.class);
@@ -152,7 +152,7 @@ public class RegisUserActivity extends AppCompatActivity implements View.OnClick
                                                     } if(user.getPemilik().equals("1")) {
                                                         TastyToast.makeText(getApplicationContext(), "Pemilik", TastyToast.LENGTH_LONG, TastyToast.INFO);
                                                         startActivity(new Intent(getApplicationContext(), PnlPemilikActivity.class));
-                                                        Log.e("Data snapshot", "barang1" + user.getPemilik());
+                                                        //Log.e("Data snapshot", "barang1" + user.getPemilik());
                                                         finish();
                                                     }
                                                 }

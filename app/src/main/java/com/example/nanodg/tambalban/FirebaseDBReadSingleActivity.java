@@ -249,21 +249,21 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
         double tujuanlong = Double.parseDouble(lon.getText().toString().trim());
         final LatLng awal = new LatLng(laat, lang);
         final LatLng tujuan = new LatLng(tujuanlat,tujuanlong);
-        Log.e("barang23", Double.toString(tujuanlat));
-        Log.e("barang23",Double.toString(tujuanlong));
+        //Log.e("barang23", Double.toString(tujuanlat));
+       // Log.e("barang23",Double.toString(tujuanlong));
 
         String lokasiAwal = awal.latitude + "," + awal.longitude;
         String lokasiAkhir = tujuan.latitude + "," + tujuan.longitude;
 
-        Log.e("Data snapshot","barang1"+lokasiAwal);
-        Log.e("Data snapshot","barang2"+lokasiAkhir);
+       // Log.e("Data snapshot","barang1"+lokasiAwal);
+       // Log.e("Data snapshot","barang2"+lokasiAkhir);
 
         // Panggil Retrofit
         ApiServices api = InitLibrary.getInstance();
         // Siapkan request
         Call<ReponseRoute> routeRequest = api.request_route(lokasiAwal, lokasiAkhir, API_KEY);
         // kirim request
-        Log.e("Data snapshot","barang3"+routeRequest);
+       // Log.e("Data snapshot","barang3"+routeRequest);
         routeRequest.enqueue(new Callback<ReponseRoute>() {
             @Override
             public void onResponse(Call<ReponseRoute> call, Response<ReponseRoute> response) {
@@ -273,7 +273,7 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
                     ReponseRoute dataDirection = response.body();
 
                     LegsItem dataLegs = dataDirection.getRoutes().get(0).getLegs().get(0);
-                    Log.e("Data snapshot","barang4"+dataLegs);
+                    //Log.e("Data snapshot","barang4"+dataLegs);
                     // Dapatkan garis polyline
                     String polylinePoint = dataDirection.getRoutes().get(0).getOverviewPolyline().getPoints();
                     // Decode
