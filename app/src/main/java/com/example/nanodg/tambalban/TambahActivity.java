@@ -75,7 +75,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
     String FileName1,FileName2,FileName3;
 
     EditText pembuat, nama, no, alamat,image1,image2,image3,edinfo;
-    TextView tvjambuka, tvjamtutup, lat, longt, useremail,uri1,uri2,uri3,hsl1,hsl2,proses1,proses2,proses3,pemilik,hsl3,verif;
+    TextView tvjambuka, tvjamtutup, lat, longt, useremail,uri1,uri2,uri3,hsl1,hsl2,proses1,proses2,proses3,pemilik,hsl3,verif,tvsts;
     Button btbuka, bttutup, btlogout,simpan;
     TimePickerDialog timePickerDialog1,timePickerDialog2;
     CheckBox biasa, tubles, Motor, Mobil;
@@ -113,6 +113,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
         status = (Switch) findViewById(R.id.status);
         hsl3 = (TextView) findViewById(R.id.hsl3);
         verif = (TextView) findViewById(R.id.tvverif);
+        tvsts = (TextView) findViewById(R.id.tvsts);
         // mengambil referensi ke Firebase Database
         database = FirebaseDatabase.getInstance().getReference();
         simpan = (Button) findViewById(R.id.simpan);
@@ -206,11 +207,14 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
                     if (user.getPemilik().equals("0")) {
                         pemilik.setText("0");
                         verif.setText("0");
-
+                        status.setVisibility(View.GONE);
+                        tvsts.setVisibility(View.GONE);
                     }
                     if (user.getPemilik().equals("1")) {
                         pemilik.setText("1");
                         verif.setText("1");
+                        status.setVisibility(View.VISIBLE);
+                        tvsts.setVisibility(View.VISIBLE);
                         //Log.e("Data snapshot", "barang1" + user.getPemilik());
 
                     }

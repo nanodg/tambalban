@@ -26,6 +26,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.example.nanodg.tambalban.Model.Tambah;
 import com.example.nanodg.tambalban.Model.User;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,8 +34,8 @@ import com.google.android.gms.maps.GoogleMap;
 import java.util.ArrayList;
 import java.util.List;
 
-import ir.apend.slider.model.Slide;
-import ir.apend.slider.ui.Slider;
+import com.example.nanodg.tambalban.ir.apend.slider.model.Slide;
+import com.example.nanodg.tambalban.ir.apend.slider.ui.Slider;
 import android.graphics.Color;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -72,9 +73,9 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
 //    private Button bttlpn,btsms;
     TextView nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,tvbiasa,tvtubles,tvmotor,tvmobil,tvverif,hsl3,status,status1;
-    EditText lat,lon;
+    EditText lat,lon,info;
     private TextView uri1,uri2,uri3;
-    private Slider slider;;
+    private Slider slider;
     private GoogleMap mMap;
     LocationManager mLocationManager = null;
     String provider = null;
@@ -103,6 +104,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         alamat = (TextView) findViewById(R.id.et_alamat);
         lat = (EditText) findViewById(R.id.et_lat);
         aduan = (Button) findViewById(R.id.aduan);
+        info = (EditText) findViewById(R.id.info);
         lon = (EditText) findViewById(R.id.et_long);
         uri1 = (TextView) findViewById(R.id.uri1);
         uri2 = (TextView) findViewById(R.id.uri2);
@@ -155,6 +157,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                         uri1.setText(tambah.getFoto1());
                         uri2.setText(tambah.getFoto2());
                         uri3.setText(tambah.getFoto3());
+
                         verif = tambah.getVerif();
                         if(tambah.getVerif().equals("0")){
                            imgverif.setVisibility(View.GONE);
@@ -199,9 +202,15 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                             stbuka.setVisibility(View.GONE);
                             sttutup.setVisibility(View.VISIBLE);
                         }
+                        info.setText(tambah.getInfo());
                         //coba(la1,lo2);
 
                         final List<Slide> slideList = new ArrayList<>();
+                        final ArrayList<Slide> imageList = new ArrayList<>();
+                        imageList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                        imageList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                        imageList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+
                         slideList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
                         slideList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
                         slideList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
@@ -210,7 +219,15 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 //do what you want
-                                Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
+                               // Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
+
+                                Intent intent = new Intent(DtltambalActivity.this,
+                                        DtlImgActivity.class);
+                                intent.putExtra(DtlImgActivity.IMAGE_LIST,
+                                        imageList);
+                                intent.putExtra(DtlImgActivity.CURRENT_ITEM, 3);
+                                startActivity(intent);
+
                             }
                         });
                         slider.addSlides(slideList);

@@ -147,7 +147,7 @@ public class RegisUserActivity extends AppCompatActivity implements View.OnClick
                                                     User user = userContact.getValue(User.class);
                                                     if(user.getPemilik().equals("0")){
                                                         TastyToast.makeText(getApplicationContext(), "User", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                                                        startActivity(new Intent(getApplicationContext(), TambahActivity.class));
+                                                        startActivity(new Intent(getApplicationContext(), PnlUserActivity.class));
                                                         finish();
                                                     } if(user.getPemilik().equals("1")) {
                                                         TastyToast.makeText(getApplicationContext(), "Pemilik", TastyToast.LENGTH_LONG, TastyToast.INFO);

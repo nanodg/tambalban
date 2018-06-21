@@ -58,8 +58,8 @@ import com.google.maps.android.PolyUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import ir.apend.slider.model.Slide;
-import ir.apend.slider.ui.Slider;
+import com.example.nanodg.tambalban.ir.apend.slider.model.Slide;
+import com.example.nanodg.tambalban.ir.apend.slider.ui.Slider;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -177,15 +177,28 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
             //coba(la1,lo2);
 
             final List<Slide> slideList = new ArrayList<>();
-            slideList.add(new Slide(0, tambah.getFoto1(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-            slideList.add(new Slide(1, tambah.getFoto2(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-            slideList.add(new Slide(2, tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+            final ArrayList<Slide> imageList = new ArrayList<>();
+            imageList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+            imageList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+            imageList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+
+            slideList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+            slideList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+            slideList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
 
             slider.setItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     //do what you want
-                    Toast.makeText(getApplicationContext(), "you clicked image " + (i + 1), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(FirebaseDBReadSingleActivity.this,
+                            DtlImgActivity.class);
+                    intent.putExtra(DtlImgActivity.IMAGE_LIST,
+                            imageList);
+                    intent.putExtra(DtlImgActivity.CURRENT_ITEM, 3);
+                    startActivity(intent);
+
                 }
             });
             slider.addSlides(slideList);

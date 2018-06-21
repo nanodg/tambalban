@@ -29,7 +29,7 @@
                     android:layout_height="200dp"
                     android:background="@drawable/slider_bg">
 
-                    <ir.apend.slider.ui.Slider
+                    <com.example.nanodg.tambalban.ir.apend.slider.ui.Slider
                         android:id="@+id/slider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -57,7 +57,8 @@
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="8dp"
                         android:layout_marginLeft="8dp"
-                        app:layout_constraintLeft_toLeftOf="parent" />
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginStart="8dp" />
                     <TextView
                         android:id="@+id/et_namatambal"
                         android:layout_width="170dp"
@@ -71,34 +72,30 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0" />
+                        app:layout_constraintHorizontal_bias="0.0"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
 
                     <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:src="@drawable/buka"
                         android:id="@+id/stbuka"
                         android:visibility="gone"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginRight="8dp"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/et_namatambal"
-                        android:layout_marginLeft="8dp"
                         app:layout_constraintHorizontal_bias="1.0" />
 
                     <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="25dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:src="@drawable/tutup"
                         android:id="@+id/sttutup"
                         android:visibility="gone"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginRight="8dp"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/et_namatambal"
-                        android:layout_marginLeft="8dp"
                         app:layout_constraintHorizontal_bias="1.0" />
 
                     <ImageView
@@ -109,13 +106,14 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/ic_verified"
                         android:visibility="visible"
-                        android:layout_marginLeft="40dp"
+                        android:layout_marginLeft="10dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:layout_marginRight="8dp"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintHorizontal_bias="0.072"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="32dp" />
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="8dp" />
 
                     <TextView
                         android:id="@+id/tvverif"
@@ -130,8 +128,9 @@
                         android:layout_marginRight="8dp"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
-                        android:layout_marginTop="0dp"
-                        app:layout_constraintTop_toBottomOf="@+id/et_namatambal" />
+                        app:layout_constraintTop_toBottomOf="@+id/et_namatambal"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="8dp" />
 
                     <ImageView
                         android:id="@+id/imageView3"
@@ -145,7 +144,9 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintHorizontal_bias="0.077"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="80dp" />
+                        android:layout_marginTop="80dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
                     <TextView
                         android:id="@+id/et_nohp"
                         android:layout_width="wrap_content"
@@ -158,7 +159,9 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintHorizontal_bias="0.021"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="83dp" />
+                        android:layout_marginTop="83dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
 
                     <ImageButton
                         android:id="@+id/tlpn"
@@ -172,7 +175,8 @@
                         app:layout_constraintLeft_toRightOf="@+id/et_nohp"
                         android:layout_marginLeft="9dp"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="74dp" />
+                        android:layout_marginTop="74dp"
+                        android:layout_marginStart="9dp" />
 
                     <ImageButton
                         android:id="@+id/sms"
@@ -188,7 +192,9 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginTop="74dp"
-                        app:layout_constraintHorizontal_bias="0.0" />
+                        app:layout_constraintHorizontal_bias="0.0"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
 
                     <ImageView
                         android:id="@+id/imageView4"
@@ -203,7 +209,9 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:layout_marginRight="8dp"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintHorizontal_bias="0.077" />
+                        app:layout_constraintHorizontal_bias="0.077"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
                     <TextView
                         android:id="@+id/et_hsl2"
                         android:layout_width="0dp"
@@ -217,7 +225,9 @@
                         app:layout_constraintTop_toBottomOf="@+id/et_nohp"
                         android:layout_marginRight="8dp"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0" />
+                        app:layout_constraintHorizontal_bias="0.0"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
 
                     <ImageView
                         android:id="@+id/imgmotor"
@@ -230,7 +240,9 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:layout_marginRight="8dp"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintHorizontal_bias="0.155" />
+                        app:layout_constraintHorizontal_bias="0.155"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
 
                     <TextView
                         android:id="@+id/tvmotor"
@@ -241,7 +253,8 @@
                         android:layout_marginTop="9dp"
                         app:layout_constraintTop_toBottomOf="@+id/et_hsl2"
                         app:layout_constraintLeft_toRightOf="@+id/imgmotor"
-                        android:layout_marginLeft="8dp" />
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp" />
 
                     <ImageView
                         android:id="@+id/imgmobil"
@@ -254,7 +267,9 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintHorizontal_bias="0.432"
                         android:layout_marginTop="2dp"
-                        app:layout_constraintTop_toBottomOf="@+id/et_hsl2" />
+                        app:layout_constraintTop_toBottomOf="@+id/et_hsl2"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
 
                     <TextView
                         android:id="@+id/tvmobil"
@@ -265,7 +280,8 @@
                         app:layout_constraintLeft_toRightOf="@+id/imgmobil"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="8dp"
-                        app:layout_constraintTop_toBottomOf="@+id/et_hsl2" />
+                        app:layout_constraintTop_toBottomOf="@+id/et_hsl2"
+                        android:layout_marginStart="8dp" />
 
                     <ImageView
                         android:id="@+id/imgbiasa"
@@ -279,7 +295,9 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintHorizontal_bias="0.155"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="177dp" />
+                        android:layout_marginTop="177dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
 
                     <TextView
                         android:id="@+id/tvbiasa"
@@ -293,7 +311,9 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="184dp" />
+                        android:layout_marginTop="184dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
 
                     <ImageView
                         android:id="@+id/imgtub"
@@ -306,7 +326,9 @@
                         app:layout_constraintRight_toRightOf="parent"
                         android:layout_marginTop="36dp"
                         app:layout_constraintTop_toBottomOf="@+id/et_hsl2"
-                        app:layout_constraintHorizontal_bias="0.432" />
+                        app:layout_constraintHorizontal_bias="0.432"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
 
                     <TextView
                         android:id="@+id/tvtubles"
@@ -320,7 +342,9 @@
                         app:layout_constraintTop_toBottomOf="@+id/et_hsl2"
                         android:layout_marginRight="8dp"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0" />
+                        app:layout_constraintHorizontal_bias="0.0"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
 
                     <ImageView
                         android:id="@+id/imageView6"
@@ -335,7 +359,9 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:layout_marginRight="8dp"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintHorizontal_bias="0.077" />
+                        app:layout_constraintHorizontal_bias="0.077"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
 
                     <TextView
                         android:id="@+id/et_jambuka"
@@ -349,12 +375,67 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="215dp" />
+                        android:layout_marginTop="215dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" />
                 </android.support.constraint.ConstraintLayout>
 
             </android.support.v7.widget.CardView>
 
-
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="10dp">
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_info_black_24dp"
+                    android:layout_marginLeft="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/imageView9"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Informasi"
+                    android:textStyle="bold"
+                    android:id="@+id/textView6"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintLeft_toRightOf="@+id/imageView9"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/info"
+                    android:layout_marginLeft="8dp"
+                    android:editable="false"
+                    android:background="@drawable/bg_rectangle_edittext1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView9"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp" />
+                </android.support.constraint.ConstraintLayout>
+                </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -53,6 +53,7 @@
                         android:background="@drawable/bg_rectangle_edittext1"
                         android:hint="Nama Tambal ban / Nama Pemilik"
                         android:padding="8dp"
+
                         android:textColor="#696969"
                         android:textColorHint="#808080" />
 
@@ -65,6 +66,7 @@
                         android:layout_marginTop="6dp"
                         android:background="@drawable/bg_rectangle_edittext1"
                         android:hint="No.Hp Pemilik"
+                        android:inputType="number"
                         android:padding="8dp"
                         android:textColor="#696969"
                         android:textColorHint="#808080" />
@@ -216,7 +218,8 @@
                             android:text="Status"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:textSize="15dp" />
+                            android:textSize="15dp"
+                            android:id="@+id/tvsts"/>
 
                        <Switch
                            android:layout_width="wrap_content"
@@ -572,7 +575,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Logout" />
+                android:text="Logout"
+                android:visibility="gone"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
