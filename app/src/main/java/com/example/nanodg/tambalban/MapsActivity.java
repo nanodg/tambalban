@@ -353,7 +353,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mPosisi.position(location);
                             mPosisi.anchor(0.3f, 0.3f);
                             mPosisi.title(tambah.getNama());
-                            mPosisi.snippet("Berjarak = " +formatDesimal.format(jarak)+ " km dari anda");
+                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
                             mMap.addMarker(mPosisi);
                             //mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
@@ -410,7 +410,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mPosisi.position(location);
                             mPosisi.anchor(0.3f, 0.3f);
                             mPosisi.title(tambah.getNama());
-                            mPosisi.snippet("Berjarak = " +formatDesimal.format(jarak)+ " km dari anda");
+                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
                             mMap.addMarker(mPosisi);
                             // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
@@ -467,7 +467,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 mPosisi.position(location);
                                 mPosisi.anchor(0.3f, 0.3f);
                                 mPosisi.title(tambah.getNama());
-                                mPosisi.snippet("Berjarak = " + formatDesimal.format(jarak) + " km dari anda");
+                                mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
                                 mMap.addMarker(mPosisi);
                                 // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
@@ -522,7 +522,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mPosisi.position(location);
                             mPosisi.anchor(0.3f, 0.3f);
                             mPosisi.title(tambah.getNama());
-                            mPosisi.snippet("Berjarak = " + formatDesimal.format(jarak) + " km dari anda");
+                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
                             mMap.addMarker(mPosisi);
                             // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
@@ -535,15 +535,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 String id = marker.getTitle().toString();
                                 //Log.e("Data snapshot", "barang45" + id);
                                 Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
-                                //String reference = mMarkerPlaceLink.get(id);
-                                //daftarBarang.add(barang);
-                                //Integer index = markersOrderNumbers.get(marker);
-//                                edit.putExtra("data", daftarTambal.get(index));
                                 edit.putExtra(DATA, id);
-
-
-                                //Log.e("Data snapshot","barang1"+daftarBarang.get(position));
-                                //Log.e("Data snapshot","barang2"+daftarBarang);
                                 startActivity(edit);
 
                             }

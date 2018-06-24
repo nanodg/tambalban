@@ -10,8 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.nanodg.tambalban.Adapter.AdapterBarangRecyclerView;
 import com.example.nanodg.tambalban.Model.Tambah;
-import com.example.nanodg.tambalban.Model.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -70,43 +70,23 @@ public class FirebaseDBReadActivity extends AppCompatActivity implements Adapter
         layoutManager = new LinearLayoutManager(this);
         rvView.setLayoutManager(layoutManager);
 
-        /**
-         * Inisialisasi dan mengambil Firebase Database Reference
-         */
-        database = FirebaseDatabase.getInstance().getReference();
 
-        /**
-         * Mengambil data barang dari Firebase Realtime DB
-         */
+        database = FirebaseDatabase.getInstance().getReference();
         database.child("tambah").orderByChild("pembuat").equalTo(alias).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Log.e("Data snapshot", "data" + dataSnapshot);
-                /**
-                 * Saat ada data baru, masukkan datanya ke ArrayList
-                 */
+
                 daftarTambah = new ArrayList<>();
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
-                    /**
-                     * Mapping data pada DataSnapshot ke dalam object Barang
-                     * Dan juga menyimpan primary key pada object Barang
-                     * untuk keperluan Edit dan Delete data
-                     */
+
                     Tambah tambah = noteDataSnapshot.getValue(Tambah.class);
                     tambah.setKey(noteDataSnapshot.getKey());
 
-                    /**
-                     * Menambahkan object Barang yang sudah dimapping
-                     * ke dalam ArrayList
-                     */
+
                     daftarTambah.add(tambah);
                    // Log.e("Data snapshot","barang5"+daftarBarang.add(barang));
                 }
 
-                /**
-                 * Inisialisasi adapter dan data barang dalam bentuk ArrayList
-                 * dan mengeset Adapter ke dalam RecyclerView
-                 */
                 adapter = new AdapterBarangRecyclerView(daftarTambah, FirebaseDBReadActivity.this);
                 rvView.setAdapter(adapter);
             }

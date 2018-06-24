@@ -46,6 +46,12 @@
                 android:id="@+id/tgl"
                 android:text="Tanggal"
                 android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pemilik"
+                android:text="Tanggal"
+                android:layout_gravity="center"/>
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
@@ -57,12 +63,23 @@
                 android:textColor="#696969"
                 android:textColorHint="#808080" />
             <EditText
+                android:id="@+id/nama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_rectangle_edittext1"
+                android:hint="Nama tempat."
+                android:padding="8dp"
+                android:textColor="#696969"
+                android:textColorHint="#808080" />
+            <EditText
                 android:id="@+id/hsl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:background="@drawable/bg_rectangle_edittext1"
                 android:hint="hsl"
+                android:visibility="gone"
                 android:padding="8dp"
                 android:textColor="#696969"
                 android:textColorHint="#808080" />
@@ -77,10 +94,11 @@
                 android:id="@+id/edket"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_rectangle_edittext1"
                 android:ems="10"
+                android:padding="10dp"
                 android:hint="Keterangan."
                 android:inputType="textMultiLine" />
 

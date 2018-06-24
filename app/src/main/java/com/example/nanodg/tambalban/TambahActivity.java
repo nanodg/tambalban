@@ -37,15 +37,14 @@ import java.util.Calendar;
 
 import android.widget.Toast;
 
+import com.example.nanodg.tambalban.Adapter.WorkaroundMapFragment;
 import com.example.nanodg.tambalban.Model.Tambah;
 import com.example.nanodg.tambalban.Model.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -218,6 +217,14 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
                         //Log.e("Data snapshot", "barang1" + user.getPemilik());
 
                     }
+                    if (user.getPemilik().equals("2")) {
+                        pemilik.setText("0");
+                        verif.setText("1");
+                        status.setVisibility(View.GONE);
+                        tvsts.setVisibility(View.GONE);
+                        //Log.e("Data snapshot", "barang1" + user.getPemilik());
+
+                    }
                 }
             }
 
@@ -262,8 +269,9 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
         /**
          * UNTUK MENU EDIT
          */
-        final Tambah tambah1 = (Tambah) getIntent().getSerializableExtra("data");
-        if (tambah1 != null) {
+
+
+        if (tambah != null) {
             nama.setText(tambah.getNama());
             alamat.setText(tambah.getAlamat());
             no.setText(tambah.getNo());

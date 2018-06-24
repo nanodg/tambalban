@@ -1,10 +1,12 @@
 package com.example.nanodg.tambalban.Model;
 
+import java.io.Serializable;
+
 /**
  * Created by NanoDG on 11-Jun-18.
  */
 
-public class User {
+public class User implements Serializable {
     private String email;
     private String username;
     private String pemilik;

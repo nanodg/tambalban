@@ -1,14 +1,12 @@
-package com.example.nanodg.tambalban;
+package com.example.nanodg.tambalban.Adapter;
 
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,11 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.nanodg.tambalban.FirebaseDBReadActivity;
+import com.example.nanodg.tambalban.FirebaseDBReadSingleActivity;
 import com.example.nanodg.tambalban.Model.Tambah;
+import com.example.nanodg.tambalban.R;
+import com.example.nanodg.tambalban.TambahActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,7 +40,7 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
     private Context context;
     FirebaseDataListener listener;
     CardView kontener;
-    Switch status;
+
     private DatabaseReference database;
 
     public AdapterBarangRecyclerView(ArrayList<Tambah> tambahs, Context ctx){
@@ -64,7 +66,6 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
             tvTitle = (TextView) v.findViewById(R.id.tv_namabarang);
             tvalamat = (TextView) v.findViewById(R.id.tv_alamat);
             kontener = (CardView) v.findViewById(R.id.kontener);
-            status = (Switch) v.findViewById(R.id.status);
 
         }
     }
@@ -141,65 +142,10 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
             }
         });
 
-        status.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(status.isChecked()) {
-
-                    DatabaseReference  mUserContactsRef =  FirebaseDatabase.getInstance().getReference().child("tambah");
-                    mUserContactsRef.orderByChild("nama").equalTo(name).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(final DataSnapshot dataSnapshot) {
-
-                            //Log.e("benar", dataSnapshot.toString());
-                            for (DataSnapshot userContact : dataSnapshot.getChildren()) {
-                                String key = userContact.getKey();
-                                database = FirebaseDatabase.getInstance().getReference().child("tambah").child(key);
-                                HashMap<String, Object> result = new HashMap<>();
-                                result.put("status", "1");
-                                database.updateChildren(result);
-
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
-                }
-                else {
-                    DatabaseReference  mUserContactsRef =  FirebaseDatabase.getInstance().getReference().child("tambah");
-                    mUserContactsRef.orderByChild("nama").equalTo(name).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(final DataSnapshot dataSnapshot) {
-
-                            //Log.e("salah", dataSnapshot.toString());
-                            for (DataSnapshot userContact : dataSnapshot.getChildren()) {
-                                String key = userContact.getKey();
-                                database = FirebaseDatabase.getInstance().getReference().child("tambah").child(key);
-
-                                HashMap<String, Object> result = new HashMap<>();
-                                result.put("status", "0");
-                                database.updateChildren(result);
-
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
-
-                }
-
-            }
-        });
 
         holder.tvTitle.setText(name);
         holder.tvalamat.setText(alamat);
-        if(hslstatus.equals("1")){
-            status.setChecked(true);
-        }if(hslstatus.equals("0")){
-            status.setChecked(false);
-        }
+
     }
 
     @Override

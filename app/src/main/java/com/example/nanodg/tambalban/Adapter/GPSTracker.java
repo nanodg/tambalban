@@ -1,4 +1,4 @@
-package com.example.nanodg.tambalban;
+package com.example.nanodg.tambalban.Adapter;
 
 import android.app.Service;
 import android.content.Context;

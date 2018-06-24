@@ -5,15 +5,23 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Selamat Datang : "
-    android:textSize="18dp"
-    android:textStyle="bold"
-    android:id="@+id/tvslmt"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Panel Pemilik"
+        android:textSize="18dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selamat Datang : "
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:id="@+id/tvslmt"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"/>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
@@ -149,6 +157,7 @@
                             android:padding="5dp"
                             android:text="Merubah Informasi Tambal Ban"
                             android:textColor="@android:color/darker_gray" />
+
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
@@ -189,6 +198,46 @@
                             android:padding="5dp"
                             android:text="Informasi Akun Pemilik Tambal Ban"
                             android:textColor="@android:color/darker_gray" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="120dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="5dp"
+                    android:clickable="true"
+                    android:id="@+id/btnaduan"
+                    android:foreground="?android:attr/selectableItemBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/circlepink"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_sentiment_neutral_black_24dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="Kritik dan Saran"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="Informasi Kritik dan Saran dari Pengguna"
+                            android:textColor="@android:color/darker_gray" />
+
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>

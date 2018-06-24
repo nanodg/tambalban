@@ -27,8 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.nanodg.tambalban.Adapter.WorkaroundMapFragment;
 import com.example.nanodg.tambalban.Model.Tambah;
-import com.example.nanodg.tambalban.Model.User;
 import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
@@ -60,7 +60,6 @@ import com.example.nanodg.tambalban.response.Distance;
 import com.example.nanodg.tambalban.response.Duration;
 import com.example.nanodg.tambalban.response.LegsItem;
 import com.example.nanodg.tambalban.response.ReponseRoute;
-import com.sdsmdg.tastytoast.TastyToast;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,11 +71,13 @@ import retrofit2.Response;
 public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener,View.OnClickListener  {
 
 //    private Button bttlpn,btsms;
+    public static final String DATA = "com.example.nanodg.tambalban";
     TextView nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,tvbiasa,tvtubles,tvmotor,tvmobil,tvverif,hsl3,status,status1;
     EditText lat,lon,info;
     private TextView uri1,uri2,uri3;
     private Slider slider;
     private GoogleMap mMap;
+    public String idkey;
     LocationManager mLocationManager = null;
     String provider = null;
     Marker mCurrentPosition = null;
@@ -145,6 +146,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
                         Tambah tambah = userContact.getValue(Tambah.class);
                         loading.dismiss();
+                        idkey = userContact.getKey();
                         nama.setText(tambah.getNama());
                         tlp.setText(tambah.getNo());
                         jmbuka.setText(tambah.getBuka()+" s/d "+(tambah.getTutup()));
@@ -506,9 +508,14 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     public void onClick(View view) {
 
         if(view == aduan){
-            finish();
-            startActivity(new Intent(this, AduanActivity.class));
+
+                        String id = nama.getText().toString();
+                        Intent edit = new Intent(getApplicationContext(), AduanActivity.class);
+                        edit.putExtra(DATA, id);
+                        startActivity(edit);
+                        finish();
         }
+
     }
     public static Intent getActIntent(Activity activity){
         return new Intent(activity, DtltambalActivity.class);

@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -21,10 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nanodg.tambalban.Model.Aduan;
+import com.example.nanodg.tambalban.Model.Tambah;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -34,15 +39,16 @@ import java.util.Calendar;
 
 public class AduanActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView tgl,namafile,uri1,proses;
+    TextView tgl,namafile,uri1,proses,pemilik;
     Spinner kategori;
-    EditText keterangan,pembuat,hsl;
+    EditText keterangan,pembuat,hsl,nama;
     Button simpan,upload;
     String[] jeniskategori = {"Informasi Umum","Kritik dan Saran","lainya"};
     String hasil;
     private static final int PICK_IMAGE_REQUEST1 = 234;
     Uri filePath1;
     String FileName1;
+    public String status = "0";
     ProgressBar progressBar;
     private DatabaseReference database;
 
@@ -56,6 +62,8 @@ public class AduanActivity extends AppCompatActivity implements View.OnClickList
         kategori = (Spinner) findViewById(R.id.kategori);
         keterangan = (EditText) findViewById(R.id.edket);
         pembuat = (EditText) findViewById(R.id.email);
+        nama = (EditText) findViewById(R.id.nama);
+        pemilik = (TextView) findViewById(R.id.pemilik);
         hsl = (EditText) findViewById(R.id.hsl);
         simpan = (Button) findViewById(R.id.simpan);
         upload = (Button) findViewById(R.id.file);
@@ -93,7 +101,7 @@ public class AduanActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View view) {
                 if(!isEmpty(pembuat.getText().toString()) && !isEmpty(hsl.getText().toString()) && !isEmpty(keterangan.getText().toString()))
-                    submitBarang(new Aduan(pembuat.getText().toString(), tgl.getText().toString(), keterangan.getText().toString(), uri1.getText().toString(), hsl.getText().toString()));
+                    submitBarang(new Aduan(pembuat.getText().toString(), tgl.getText().toString(), keterangan.getText().toString(), uri1.getText().toString(), hsl.getText().toString(), nama.getText().toString(),pemilik.getText().toString(),status.toString()));
                 else
                     Snackbar.make(findViewById(R.id.simpan), "Data barang tidak boleh kosong", Snackbar.LENGTH_LONG).show();
 
@@ -101,6 +109,28 @@ public class AduanActivity extends AppCompatActivity implements View.OnClickList
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(
                         pembuat.getWindowToken(), 0);
+            }
+        });
+
+        Intent intent = getIntent();
+        String hslnama = intent.getStringExtra(DtltambalActivity.DATA);
+        //nama.setText(hslnama);
+//        Log.e("Data snapshot","barang4"+hslnama);
+        DatabaseReference mUserContactsRef = FirebaseDatabase.getInstance().getReference().child("tambah");
+        mUserContactsRef.orderByChild("nama").equalTo(hslnama).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                Log.e("Data snapshot","barang5"+dataSnapshot);
+                for (DataSnapshot s : dataSnapshot.getChildren()) {
+                    final Tambah tambah = s.getValue(Tambah.class);
+                    pemilik.setText(tambah.getPembuat());
+                    nama.setText(tambah.getNama());
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
@@ -209,6 +239,7 @@ public class AduanActivity extends AppCompatActivity implements View.OnClickList
                 hsl.setText("");
                 keterangan.setText("");
                 uri1.setText("");
+                nama.setText("");
 
                 Snackbar.make(findViewById(R.id.simpan), "Data berhasil ditambahkan", Snackbar.LENGTH_LONG).show();
             }
