@@ -44,7 +44,8 @@
         <activity android:name=".ListUserActivity" />
         <activity android:name=".ListTambalActivity" />
         <activity android:name=".ListAduanActivity" />
-        <activity android:name=".ListAduanPemilikActivity"></activity>
+        <activity android:name=".ListAduanPemilikActivity" />
+        <activity android:name=".EditTambalActivity"></activity>
     </application>
 
 </manifest>

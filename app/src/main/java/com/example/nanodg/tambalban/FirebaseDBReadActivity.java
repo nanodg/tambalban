@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.nanodg.tambalban.Adapter.AdapterBarangRecyclerView;
@@ -19,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -39,15 +43,14 @@ public class FirebaseDBReadActivity extends AppCompatActivity implements Adapter
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Tambah> daftarTambah;
     FirebaseAuth firebaseAuth;
-    String alias;
-
+    public String alias;
+    EditText pencarian;
+    ImageButton cari;
+    public String hasil;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /**
-         * FIREBASE LOGIN
-         */
         firebaseAuth = FirebaseAuth.getInstance();
 
         if(firebaseAuth.getCurrentUser() == null){
@@ -57,34 +60,44 @@ public class FirebaseDBReadActivity extends AppCompatActivity implements Adapter
         FirebaseUser user = firebaseAuth.getCurrentUser();
         alias = user.getEmail();
         Log.e("Data snapshot", "email" + alias);
-        /**
-         * Mengeset layout
-         */
         setContentView(R.layout.activity_db_read);
-
-        /**
-         * Inisialisasi RecyclerView & komponennya
-         */
+        pencarian = (EditText) findViewById(R.id.pencarian);
+        cari = (ImageButton) findViewById(R.id.cari);
         rvView = (RecyclerView) findViewById(R.id.rv_main);
         rvView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         rvView.setLayoutManager(layoutManager);
+        hasil = pencarian.getText().toString();
+        cari();
 
+        cari.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
 
+                hasil = pencarian.getText().toString();
+                cari();
+            }
+        });
+
+    }
+
+    public void cari(){
         database = FirebaseDatabase.getInstance().getReference();
-        database.child("tambah").orderByChild("pembuat").equalTo(alias).addValueEventListener(new ValueEventListener() {
+        database.child("tambah").orderByChild("nama").startAt(hasil).endAt(hasil + "\uf8ff").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 daftarTambah = new ArrayList<>();
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
+                    final Tambah tambah = noteDataSnapshot.getValue(Tambah.class);
+                    if(tambah.getPembuat().equals(alias)) {
 
-                    Tambah tambah = noteDataSnapshot.getValue(Tambah.class);
-                    tambah.setKey(noteDataSnapshot.getKey());
+                        tambah.setKey(noteDataSnapshot.getKey());
 
 
-                    daftarTambah.add(tambah);
-                   // Log.e("Data snapshot","barang5"+daftarBarang.add(barang));
+                        daftarTambah.add(tambah);
+                        // Log.e("Data snapshot","barang5"+daftarBarang.add(barang));
+                    }
                 }
 
                 adapter = new AdapterBarangRecyclerView(daftarTambah, FirebaseDBReadActivity.this);
@@ -93,11 +106,6 @@ public class FirebaseDBReadActivity extends AppCompatActivity implements Adapter
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                /**
-                 * Kode ini akan dipanggil ketika ada error dan
-                 * pengambilan data gagal dan memprint error nya
-                 * ke LogCat
-                 */
                 System.out.println(databaseError.getDetails()+" "+databaseError.getMessage());
             }
         });

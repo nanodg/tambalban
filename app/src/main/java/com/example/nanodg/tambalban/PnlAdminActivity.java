@@ -77,7 +77,6 @@ public class PnlAdminActivity extends AppCompatActivity implements View.OnClickL
 
         if (view == btntambah) {
             startActivity(new Intent(this, TambahActivity.class));
-            finish();
         }if (view == btnlogout) {
             //logging out the user
             firebaseAuth.signOut();
@@ -86,13 +85,12 @@ public class PnlAdminActivity extends AppCompatActivity implements View.OnClickL
             //starting login activity
             startActivity(new Intent(this, LoginUserActivity.class));
         } if (view == btntambal) {
-            finish();
-
+            startActivity(new Intent(this, ListTambalActivity.class));
         } if (view == btnaduan) {
-            finish();
+
 
         } if (view == btnuser) {
-            finish();
+
 
         }
     }

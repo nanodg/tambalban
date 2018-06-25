@@ -1,6 +1,6 @@
 package com.example.nanodg.tambalban;
 
-import android.Manifest;
+import android.*;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
@@ -13,17 +13,17 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -31,10 +31,6 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.CheckBox;
-
-import java.util.Calendar;
-
 import android.widget.Toast;
 
 import com.example.nanodg.tambalban.Adapter.WorkaroundMapFragment;
@@ -63,8 +59,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sdsmdg.tastytoast.TastyToast;
 
+import java.util.Calendar;
 
-public class TambahActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener, View.OnClickListener {
+public class EditTambalActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, View.OnClickListener {
 
     //upload images
     private static final int PICK_IMAGE_REQUEST1 = 234;
@@ -74,7 +71,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
     String FileName1,FileName2,FileName3;
 
     EditText pembuat, nama, no, alamat,image1,image2,image3,edinfo;
-    TextView tvjambuka, tvjamtutup, lat, longt, useremail,uri1,uri2,uri3,hsl1,hsl2,proses1,proses2,proses3,pemilik,hsl3,verif,tvsts;
+    TextView tvjambuka, tvjamtutup, lat, longt, useremail,uri1,uri2,uri3,hsl1,hsl2,proses1,proses2,proses3,pemilik,hsl3,verif,tvvrf;
     Button btbuka, bttutup, btlogout,simpan;
     TimePickerDialog timePickerDialog1,timePickerDialog2;
     CheckBox biasa, tubles, Motor, Mobil;
@@ -88,29 +85,29 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
     String provider = null;
     Marker mCurrentPosition = null;
     ScrollView mScrollView;
-    Switch status;
+    Switch sw_verif;
 
     FirebaseAuth firebaseAuth;
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tambah);
+        setContentView(R.layout.activity_edit_tambal);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-//        final ProgressDialog loading = ProgressDialog.show(this, "Mengambil data Rute", "Tunggu Sebentar...", false, false);
+
         pembuat = (EditText) findViewById(R.id.addusername);
         nama = (EditText) findViewById(R.id.addnama);
         no = (EditText) findViewById(R.id.addno_tlp);
         alamat = (EditText) findViewById(R.id.alamat);
         edinfo = (EditText) findViewById(R.id.edinfo);
         pemilik = (TextView) findViewById(R.id.tvpemilik);
-        status = (Switch) findViewById(R.id.status);
+        sw_verif = (Switch) findViewById(R.id.sw_verif);
         hsl3 = (TextView) findViewById(R.id.hsl3);
         verif = (TextView) findViewById(R.id.tvverif);
-        tvsts = (TextView) findViewById(R.id.tvsts);
+        tvvrf = (TextView) findViewById(R.id.tvvrf);
         // mengambil referensi ke Firebase Database
         database = FirebaseDatabase.getInstance().getReference();
         simpan = (Button) findViewById(R.id.simpan);
@@ -168,69 +165,6 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
 
         }
 
-        /**
-         * FIREBASE LOGIN
-         */
-        firebaseAuth = FirebaseAuth.getInstance();
-
-        //if the user is not logged in
-        //that means current user will return null
-        if (firebaseAuth.getCurrentUser() == null) {
-            //closing this activity
-            finish();
-            //starting login activity
-            startActivity(new Intent(this, LoginUserActivity.class));
-        }
-
-        //getting current user
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-
-        //initializing views
-
-        useremail = (EditText) findViewById(R.id.addusername);
-        btlogout = (Button) findViewById(R.id.buttonLogout);
-        //displaying logged in user name
-        useremail.setText(user.getEmail());
-        final String email = useremail.getText().toString().trim();
-        ///
-        DatabaseReference mUserContactsRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        mUserContactsRef.orderByChild("email").equalTo(email).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                //loading.dismiss();
-                //Log.e("barang1", dataSnapshot.toString());
-                for (DataSnapshot userContact : dataSnapshot.getChildren()) {
-                    User user = userContact.getValue(User.class);
-                    if (user.getPemilik().equals("0")) {
-                        pemilik.setText("0");
-                        verif.setText("0");
-                        status.setVisibility(View.GONE);
-                        tvsts.setVisibility(View.GONE);
-                    }
-                    if (user.getPemilik().equals("1")) {
-                        pemilik.setText("1");
-                        verif.setText("1");
-                        status.setVisibility(View.VISIBLE);
-                        tvsts.setVisibility(View.VISIBLE);
-                        //Log.e("Data snapshot", "barang1" + user.getPemilik());
-
-                    }
-                    if (user.getPemilik().equals("2")) {
-                        pemilik.setText("0");
-                        verif.setText("1");
-                        status.setVisibility(View.GONE);
-                        tvsts.setVisibility(View.GONE);
-                        //Log.e("Data snapshot", "barang1" + user.getPemilik());
-
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-        btlogout.setOnClickListener(this);
 
         /**
          * Upload Images
@@ -259,17 +193,8 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
         //simpan.setOnClickListener(this);
 
 
-        /**
-         * Upload Images dan simpan data
-         */
-
-
-        /**
-         * UNTUK MENU EDIT
-         */
-
-
         if (tambah != null) {
+            pembuat.setText(tambah.getPembuat());
             nama.setText(tambah.getNama());
             alamat.setText(tambah.getAlamat());
             no.setText(tambah.getNo());
@@ -283,12 +208,12 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
             lat.setText(tambah.getLat().toString());
             longt.setText(tambah.getLongt().toString());
             pemilik.setText(tambah.getPemilik());
-            verif.setText(tambah.getVerif());
+            hsl3.setText(tambah.getVerif());
             edinfo.setText(tambah.getInfo());
-            hsl3.setText(tambah.getStatus());
             simpan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    tambah.setPembuat(pembuat.getText().toString());
                     tambah.setNama(nama.getText().toString());
                     tambah.setNo(no.getText().toString());
                     tambah.setBuka(tvjambuka.getText().toString());
@@ -301,56 +226,20 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
                     tambah.setFoto2(uri2.getText().toString());
                     tambah.setFoto3(uri3.getText().toString());
                     tambah.setPemilik(pemilik.getText().toString());
-                    tambah.setVerif(verif.getText().toString());
+                    tambah.setVerif(hsl3.getText().toString());
                     tambah.setInfo(edinfo.getText().toString());
-                    tambah.setStatus(hsl3.getText().toString());
 
 
                     updateTambah(tambah);
                 }
             });
-        } else {
-            simpan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (isEmpty(nama.getText().toString()) && isEmpty(no.getText().toString())
-                            && isEmpty(alamat.getText().toString()) && isEmpty(lat.getText().toString())
-                            && isEmpty(hsl1.getText().toString()) && isEmpty(hsl2.getText().toString())
-                            && isEmpty(longt.getText().toString()) && isEmpty(uri1.getText().toString())
-                            && isEmpty(uri2.getText().toString()) && isEmpty(uri3.getText().toString())
-                            && isEmpty(pemilik.getText().toString()) && isEmpty(verif.getText().toString())) {
-                        TastyToast.makeText(getApplicationContext(), "Semua Data Harus diIsi", TastyToast.LENGTH_LONG, TastyToast.WARNING);
-                    } else if (!isEmpty(pembuat.getText().toString()) && !isEmpty(nama.getText().toString())
-                            && !isEmpty(no.getText().toString()) && !isEmpty(tvjambuka.getText().toString())
-                            && !isEmpty(tvjamtutup.getText().toString()) && !isEmpty(hsl1.getText().toString())
-                            && !isEmpty(hsl2.getText().toString()) && !isEmpty(alamat.getText().toString())
-                            && !isEmpty(lat.getText().toString()) && !isEmpty(longt.getText().toString())
-                            && !isEmpty(uri1.getText().toString()) && !isEmpty(uri2.getText().toString()) && !isEmpty(uri3.getText().toString())
-                            && !isEmpty(pemilik.getText().toString()) && !isEmpty(verif.getText().toString()))
-                        submitTambah(new Tambah(pembuat.getText().toString(), nama.getText().toString(),
-                                no.getText().toString(), tvjambuka.getText().toString(),
-                                tvjamtutup.getText().toString(), hsl1.getText().toString(),
-                                hsl2.getText().toString(), alamat.getText().toString(),
-                                Double.parseDouble(lat.getText().toString().trim()), Double.parseDouble(longt.getText().toString().trim()),
-                                uri1.getText().toString(), uri2.getText().toString(), uri3.getText().toString(),
-                                pemilik.getText().toString(), hsl3.getText().toString(), verif.getText().toString(), edinfo.getText().toString()));
-                    else
-                        TastyToast.makeText(getApplicationContext(), "Semua Data Harus diIsi2", TastyToast.LENGTH_LONG, TastyToast.WARNING);
-
-                    InputMethodManager imm = (InputMethodManager)
-                            getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(
-                            pembuat.getWindowToken(), 0);
-
-                }
-            });
         }
 
-        status.setOnClickListener(new View.OnClickListener() {
+        sw_verif.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(status.isChecked()) {
+                if(sw_verif.isChecked()) {
                     hsl3.setText("1");
                 }
                 else {
@@ -381,10 +270,10 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
             Mobil.setChecked(true);
         }
         if(hsl3.getText().equals("1")){
-            status.setChecked(true);
+            sw_verif.setChecked(true);
         }
         if(hsl3.getText().equals("0")){
-            status.setChecked(false);
+            sw_verif.setChecked(false);
         }
     }
 
@@ -652,38 +541,9 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
         return TextUtils.isEmpty(s);
     }
 
-    private void submitTambah (Tambah tambah){
-        /**
-         * Ini adalah kode yang digunakan untuk mengirimkan data ke Firebase Realtime Database
-         * dan juga kita set onSuccessListener yang berisi kode yang akan dijalankan
-         * ketika data berhasil ditambahkan
-         */
-        database.child("tambah").push().setValue(tambah).addOnSuccessListener(this, new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-              pembuat.setText("");
-                no.setText("");
-                tvjambuka.setText("");
-                tvjamtutup.setText("");
-                hsl1.setText("");
-                hsl2.setText("");
-                alamat.setText("");
-                lat.setText("");
-                longt.setText("");
-                uri1.setText("");
-                uri2.setText("");
-                uri3.setText("");
-                verif.setText("");
-                pemilik.setText("");
-                status.setText("");
-                TastyToast.makeText(getApplicationContext(), "Data Berhasil diTambahkan", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-
-            }
-        });
-    }
     public static Intent getActIntent(Activity activity) {
         // kode untuk pengambilan Intent
-        return new Intent(activity, TambahActivity.class);
+        return new Intent(activity, EditTambalActivity.class);
     }
     @Override
     public void onClick(View view) {
@@ -698,14 +558,6 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
             showFileChooser3();
         }
         //if the clicked button is upload
-       if (view == btlogout){
-            //logging out the user
-            firebaseAuth.signOut();
-            //closing activity
-            finish();
-            //starting login activity
-            startActivity(new Intent(this, LoginUserActivity.class));
-        }
     }
 
 
@@ -739,7 +591,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
 
     private void locateCurrentPosition() {
 
-        int status = getPackageManager().checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION,
+        int status = getPackageManager().checkPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION,
                 getPackageName());
 
         if (status == PackageManager.PERMISSION_GRANTED) {
@@ -920,5 +772,5 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
         timePickerDialog2.show();
     }
 
-
 }
+

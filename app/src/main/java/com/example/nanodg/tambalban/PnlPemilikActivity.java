@@ -80,15 +80,15 @@ public class PnlPemilikActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
 
         if(view == tambah){
-            finish();
+
             startActivity(new Intent(this, TambahActivity.class));
         }
         if(view == btnlihat){
-            finish();
+
             startActivity(new Intent(this, FirebaseDBReadActivity.class));
         }
         if(view == btnaduan){
-            finish();
+
             startActivity(new Intent(this, FirebaseDBReadAduanActivity.class));
         }
         if (view == btnlogout) {

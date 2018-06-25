@@ -111,12 +111,13 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
         imgmotor = (ImageView) findViewById(R.id.imgmotor);
         imgmobil = (ImageView) findViewById(R.id.imgmobil);
 
-
+        lat.setText("-7.248651474442163");
+        lon.setText("112.62898944318295");
 
 
         Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
         if (tambah != null) {
-            loading.dismiss();
+
             nama.setText(tambah.getNama());
             tlp.setText(tambah.getNo());
             jmbuka.setText(tambah.getBuka() + " s/d " + (tambah.getTutup()));
@@ -221,6 +222,7 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
                     }
                 }
             });
+            loading.dismiss();
         }
 
         if (mMap == null) {

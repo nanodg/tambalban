@@ -145,7 +145,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                     for (DataSnapshot userContact : dataSnapshot.getChildren()) {
 
                         Tambah tambah = userContact.getValue(Tambah.class);
-                        loading.dismiss();
+
                         idkey = userContact.getKey();
                         nama.setText(tambah.getNama());
                         tlp.setText(tambah.getNo());
@@ -287,20 +287,12 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                     });
 
         }
-
+        loading.dismiss();
         widgetInit();
 
 
 
     }
-
-//    public void coba(String la2, String lo3){
-//
-//        la4 = la2;
-//        lo5 = lo3;
-//        Log.e("barang23", la4);
-//        Log.e("barang23", lo5);
-//    }
 
 
     private void widgetInit() {
@@ -513,7 +505,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                         Intent edit = new Intent(getApplicationContext(), AduanActivity.class);
                         edit.putExtra(DATA, id);
                         startActivity(edit);
-                        finish();
+
         }
 
     }
