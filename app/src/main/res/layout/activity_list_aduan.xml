@@ -30,7 +30,7 @@
         android:layout_marginRight="20dp"
         android:paddingRight="20dp"
         android:paddingTop="10dp"
-        android:hint="Nama Pengguna"
+        android:hint="Nama Tambal"
         android:textColor="#999999"
         android:layout_below="@+id/textView7"
         android:layout_alignStart="@+id/result_list"

@@ -7,9 +7,10 @@ import java.io.Serializable;
  */
 
 public class User implements Serializable {
-    private String email;
-    private String username;
-    private String pemilik;
+    public String email;
+    public String username;
+    public String pemilik;
+    public String key;
 
 
     public User(){
@@ -21,6 +22,12 @@ public class User implements Serializable {
         this.username = username;
         this.pemilik = pemilik;
 
+    }
+    public String getKey() {
+        return key;
+    }
+    public void setKey(String key){
+        this.key = key;
     }
     public String getEmail(){
         return email;

@@ -90,7 +90,7 @@ public class PnlAdminActivity extends AppCompatActivity implements View.OnClickL
 
 
         } if (view == btnuser) {
-
+            startActivity(new Intent(this, ListUserActivity.class));
 
         }
     }
