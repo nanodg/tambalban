@@ -7,17 +7,19 @@ import java.io.Serializable;
  */
 
 public class User implements Serializable {
+    public String key;
     public String email;
     public String username;
     public String pemilik;
-    public String key;
+
 
 
     public User(){
 
     }
 
-    public User(String email, String username, String pemilik){
+    public User(String key,String email, String username, String pemilik){
+        this.key = key;
         this.email = email;
         this.username = username;
         this.pemilik = pemilik;
@@ -47,5 +49,6 @@ public class User implements Serializable {
     public void setPemilik(String pemilik){
         this.pemilik= pemilik;
     }
+
 
 }

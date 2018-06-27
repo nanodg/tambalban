@@ -86,6 +86,7 @@
                     android:layout_height="150dp"
                     android:layout_margin="5dp"
                     android:clickable="true"
+                    android:id="@+id/btnpesan"
                     android:foreground="?android:attr/selectableItemBackground">
 
                     <LinearLayout

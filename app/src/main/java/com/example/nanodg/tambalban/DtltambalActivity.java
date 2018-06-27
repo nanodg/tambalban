@@ -77,7 +77,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     private TextView uri1,uri2,uri3;
     private Slider slider;
     private GoogleMap mMap;
-    public String idkey;
+    public String idkey,email;
     LocationManager mLocationManager = null;
     String provider = null;
     Marker mCurrentPosition = null;
@@ -85,7 +85,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     String hasil,verif;
     ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil,stbuka,sttutup;
     ImageButton bttlpn,btsms;
-    Button aduan;
+    Button aduan,chat;
 
 
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
@@ -105,6 +105,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         alamat = (TextView) findViewById(R.id.et_alamat);
         lat = (EditText) findViewById(R.id.et_lat);
         aduan = (Button) findViewById(R.id.aduan);
+        chat = (Button) findViewById(R.id.chat);
         info = (EditText) findViewById(R.id.info);
         lon = (EditText) findViewById(R.id.et_long);
         uri1 = (TextView) findViewById(R.id.uri1);
@@ -130,6 +131,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         lon.setText("112.62898944318295");
 
         aduan.setOnClickListener(this);
+        chat.setOnClickListener(this);
 
         //btSubmit.setVisibility(View.GONE);
 
@@ -148,6 +150,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
                         idkey = userContact.getKey();
                         nama.setText(tambah.getNama());
+                        email = tambah.getPembuat();
                         tlp.setText(tambah.getNo());
                         jmbuka.setText(tambah.getBuka()+" s/d "+(tambah.getTutup()));
                         //jmtutup.setText(tambah.getTutup());
@@ -501,10 +504,18 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
         if(view == aduan){
 
-                        String id = nama.getText().toString();
-                        Intent edit = new Intent(getApplicationContext(), AduanActivity.class);
-                        edit.putExtra(DATA, id);
-                        startActivity(edit);
+            String id = nama.getText().toString();
+            Intent edit = new Intent(getApplicationContext(), AduanActivity.class);
+            edit.putExtra(DATA, id);
+            startActivity(edit);
+
+        }
+        if(view == chat){
+
+            String email2 = email;
+            Intent edit = new Intent(getApplicationContext(), LoginActivity.class);
+            edit.putExtra(DATA, email2);
+            startActivity(edit);
 
         }
 

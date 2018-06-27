@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -80,7 +81,7 @@ public class RegisUserActivity extends AppCompatActivity implements View.OnClick
         final String email = edemail.getText().toString().trim();
         String password = edpswd.getText().toString().trim();
         final String pemilik = tvpemilik.getText().toString().trim();
-
+        final String key = "-";
 
         if (email.isEmpty()) {
             edemail.setError(getString(R.string.input_error_email));
@@ -122,9 +123,7 @@ public class RegisUserActivity extends AppCompatActivity implements View.OnClick
                         if (task.isSuccessful()) {
 
                             User user = new User(
-                                    email,
-                                    username,
-                                    pemilik
+                                    key,email,username,pemilik
 
                             );
 
@@ -136,7 +135,7 @@ public class RegisUserActivity extends AppCompatActivity implements View.OnClick
                                     progressBar.setVisibility(View.GONE);
                                     if (task.isSuccessful()) {
                                         TastyToast.makeText(getApplicationContext(), getString(R.string.registration_success), TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
-                                        DatabaseReference  mUserContactsRef =  FirebaseDatabase.getInstance().getReference().child("Users");
+                                        final DatabaseReference  mUserContactsRef =  FirebaseDatabase.getInstance().getReference().child("Users");
                                         mUserContactsRef.orderByChild("email").equalTo(email).addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -146,10 +145,17 @@ public class RegisUserActivity extends AppCompatActivity implements View.OnClick
 
                                                     User user = userContact.getValue(User.class);
                                                     if(user.getPemilik().equals("0")){
+//                                                        mUserContactsRef.child("key").setValue(userContact.getKey());
+                                                        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users").child(userContact.getKey().toString());
+                                                        mDatabase.child("key").setValue(userContact.getKey());
                                                         TastyToast.makeText(getApplicationContext(), "User", TastyToast.LENGTH_LONG, TastyToast.INFO);
                                                         startActivity(new Intent(getApplicationContext(), PnlUserActivity.class));
                                                         finish();
                                                     } if(user.getPemilik().equals("1")) {
+                                                        //mUserContactsRef.child("key").setValue(userContact.getKey());
+                                                        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Users").child(userContact.getKey().toString());
+                                                        mDatabase.child("key").setValue(userContact.getKey());
+                                                        user.setKey(userContact.getKey());
                                                         TastyToast.makeText(getApplicationContext(), "Pemilik", TastyToast.LENGTH_LONG, TastyToast.INFO);
                                                         startActivity(new Intent(getApplicationContext(), PnlPemilikActivity.class));
                                                         //Log.e("Data snapshot", "barang1" + user.getPemilik());

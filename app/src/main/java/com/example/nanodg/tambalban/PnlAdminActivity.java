@@ -87,7 +87,7 @@ public class PnlAdminActivity extends AppCompatActivity implements View.OnClickL
         } if (view == btntambal) {
             startActivity(new Intent(this, ListTambalActivity.class));
         } if (view == btnaduan) {
-
+            startActivity(new Intent(this, ListAduanActivity.class));
 
         } if (view == btnuser) {
             startActivity(new Intent(this, ListUserActivity.class));

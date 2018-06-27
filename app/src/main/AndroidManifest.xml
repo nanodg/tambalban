@@ -45,7 +45,11 @@
         <activity android:name=".ListTambalActivity" />
         <activity android:name=".ListAduanActivity" />
         <activity android:name=".ListAduanPemilikActivity" />
-        <activity android:name=".EditTambalActivity"></activity>
+        <activity android:name=".EditTambalActivity" />
+        <activity android:name=".PesanPemilikActivity" />
+        <activity android:name=".ActivityChatDetails" />
+        <activity android:name=".ActivitySelectFriend" />
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>

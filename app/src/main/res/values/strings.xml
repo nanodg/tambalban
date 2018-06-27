@@ -9,6 +9,9 @@
     <string name="input_error_password_length">Password Harus 8 Karakter / Lebih</string>
     <string name="registration_success">Pendaftaran Berhasil</string>
     <string name="input_error_email_invalid">Masukan Email Yang Benar</string>
+    <string name="press_again_exit_app">Press again to exit</string>
+
+    <string name="settings_file_name">com.example.nanodg.tambalban.temp</string>
     <string-array name="PilihanBan">
         <item>Biasa</item>
         <item>Tubles</item>

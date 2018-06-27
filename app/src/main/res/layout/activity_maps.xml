@@ -47,7 +47,7 @@
                 android:layout_below="@+id/jenisban"
                 android:layout_marginStart="18dp"
                 android:visibility="visible"
-                android:background="@drawable/spinner_border"/>
+                />
 
             <Spinner
                 android:id="@+id/spinner2"
@@ -57,7 +57,7 @@
                 android:layout_alignTop="@+id/spinner"
                 android:layout_marginEnd="21dp"
                 android:visibility="visible"
-                android:background="@drawable/spinner_border"/>
+               />
 
             <Button
                 android:id="@+id/tampil"

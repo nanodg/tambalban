@@ -11,4 +11,11 @@
     <color name="red">#dc000f</color>
     <color name="colorAccent">#2677b4</color>
     <color name="colorRouteLine">#2677b4</color>
+    <color name="me_chat_bg">#FFE0B2</color>
+    <color name="grey_hard">#96989A</color>
+    <color name="grey_medium">#BDBFC1</color>
+    <color name="grey_soft">#F5F5F5</color>
+
+    <color name="grey_bg">#EBEFF0</color>
+    <color name="grey_text">#222D31</color>
 </resources>

@@ -3,16 +3,16 @@ package com.example.nanodg.tambalban;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-
+import com.example.nanodg.tambalban.Model.User;
 import com.example.nanodg.tambalban.data.SettingsAPI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,10 +24,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.example.nanodg.tambalban.Model.User;
 import com.sdsmdg.tastytoast.TastyToast;
 
-public class LoginUserActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     FirebaseDatabase database;
     DatabaseReference users;
     private FirebaseAuth firebaseAuth;
@@ -35,12 +34,12 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
     EditText edemail,edpswd;
     Button btnlogin,btnsignup;
     SettingsAPI set;
-
-
+    public String hslnama;
+    public static final String DATA = "com.example.nanodg.tambalban";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_user);
+        setContentView(R.layout.activity_login);
 
         database = FirebaseDatabase.getInstance();
         users = database.getReference("Users");
@@ -53,6 +52,8 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
         btnsignup = (Button) findViewById(R.id.btnsignup);
         btnsignup.setOnClickListener(this);
         set = new SettingsAPI(this);
+        Intent intent = getIntent();
+        final String hslnama = intent.getStringExtra(DtltambalActivity.DATA);
 
         if(firebaseAuth.getCurrentUser() != null){
             FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -64,37 +65,22 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                 @Override
                 public void onDataChange(final DataSnapshot dataSnapshot) {
                     set.deleteAllSettings();
+                    Log.e("barang1", dataSnapshot.toString());
                     //Log.e("barang1", dataSnapshot.toString());
                     for (DataSnapshot userContact : dataSnapshot.getChildren()) {
-
                         User user = userContact.getValue(User.class);
-                        if(user.getPemilik().equals("0")){
-                            final String usrNm = user.getUsername();
-                            final String usrId = user.getKey();
-                            set.addUpdateSettings("myid", usrId);
-                            set.addUpdateSettings("myname", usrNm);
-                            TastyToast.makeText(getApplicationContext(), "User", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                            startActivity(new Intent(getApplicationContext(), PnlUserActivity.class));
-                            finish();
-                        } if(user.getPemilik().equals("1")) {
-                            final String usrNm = user.getUsername();
-                            final String usrId = user.getKey();
-                            set.addUpdateSettings("myid", usrId);
-                            set.addUpdateSettings("myname", usrNm);
-                            TastyToast.makeText(getApplicationContext(), "Pemilik", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                            startActivity(new Intent(getApplicationContext(), PnlPemilikActivity.class));
-                            //Log.e("Data snapshot", "barang1" + user.getPemilik());
-                            finish();
-                        }if(user.getPemilik().equals("2")) {
-                            final String usrNm = user.getUsername();
-                            final String usrId = user.getKey();
-                            set.addUpdateSettings("myid", usrId);
-                            set.addUpdateSettings("myname", usrNm);
-                            TastyToast.makeText(getApplicationContext(), "Admin", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                            startActivity(new Intent(getApplicationContext(), PnlAdminActivity.class));
-                            //Log.e("Data snapshot", "barang1" + user.getPemilik());
-                            finish();
-                        }
+
+                        final String usrNm = user.getUsername();
+                        final String usrId = user.getKey();
+                        set.addUpdateSettings("myid", usrId);
+                        set.addUpdateSettings("myname", usrNm);
+
+                        String email2 = hslnama;
+                        Intent edit = new Intent(getApplicationContext(), ActivitySelectFriend.class);
+                        edit.putExtra(DATA, email2);
+                        startActivity(edit);
+                        finish();
+
                     }
                 }
                 @Override
@@ -103,9 +89,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
             });
 //            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
-
     }
-
 
     //method for user login
     private void userLogin(){
@@ -146,35 +130,19 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                                     set.deleteAllSettings();
                                     //Log.e("barang1", dataSnapshot.toString());
                                     for (DataSnapshot userContact : dataSnapshot.getChildren()) {
-
                                         User user = userContact.getValue(User.class);
-                                        if(user.getPemilik().equals("0")){
-                                            final String usrNm = user.getUsername();
-                                            final String usrId = user.getKey();
-                                            set.addUpdateSettings("myid", usrId);
-                                            set.addUpdateSettings("myname", usrNm);
-                                            TastyToast.makeText(getApplicationContext(), "User", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                                            startActivity(new Intent(getApplicationContext(), PnlUserActivity.class));
-                                            finish();
-                                        } if(user.getPemilik().equals("1")) {
-                                            final String usrNm = user.getUsername();
-                                            final String usrId = user.getKey();
-                                            set.addUpdateSettings("myid", usrId);
-                                            set.addUpdateSettings("myname", usrNm);
-                                            TastyToast.makeText(getApplicationContext(), "Pemilik", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                                            startActivity(new Intent(getApplicationContext(), PnlPemilikActivity.class));
-                                           // Log.e("Data snapshot", "barang1" + user.getPemilik());
-                                            finish();
-                                        }if(user.getPemilik().equals("2")) {
-                                            final String usrNm = user.getUsername();
-                                            final String usrId = user.getKey();
-                                            set.addUpdateSettings("myid", usrId);
-                                            set.addUpdateSettings("myname", usrNm);
-                                            TastyToast.makeText(getApplicationContext(), "Admin", TastyToast.LENGTH_LONG, TastyToast.INFO);
-                                            startActivity(new Intent(getApplicationContext(), PnlAdminActivity.class));
-                                            //Log.e("Data snapshot", "barang1" + user.getPemilik());
-                                            finish();
-                                        }
+                                        final String usrNm = user.getUsername();
+                                        final String usrId = user.getKey();
+                                        Log.e("barang2", usrNm);
+                                        Log.e("barang2", usrId);
+                                        set.addUpdateSettings("myid", usrId);
+                                        set.addUpdateSettings("myname", usrNm);
+
+                                        String email2 = hslnama;
+                                        Intent edit = new Intent(getApplicationContext(), ActivitySelectFriend.class);
+                                        edit.putExtra(DATA, email2);
+                                        startActivity(edit);
+                                        finish();
                                     }
                                 }
                                 @Override
@@ -205,5 +173,4 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
         // kode untuk pengambilan Intent
         return new Intent(activity, LoginUserActivity.class);
     }
-
 }
