@@ -2,8 +2,10 @@ package com.example.nanodg.tambalban;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -26,7 +28,7 @@ public class PnlUserActivity extends AppCompatActivity implements View.OnClickLi
     TextView selamat;
     FirebaseAuth firebaseAuth;
     String alias;
-
+    private ActionBar actionBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,7 @@ public class PnlUserActivity extends AppCompatActivity implements View.OnClickLi
         selamat = (TextView) findViewById(R.id.tvslmt);
         tambah.setOnClickListener(this);
         logout.setOnClickListener(this);
-
+        initToolbar();
         /**
          * FIREBASE LOGIN
          */
@@ -72,11 +74,19 @@ public class PnlUserActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
 
+    public void initToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("Panel User");
+    }
+
     @Override
     public void onClick(View view) {
 
         if (view == tambah) {
-            finish();
             startActivity(new Intent(this, TambahActivity.class));
         }
             if (view == logout) {

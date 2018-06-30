@@ -14,7 +14,9 @@ import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -76,7 +78,7 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
     String hasil,verif;
     ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil;
     ImageButton bttlpn,btsms;
-
+    private ActionBar actionBar;
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
 
 
@@ -110,6 +112,13 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
         imgtub = (ImageView) findViewById(R.id.imgtub);
         imgmotor = (ImageView) findViewById(R.id.imgmotor);
         imgmobil = (ImageView) findViewById(R.id.imgmobil);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("Tambal Ban");
 
         lat.setText("-7.248651474442163");
         lon.setText("112.62898944318295");

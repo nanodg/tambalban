@@ -5,15 +5,25 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +34,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.example.nanodg.tambalban.Model.Tambah;
 import com.example.nanodg.tambalban.Model.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -46,9 +58,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,LocationListener,GoogleMap.OnMarkerClickListener{
+import static com.example.nanodg.tambalban.R.layout.toolbar;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,LocationListener,GoogleMap.OnMarkerClickListener{
 
     public static final String DATA = "com.example.nanodg.tambalban";
     private GoogleMap mMap;
@@ -76,7 +95,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Circle circle;
     private CircleOptions mOptions;
     SeekBar radius;
-
+    private ActionBar actionBar;
+    private String view;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -95,8 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         kendaraan = (TextView)findViewById(R.id.jeniskendaraan);
         radius = (SeekBar)findViewById(R.id.radius);
         numradius = (TextView)findViewById(R.id.numradius);
-
-
+        initToolbar();
 
         radius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -269,6 +288,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             zoomLevel = (int) (16 - Math.log(scale) / Math.log(2));
         }
         return zoomLevel;
+    }
+
+
+    public void initToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.login, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_login) {
+            view = "login";
+            startActivity(LoginUserActivity.getActIntent(MapsActivity.this));
+        }
+        return true;
     }
 
 //    private void addBoundaryToCurrentPosition(double lat, double lang) {

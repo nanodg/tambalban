@@ -18,6 +18,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -64,7 +67,7 @@ import com.google.firebase.storage.UploadTask;
 import com.sdsmdg.tastytoast.TastyToast;
 
 
-public class TambahActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener, View.OnClickListener {
+public class TambahActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener, View.OnClickListener {
 
     //upload images
     private static final int PICK_IMAGE_REQUEST1 = 234;
@@ -72,7 +75,7 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
     private static final int PICK_IMAGE_REQUEST3 = 236;
     Uri filePath1,filePath2,filePath3;
     String FileName1,FileName2,FileName3;
-
+    private ActionBar actionBar;
     EditText pembuat, nama, no, alamat,image1,image2,image3,edinfo;
     TextView tvjambuka, tvjamtutup, lat, longt, useremail,uri1,uri2,uri3,hsl1,hsl2,proses1,proses2,proses3,pemilik,hsl3,verif,tvsts;
     Button btbuka, bttutup, btlogout,simpan;
@@ -115,7 +118,12 @@ public class TambahActivity extends FragmentActivity implements OnMapReadyCallba
         database = FirebaseDatabase.getInstance().getReference();
         simpan = (Button) findViewById(R.id.simpan);
         final Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("Tambah Tambal Ban");
 
         /**
          * Jam Operasional

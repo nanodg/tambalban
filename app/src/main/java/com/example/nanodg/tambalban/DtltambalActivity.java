@@ -13,7 +13,9 @@ import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -86,8 +88,9 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil,stbuka,sttutup;
     ImageButton bttlpn,btsms;
     Button aduan,chat;
-
-
+    public boolean isfirebase=false;
+    private ActionBar actionBar;
+    double lng,laat;
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
 
 
@@ -126,9 +129,10 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         imgtub = (ImageView) findViewById(R.id.imgtub);
         imgmotor = (ImageView) findViewById(R.id.imgmotor);
         imgmobil = (ImageView) findViewById(R.id.imgmobil);
+        initToolbar();
 
-        lat.setText("-7.248651474442163");
-        lon.setText("112.62898944318295");
+//        lat.setText("-7.248651474442163");
+//        lon.setText("112.62898944318295");
 
         aduan.setOnClickListener(this);
         chat.setOnClickListener(this);
@@ -157,8 +161,12 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 //                        hsl1.setText(tambah.getBan());
 //                        hsl2.setText(tambah.getKendaraan());
                         alamat.setText(tambah.getAlamat());
+
                         lat.setText(Double.toString(tambah.getLat()));
                         lon.setText(Double.toString(tambah.getLongt()));
+                        if(lat.getText() != null && lon.getText() !=null){
+                            actionRoute(laat,lng);
+                        }
                         uri1.setText(tambah.getFoto1());
                         uri2.setText(tambah.getFoto2());
                         uri3.setText(tambah.getFoto3());
@@ -209,7 +217,12 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                         }
                         info.setText(tambah.getInfo());
                         //coba(la1,lo2);
-
+                        if(tambah.getPemilik().equals("1")){
+                            chat.setVisibility(View.VISIBLE);
+                        }
+                        if(tambah.getPemilik().equals("0")){
+                            chat.setVisibility(View.GONE);
+                        }
                         final List<Slide> slideList = new ArrayList<>();
                         final ArrayList<Slide> imageList = new ArrayList<>();
                         imageList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
@@ -267,6 +280,9 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
 
                     }
+
+
+
                 }
 
                 @Override
@@ -297,7 +313,13 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
-
+    public void initToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+    }
     private void widgetInit() {
         tvStartAddress = (TextView)findViewById(R.id.tvStartAddress);
         tvEndAddress =(TextView) findViewById(R.id.tvEndAddress);
@@ -334,9 +356,17 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                 if (response.isSuccessful()){
                     // tampung response ke variable
                     ReponseRoute dataDirection = response.body();
+                    LegsItem dataLegs = null;
 
-                    LegsItem dataLegs = dataDirection.getRoutes().get(0).getLegs().get(0);
-
+                    try {
+                       dataLegs = dataDirection.getRoutes().get(0).getLegs().get(0);
+                    }catch (Exception e) {
+                        Log.d("Data snapshot", "barang3" + e.toString());
+                    }
+                    Log.e("Data snapshot", "barang4" + dataLegs);
+                    if (dataLegs == null){
+                        return;
+                    }
                     //loading.dismiss();
                     //Log.e("Data snapshot","barang4"+dataLegs);
                     // Dapatkan garis polyline
@@ -454,12 +484,8 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     private void updateWithNewLocation(Location location) {
 
         if (location != null && provider != null) {
-            double lng = location.getLongitude();
-            double laat = location.getLatitude();
-
-            //addBoundaryToCurrentPosition(lat, lng);
-            actionRoute(laat,lng);
-
+            lng = location.getLongitude();
+            laat = location.getLatitude();
             CameraPosition camPosition = new CameraPosition.Builder()
                     .target(new LatLng(laat, lng)).zoom(15f).build();
 

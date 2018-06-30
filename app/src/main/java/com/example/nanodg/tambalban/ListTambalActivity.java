@@ -4,10 +4,12 @@ package com.example.nanodg.tambalban;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -44,6 +46,7 @@ public class ListTambalActivity extends AppCompatActivity implements AdapterTamb
     EditText pencarian;
     ImageButton cari;
     public String hasil;
+    private ActionBar actionBar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +69,12 @@ public class ListTambalActivity extends AppCompatActivity implements AdapterTamb
         rvView.setLayoutManager(layoutManager);
         hasil = pencarian.getText().toString();
         cari();
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("List Tambal Ban");
         cari.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

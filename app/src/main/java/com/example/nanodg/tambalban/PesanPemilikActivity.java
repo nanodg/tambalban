@@ -2,18 +2,27 @@ package com.example.nanodg.tambalban;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+
 import com.example.nanodg.tambalban.R;
 import com.example.nanodg.tambalban.Fragment.ChatsFragment;
 
 public class PesanPemilikActivity extends AppCompatActivity {
-
+    private ActionBar actionBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pesan_pemilik);
         initComponent();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("Pesan");
     }
     private void initComponent() {
         FragmentManager fragmentManager = getSupportFragmentManager();

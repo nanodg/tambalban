@@ -50,7 +50,6 @@ public class ActivityChatDetails extends AppCompatActivity {
     private Button btn_send;
     private EditText et_content;
     public static ChatDetailsListAdapter mAdapter;
-
     private ListView listview;
     private ActionBar actionBar;
     private User user;
@@ -79,7 +78,7 @@ public class ActivityChatDetails extends AppCompatActivity {
         Intent intent = getIntent();
         user = (User) intent.getExtras().getSerializable(KEY_FRIEND);
 
-
+        initToolbar();
         iniComponen();
         chatNode_1 = set.readSetting("myid") + "-" + user.getKey();
         chatNode_2 = user.getKey() + "-" + set.readSetting("myid");
@@ -118,7 +117,14 @@ public class ActivityChatDetails extends AppCompatActivity {
         }
     }
 
-
+    public void initToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle(user.getUsername());
+    }
 
     public void bindView() {
         try {

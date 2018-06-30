@@ -1,9 +1,11 @@
 package com.example.nanodg.tambalban;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,7 +23,7 @@ public class PnlAdminActivity extends AppCompatActivity implements View.OnClickL
     CardView btntambah,btntambal,btnuser,btnaduan,btnlogout;
     FirebaseAuth firebaseAuth;
     TextView tvslmt;
-
+    private ActionBar actionBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +35,7 @@ public class PnlAdminActivity extends AppCompatActivity implements View.OnClickL
         btnaduan = (CardView) findViewById(R.id.btnaduan);
         btnlogout = (CardView) findViewById(R.id.btnlogout);
         tvslmt = (TextView) findViewById(R.id.tvslmt);
-
+        initToolbar();
         btnlogout.setOnClickListener(this);
         btnaduan.setOnClickListener(this);
         btnuser.setOnClickListener(this);
@@ -72,6 +74,16 @@ public class PnlAdminActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
+
+    public void initToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("Panel Admin");
+    }
+
     @Override
     public void onClick(View view) {
 

@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -51,7 +53,7 @@ public class AduanActivity extends AppCompatActivity implements View.OnClickList
     public String status = "0";
     ProgressBar progressBar;
     private DatabaseReference database;
-
+    private ActionBar actionBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +78,7 @@ public class AduanActivity extends AppCompatActivity implements View.OnClickList
         upload.setOnClickListener(this);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AduanActivity.this, R.layout.simple_kategori,R.id.test, jeniskategori);
         kategori.setAdapter(adapter);
-
+        initToolbar();
         kategori.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -134,6 +136,15 @@ public class AduanActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
+    }
+
+    public void initToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("Aduan");
     }
 
     public String getCurrentDate(){

@@ -15,8 +15,10 @@ import android.location.LocationProvider;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -88,7 +90,7 @@ public class EditTambalActivity extends AppCompatActivity implements OnMapReadyC
     Switch sw_verif;
 
     FirebaseAuth firebaseAuth;
-
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,12 @@ public class EditTambalActivity extends AppCompatActivity implements OnMapReadyC
         simpan = (Button) findViewById(R.id.simpan);
         final Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("Edit Tambal Ban");
 
         /**
          * Jam Operasional
