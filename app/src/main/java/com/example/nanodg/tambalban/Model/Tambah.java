@@ -28,6 +28,7 @@ public class Tambah implements Serializable{
     public String status;
     public String verif;
     public String info;
+    public String alat;
     public String key;
 
     public Tambah(){
@@ -140,6 +141,12 @@ public class Tambah implements Serializable{
     public void setInfo(String info){
         this.info = info;
     }
+    public String getAlat() {
+        return alat;
+    }
+    public void setAlat(String alat){
+        this.alat = alat;
+    }
 
     @Override
     public String toString(){
@@ -159,10 +166,11 @@ public class Tambah implements Serializable{
                 " "+pemilik+"\n" +
                 " "+status+"\n" +
                 " "+verif+"\n" +
-                " "+info;
+                " "+info+"\n" +
+                " "+alat;
     }
 
-    public Tambah(String pm, String nm, String n, String bk, String tp, String bn, String kn, String al, double la, double lo, String ft1, String ft2, String ft3, String pml, String sts, String vf, String in){
+    public Tambah(String pm, String nm, String n, String bk, String tp, String bn, String kn, String al, double la, double lo, String ft1, String ft2, String ft3, String pml, String sts, String vf, String in,String at){
         pembuat = pm;
         nama = nm;
         no = n;
@@ -180,5 +188,6 @@ public class Tambah implements Serializable{
         status = sts;
         verif = vf;
         info = in;
+        alat=at;
     }
 }

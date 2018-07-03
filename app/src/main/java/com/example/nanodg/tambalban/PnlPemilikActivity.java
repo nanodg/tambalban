@@ -89,6 +89,14 @@ public class PnlPemilikActivity extends AppCompatActivity implements View.OnClic
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("Panel Pemilik");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
     }
 
     @Override

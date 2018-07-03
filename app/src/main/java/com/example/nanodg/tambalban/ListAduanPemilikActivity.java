@@ -46,6 +46,14 @@ public class ListAduanPemilikActivity extends AppCompatActivity{
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("Aduan");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
         final Aduan aduan = (Aduan) getIntent().getSerializableExtra("data");
         if (aduan != null) {
             edemail.setText(aduan.getPembuat());

@@ -124,6 +124,14 @@ public class ActivityChatDetails extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle(user.getUsername());
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
     }
 
     public void bindView() {

@@ -385,7 +385,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         daftarTambal.add(tambah);
                         final Object row = (Object) tambah.getNama();
-
 //                    Log.e("Data snapshot","barang1"+daftarTambal);
                         LatLng location = new LatLng(tambah.getLat(), tambah.getLongt());
                         lokMarker.setLatitude(tambah.getLat());

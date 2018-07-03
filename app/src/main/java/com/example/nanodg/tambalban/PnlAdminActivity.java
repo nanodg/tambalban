@@ -82,6 +82,14 @@ public class PnlAdminActivity extends AppCompatActivity implements View.OnClickL
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("Panel Admin");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
     }
 
     @Override

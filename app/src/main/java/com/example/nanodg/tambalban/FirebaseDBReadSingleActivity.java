@@ -58,6 +58,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.text.TextUtils.isEmpty;
+
 
 /**
  * Created by Hafizh Herdi on 10/15/2017.
@@ -76,16 +78,17 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
     Marker mCurrentPosition = null;
     ScrollView mScrollView;
     String hasil,verif;
-    ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil;
+    ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil,stbuka,sttutup;
     ImageButton bttlpn,btsms;
     private ActionBar actionBar;
+    double lng,laat;
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
 
 
     private TextView tvStartAddress, tvEndAddress, tvDuration, tvDistance;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dtltambal);
         final ProgressDialog loading = ProgressDialog.show(this, "Mengambil data", "Tunggu Sebentar...", false, false);
@@ -103,6 +106,8 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
         tvtubles = (TextView) findViewById(R.id.tvtubles);
         tvmotor = (TextView) findViewById(R.id.tvmotor);
         tvmobil = (TextView) findViewById(R.id.tvmobil);
+        stbuka = (ImageView) findViewById(R.id.stbuka);
+        sttutup= (ImageView) findViewById(R.id.sttutup);
         tvverif = (TextView) findViewById(R.id.tvverif);
         bttlpn = (ImageButton) findViewById(R.id.tlpn);
         btsms = (ImageButton) findViewById(R.id.sms);
@@ -119,9 +124,17 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("Tambal Ban");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
 
-        lat.setText("-7.248651474442163");
-        lon.setText("112.62898944318295");
+            }
+        });
+
+//        lat.setText("-7.248651474442163");
+//        lon.setText("112.62898944318295");
 
 
         Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
@@ -136,6 +149,9 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
             alamat.setText(tambah.getAlamat());
             lat.setText(Double.toString(tambah.getLat()));
             lon.setText(Double.toString(tambah.getLongt()));
+            if(lat.getText() != null && lon.getText() !=null){
+                actionRoute(laat,lng);
+            }
             uri1.setText(tambah.getFoto1());
             uri2.setText(tambah.getFoto2());
             uri3.setText(tambah.getFoto3());
@@ -175,6 +191,12 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
                 tvmotor.setVisibility(View.VISIBLE);
                 imgmobil.setVisibility(View.VISIBLE);
                 tvmobil.setVisibility(View.VISIBLE);
+            }if(tambah.getStatus().equals("1")){
+                stbuka.setVisibility(View.VISIBLE);
+                sttutup.setVisibility(View.GONE);
+            }if(tambah.getStatus().equals("0")){
+                stbuka.setVisibility(View.GONE);
+                sttutup.setVisibility(View.VISIBLE);
             }
             //coba(la1,lo2);
 
@@ -210,11 +232,11 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
                 @Override
                 public void onClick(View view) {
                     String phoneNo = tlp.getText().toString();
-                    if (!TextUtils.isEmpty(phoneNo)) {
+                    if (isEmpty(tlp.getText().toString())) {
+                        Toast.makeText(FirebaseDBReadSingleActivity.this, "Tidak Dapat Melakukan Panggilan", Toast.LENGTH_SHORT).show();
+                    } else {
                         String dial = "tel:" + phoneNo;
                         startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
-                    } else {
-                        Toast.makeText(FirebaseDBReadSingleActivity.this, "Enter a phone number", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -224,7 +246,9 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
                 public void onClick(View view) {
                     //String message = messagetEt.getText().toString();
                     String phoneNo = tlp.getText().toString();
-                    if (!TextUtils.isEmpty(phoneNo)) {
+                    if (isEmpty(tlp.getText().toString())) {
+                        Toast.makeText(FirebaseDBReadSingleActivity.this, "Tidak Dapat Melakukan Sms", Toast.LENGTH_SHORT).show();
+                    }else{
                         Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNo));
                         smsIntent.putExtra("sms_body", "");
                         startActivity(smsIntent);
@@ -287,10 +311,17 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
                 if (response.isSuccessful()){
                     // tampung response ke variable
                     ReponseRoute dataDirection = response.body();
+                    LegsItem dataLegs = null;
 
-                    LegsItem dataLegs = dataDirection.getRoutes().get(0).getLegs().get(0);
-                    //Log.e("Data snapshot","barang4"+dataLegs);
-                    // Dapatkan garis polyline
+                    try {
+                        dataLegs = dataDirection.getRoutes().get(0).getLegs().get(0);
+                    }catch (Exception e) {
+                        Log.d("Data snapshot", "barang3" + e.toString());
+                    }
+                    Log.e("Data snapshot", "barang4" + dataLegs);
+                    if (dataLegs == null){
+                        return;
+                    }
                     String polylinePoint = dataDirection.getRoutes().get(0).getOverviewPolyline().getPoints();
                     // Decode
                     List<LatLng> decodePath = PolyUtil.decode(polylinePoint);
@@ -307,11 +338,11 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
                     Duration dataDuration = dataLegs.getDuration();
 
                     // Set Nilai Ke Widget
-                    tvStartAddress.setText("start location : " + dataLegs.getStartAddress().toString());
-                    tvEndAddress.setText("end location : " + dataLegs.getEndAddress().toString());
+                    tvStartAddress.setText("Lokasi Awal : " + dataLegs.getStartAddress().toString());
+                    tvEndAddress.setText("Lokasi Tujuan : " + dataLegs.getEndAddress().toString());
 
-                    tvDistance.setText("distance : " + dataDistance.getText() + " (" + dataDistance.getValue() + ")");
-                    tvDuration.setText("duration : " + dataDuration.getText() + " (" + dataDuration.getValue() + ")");
+                    tvDistance.setText("Jarak : " + dataDistance.getText() + " (" + dataDistance.getValue() + ")");
+                    tvDuration.setText("Waktu : " + dataDuration.getText() + " (" + dataDuration.getValue() + ")");
                     /** START
                      * Logic untuk membuat layar berada ditengah2 dua koordinat
                      */
@@ -405,12 +436,8 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
     private void updateWithNewLocation(Location location) {
 
         if (location != null && provider != null) {
-            double lng = location.getLongitude();
-            double laat = location.getLatitude();
-
-            //addBoundaryToCurrentPosition(lat, lng);
-            actionRoute(laat,lng);
-
+           lng = location.getLongitude();
+            laat = location.getLatitude();
             CameraPosition camPosition = new CameraPosition.Builder()
                     .target(new LatLng(laat, lng)).zoom(15f).build();
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,14 +12,30 @@
         layout="@layout/toolbar" />
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="155dp"
         app:cardBackgroundColor="#232325"
         android:id="@+id/cardView"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:layout_toEndOf="@+id/tambah">
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="155dp">
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pelepas Ban Otomatis"
+                android:textColor="#ffff"
+                android:visibility="gone"
+                android:layout_marginLeft="16dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tampil"
+                android:layout_marginRight="8dp"
+                app:layout_constraintHorizontal_bias="0.947"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
             <TextView
                 android:id="@+id/jenisban"
@@ -27,62 +44,84 @@
                 android:text="Jenis Ban :"
                 android:textColor="#ffff"
                 android:textSize="16dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/spinner" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="24dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
 
             <TextView
                 android:id="@+id/jeniskendaraan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/jenisban"
-                android:layout_alignBottom="@+id/jenisban"
-                android:layout_alignStart="@+id/spinner2"
                 android:text="Jenis Kendaraan :"
                 android:textColor="#ffff"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="5dp"
+                app:layout_constraintLeft_toRightOf="@+id/jenisban"
+                android:layout_marginLeft="97dp"
+                android:layout_marginRight="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_bias="0.214" />
 
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/jenisban"
-                android:layout_marginStart="18dp"
                 android:visibility="visible"
-                />
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/jenisban"
+                android:layout_marginLeft="24dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
 
             <Spinner
                 android:id="@+id/spinner2"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignTop="@+id/spinner"
-                android:layout_marginEnd="21dp"
                 android:visibility="visible"
-               />
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/jeniskendaraan"
+                app:layout_constraintLeft_toRightOf="@+id/spinner"
+                android:layout_marginLeft="23dp"
+                android:layout_marginRight="24dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_bias="0.923" />
+            <SeekBar
+                android:id="@+id/radius"
+                android:layout_width="166dp"
+                android:layout_height="wrap_content"
+                android:max="3000"
+                android:backgroundTint="#ffff"
+                android:progressBackgroundTint="#ffff"
+                android:progressTint="@color/colorPrimary"
+                android:layout_marginTop="4dp"
+                app:layout_constraintTop_toBottomOf="@+id/spinner"
+                app:layout_constraintLeft_toRightOf="@+id/textView7"
+                android:layout_marginLeft="8dp" />
 
             <Button
                 android:id="@+id/tampil"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_width="70dp"
+                android:layout_height="36dp"
                 android:text="Cari"
                 android:background="@drawable/bg_rectangle_button"
                 android:textColor="#fff"
-                android:layout_alignTop="@+id/numradius"
-                android:layout_alignEnd="@+id/spinner2" />
+                android:layout_marginRight="24dp"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/numradius" />
 
-            <SeekBar
-                android:id="@+id/radius"
+            <TextView
+                android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/spinner"
-                android:layout_marginTop="9dp"
-                android:max="3000"
-                android:layout_alignStart="@+id/spinner"
-                android:layout_toStartOf="@+id/numradius"
-                 android:backgroundTint="#ffff"
-                android:progressBackgroundTint="#ffff"
-                android:progressTint="@color/colorPrimary" />
+                android:text="Radius"
+                android:textColor="#ffff"
+                android:layout_marginLeft="24dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,9 +129,24 @@
                 android:textColor="#ffff"
                 android:text="0"
                 android:textSize="16dp"
-                android:layout_alignTop="@+id/radius"
-                android:layout_toStartOf="@+id/tampil" />
-        </RelativeLayout>
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/spinner2"
+                app:layout_constraintLeft_toRightOf="@+id/radius"
+                android:layout_marginLeft="8dp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meter"
+                android:textColor="#ffff"
+                android:layout_marginRight="24dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/numradius"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
     <fragment

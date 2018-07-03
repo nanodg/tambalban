@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -14,11 +16,14 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -36,7 +41,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.CheckBox;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import android.widget.Toast;
 
@@ -73,11 +81,15 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
     private static final int PICK_IMAGE_REQUEST1 = 234;
     private static final int PICK_IMAGE_REQUEST2 = 235;
     private static final int PICK_IMAGE_REQUEST3 = 236;
-    Uri filePath1,filePath2,filePath3;
-    String FileName1,FileName2,FileName3;
+    private static final int PICK_FROM_CAMERA = 1;
+    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    private String mCurrentPhotoPath;
+    Uri filePath1,filePath2,filePath3,file;
+    String FileName1,FileName2,FileName3,file1;
     private ActionBar actionBar;
     EditText pembuat, nama, no, alamat,image1,image2,image3,edinfo;
-    TextView tvjambuka, tvjamtutup, lat, longt, useremail,uri1,uri2,uri3,hsl1,hsl2,proses1,proses2,proses3,pemilik,hsl3,verif,tvsts;
+    TextView tvjambuka, tvjamtutup, lat, longt, useremail,uri1,uri2,uri3,hsl1,hsl2,proses1,proses2,proses3,pemilik,hsl3,hsl4,verif,tvsts;
     Button btbuka, bttutup, btlogout,simpan;
     TimePickerDialog timePickerDialog1,timePickerDialog2;
     CheckBox biasa, tubles, Motor, Mobil;
@@ -91,7 +103,7 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
     String provider = null;
     Marker mCurrentPosition = null;
     ScrollView mScrollView;
-    Switch status;
+    Switch status,alat;
 
     FirebaseAuth firebaseAuth;
 
@@ -111,7 +123,9 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
         edinfo = (EditText) findViewById(R.id.edinfo);
         pemilik = (TextView) findViewById(R.id.tvpemilik);
         status = (Switch) findViewById(R.id.status);
+        alat = (Switch) findViewById(R.id.alat);
         hsl3 = (TextView) findViewById(R.id.hsl3);
+        hsl4 = (TextView) findViewById(R.id.hsl4);
         verif = (TextView) findViewById(R.id.tvverif);
         tvsts = (TextView) findViewById(R.id.tvsts);
         // mengambil referensi ke Firebase Database
@@ -124,6 +138,14 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("Tambah Tambal Ban");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
 
         /**
          * Jam Operasional
@@ -294,6 +316,7 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
             verif.setText(tambah.getVerif());
             edinfo.setText(tambah.getInfo());
             hsl3.setText(tambah.getStatus());
+            hsl4.setText(tambah.getAlat());
             simpan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -312,6 +335,7 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
                     tambah.setVerif(verif.getText().toString());
                     tambah.setInfo(edinfo.getText().toString());
                     tambah.setStatus(hsl3.getText().toString());
+                    tambah.setAlat(hsl4.getText().toString());
 
 
                     updateTambah(tambah);
@@ -321,7 +345,7 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
             simpan.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (isEmpty(nama.getText().toString()) && isEmpty(no.getText().toString())
+                    if (isEmpty(nama.getText().toString())
                             && isEmpty(alamat.getText().toString()) && isEmpty(lat.getText().toString())
                             && isEmpty(hsl1.getText().toString()) && isEmpty(hsl2.getText().toString())
                             && isEmpty(longt.getText().toString()) && isEmpty(uri1.getText().toString())
@@ -329,7 +353,7 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
                             && isEmpty(pemilik.getText().toString()) && isEmpty(verif.getText().toString())) {
                         TastyToast.makeText(getApplicationContext(), "Semua Data Harus diIsi", TastyToast.LENGTH_LONG, TastyToast.WARNING);
                     } else if (!isEmpty(pembuat.getText().toString()) && !isEmpty(nama.getText().toString())
-                            && !isEmpty(no.getText().toString()) && !isEmpty(tvjambuka.getText().toString())
+                            && !isEmpty(tvjambuka.getText().toString())
                             && !isEmpty(tvjamtutup.getText().toString()) && !isEmpty(hsl1.getText().toString())
                             && !isEmpty(hsl2.getText().toString()) && !isEmpty(alamat.getText().toString())
                             && !isEmpty(lat.getText().toString()) && !isEmpty(longt.getText().toString())
@@ -341,7 +365,7 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
                                 hsl2.getText().toString(), alamat.getText().toString(),
                                 Double.parseDouble(lat.getText().toString().trim()), Double.parseDouble(longt.getText().toString().trim()),
                                 uri1.getText().toString(), uri2.getText().toString(), uri3.getText().toString(),
-                                pemilik.getText().toString(), hsl3.getText().toString(), verif.getText().toString(), edinfo.getText().toString()));
+                                pemilik.getText().toString(), hsl3.getText().toString(), verif.getText().toString(), edinfo.getText().toString(),hsl4.getText().toString()));
                     else
                         TastyToast.makeText(getApplicationContext(), "Semua Data Harus diIsi2", TastyToast.LENGTH_LONG, TastyToast.WARNING);
 
@@ -363,6 +387,19 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
                 }
                 else {
                     hsl3.setText("0");
+
+                }
+            }
+        });
+        alat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(alat.isChecked()) {
+                    hsl4.setText("1");
+                }
+                else {
+                    hsl4.setText("0");
 
                 }
             }
@@ -393,6 +430,12 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
         }
         if(hsl3.getText().equals("0")){
             status.setChecked(false);
+        }
+        if(hsl4.getText().equals("1")){
+            alat.setChecked(true);
+        }
+        if(hsl4.getText().equals("0")){
+            alat.setChecked(false);
         }
     }
 
@@ -475,24 +518,100 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
      */
     //method to show file chooser
     private void showFileChooser1() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST1);
+        final CharSequence[] options = { "Ambil Dari Kamera", "Ambil Dari Gallery","Batal" };
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(TambahActivity.this);
+        alertDialog.setTitle("Pilih");
+
+        alertDialog.setItems(options, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int which) {
+                if (which == 0) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    filePath1 = Uri.fromFile(getOutputMediaFile());
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, filePath1);
+                    // start the image capture Intent
+                    startActivityForResult(intent, 100);
+                }
+                if (which == 1){
+                    //Select from Gallery
+                    Intent intent2 = new Intent();
+                    intent2.setType("image/*");
+                    intent2.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent2, "Select Picture"), PICK_IMAGE_REQUEST1);
+                }
+
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.show();
     }
     private void showFileChooser2() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST2);
+        final CharSequence[] options = { "Ambil Dari Kamera", "Ambil Dari Gallery","Batal" };
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(TambahActivity.this);
+        alertDialog.setTitle("Pilih");
+
+        alertDialog.setItems(options, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int which) {
+                if (which == 0) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    filePath2 = Uri.fromFile(getOutputMediaFile());
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, filePath2);
+                    // start the image capture Intent
+                    startActivityForResult(intent, 101);
+                }
+                if (which == 1){
+                    //Select from Gallery
+                    Intent intent2 = new Intent();
+                    intent2.setType("image/*");
+                    intent2.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent2, "Select Picture"), PICK_IMAGE_REQUEST2);
+                }
+
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.show();
     }
     private void showFileChooser3() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST3);
-    }
+        final CharSequence[] options = { "Ambil Dari Kamera", "Ambil Dari Gallery","Batal" };
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(TambahActivity.this);
+        alertDialog.setTitle("Pilih");
 
+        alertDialog.setItems(options, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int which) {
+                if (which == 0) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    filePath3 = Uri.fromFile(getOutputMediaFile());
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, filePath3);
+                    // start the image capture Intent
+                    startActivityForResult(intent, 102);
+                }
+                if (which == 1){
+                    //Select from Gallery
+                    Intent intent2 = new Intent();
+                    intent2.setType("image/*");
+                    intent2.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent2, "Select Picture"), PICK_IMAGE_REQUEST3);
+                }
+
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.show();
+    }
+    private static File getOutputMediaFile(){
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "CameraDemo");
+
+        if (!mediaStorageDir.exists()){
+            if (!mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
+    }
     //handling the image chooser activity result
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -504,12 +623,27 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
             image1.setText(FileName1);
             uploadFile1();
         }
+       if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
+//                FileName1= data.getData().getLastPathSegment();
+//                image1.setText(FileName1);
+                FileName1 = filePath1.getLastPathSegment();
+                uploadFile1();
+            }
+        }
 
         if (requestCode == PICK_IMAGE_REQUEST2 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath2 = data.getData();
             FileName2 = data.getData().getLastPathSegment();
             image2.setText(FileName2);
             uploadFile2();
+        }if (requestCode == 101) {
+            if (resultCode == RESULT_OK) {
+//                FileName1= data.getData().getLastPathSegment();
+//                image1.setText(FileName1);
+                FileName2 = filePath2.getLastPathSegment();
+                uploadFile2();
+            }
         }
         if (requestCode == PICK_IMAGE_REQUEST3 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath3 = data.getData();
@@ -517,6 +651,14 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
             image3.setText(FileName3);
             uploadFile3();
 
+        }
+        if (requestCode == 102) {
+            if (resultCode == RESULT_OK) {
+//                FileName1= data.getData().getLastPathSegment();
+//                image1.setText(FileName1);
+                FileName3 = filePath3.getLastPathSegment();
+                uploadFile3();
+            }
         }
 
         //if there is not any file
@@ -544,7 +686,7 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
                             image1.setText(FileName1);
 
                             //and displaying a success toast
-                            Toast.makeText(getApplicationContext(), "File Uploaded 1", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Foto 1 Terupload", Toast.LENGTH_LONG).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -587,7 +729,7 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
                             image2.setText(FileName2);
 
                             //and displaying a success toast
-                            Toast.makeText(getApplicationContext(), "File Uploaded 2 ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Foto 2 Terupload", Toast.LENGTH_LONG).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -629,7 +771,7 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
                             image3.setText(FileName3);
 
                             //and displaying a success toast
-                            Toast.makeText(getApplicationContext(), "File Uploaded 3 ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Foto 3 Terupload", Toast.LENGTH_LONG).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

@@ -4,8 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.nanodg.tambalban.DtlImgActivity">
-
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
     <com.example.nanodg.tambalban.ir.apend.slider.ui.Slider
         android:id="@+id/slider"
         android:layout_width="match_parent"

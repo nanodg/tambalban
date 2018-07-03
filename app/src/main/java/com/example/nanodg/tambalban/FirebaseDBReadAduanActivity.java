@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.nanodg.tambalban.Adapter.AdapterAduanPemilikRecyclerView;
@@ -58,6 +59,14 @@ public class FirebaseDBReadAduanActivity extends AppCompatActivity implements Ad
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("List Aduan");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
         /**
          * FIREBASE LOGIN
          */

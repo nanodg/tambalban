@@ -75,6 +75,14 @@ public class ListTambalActivity extends AppCompatActivity implements AdapterTamb
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("List Tambal Ban");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
         cari.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

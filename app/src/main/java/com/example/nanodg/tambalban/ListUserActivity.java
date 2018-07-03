@@ -58,6 +58,14 @@ public class ListUserActivity extends AppCompatActivity implements AdapterUserRe
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("List Data User");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
         cari.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){

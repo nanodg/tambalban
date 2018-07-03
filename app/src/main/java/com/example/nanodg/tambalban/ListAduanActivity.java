@@ -51,6 +51,14 @@ public class ListAduanActivity extends AppCompatActivity implements AdapterAduan
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("List Aduan");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
 
         rvView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);

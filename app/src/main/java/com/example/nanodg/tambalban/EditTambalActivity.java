@@ -121,6 +121,14 @@ public class EditTambalActivity extends AppCompatActivity implements OnMapReadyC
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("Edit Tambal Ban");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
 
         /**
          * Jam Operasional

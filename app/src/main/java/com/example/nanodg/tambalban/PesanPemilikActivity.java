@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.example.nanodg.tambalban.R;
 import com.example.nanodg.tambalban.Fragment.ChatsFragment;
@@ -23,6 +24,14 @@ public class PesanPemilikActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setTitle("Pesan");
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
     }
     private void initComponent() {
         FragmentManager fragmentManager = getSupportFragmentManager();

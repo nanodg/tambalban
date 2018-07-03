@@ -67,15 +67,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
+import static android.text.TextUtils.isEmpty;
 
 
 public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener,View.OnClickListener  {
 
 //    private Button bttlpn,btsms;
     public static final String DATA = "com.example.nanodg.tambalban";
-    TextView nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,tvbiasa,tvtubles,tvmotor,tvmobil,tvverif,hsl3,status,status1;
-    EditText lat,lon,info;
+    TextView nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,tvbiasa,tvtubles,tvmotor,tvmobil,tvverif,hsl3,status,status1,info,alat;
+    EditText lat,lon;
     private TextView uri1,uri2,uri3;
     private Slider slider;
     private GoogleMap mMap;
@@ -88,7 +88,6 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil,stbuka,sttutup;
     ImageButton bttlpn,btsms;
     Button aduan,chat;
-    public boolean isfirebase=false;
     private ActionBar actionBar;
     double lng,laat;
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
@@ -109,7 +108,8 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         lat = (EditText) findViewById(R.id.et_lat);
         aduan = (Button) findViewById(R.id.aduan);
         chat = (Button) findViewById(R.id.chat);
-        info = (EditText) findViewById(R.id.info);
+        alat = (TextView) findViewById(R.id.alat);
+        info = (TextView) findViewById(R.id.info);
         lon = (EditText) findViewById(R.id.et_long);
         uri1 = (TextView) findViewById(R.id.uri1);
         uri2 = (TextView) findViewById(R.id.uri2);
@@ -164,6 +164,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
                         lat.setText(Double.toString(tambah.getLat()));
                         lon.setText(Double.toString(tambah.getLongt()));
+
                         if(lat.getText() != null && lon.getText() !=null){
                             actionRoute(laat,lng);
                         }
@@ -223,6 +224,11 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                         if(tambah.getPemilik().equals("0")){
                             chat.setVisibility(View.GONE);
                         }
+                        if(tambah.getAlat().equals("1")){
+                            alat.setText("Otomatis");
+                        }if(tambah.getAlat().equals("0")){
+                            alat.setText("Manual");
+                        }
                         final List<Slide> slideList = new ArrayList<>();
                         final ArrayList<Slide> imageList = new ArrayList<>();
                         imageList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
@@ -255,11 +261,11 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                             @Override
                             public void onClick(View view) {
                                 String phoneNo = tlp.getText().toString();
-                                if(!TextUtils.isEmpty(phoneNo)) {
+                                if (isEmpty(tlp.getText().toString())) {
+                                    Toast.makeText(DtltambalActivity.this, "Tidak Dapat Melakukan Panggilan", Toast.LENGTH_SHORT).show();
+                                } else {
                                     String dial = "tel:" + phoneNo;
                                     startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
-                                }else {
-                                    Toast.makeText(DtltambalActivity.this, "Enter a phone number", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -269,7 +275,9 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                             public void onClick(View view) {
                                 //String message = messagetEt.getText().toString();
                                 String phoneNo = tlp.getText().toString();
-                                if(!TextUtils.isEmpty(phoneNo)) {
+                                if (isEmpty(tlp.getText().toString())) {
+                                    Toast.makeText(DtltambalActivity.this, "Tidak Dapat Melakukan Sms", Toast.LENGTH_SHORT).show();
+                                }else{
                                     Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNo));
                                     smsIntent.putExtra("sms_body", "");
                                     startActivity(smsIntent);
@@ -319,6 +327,15 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
+
     }
     private void widgetInit() {
         tvStartAddress = (TextView)findViewById(R.id.tvStartAddress);
