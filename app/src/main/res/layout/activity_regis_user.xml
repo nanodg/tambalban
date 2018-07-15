@@ -80,6 +80,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvpemilik"
         android:text="0"
+        android:visibility="gone"
         android:textColor="#ffff"/>
     <Button
         android:layout_width="match_parent"

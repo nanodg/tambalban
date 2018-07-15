@@ -49,7 +49,8 @@
         <activity android:name=".PesanPemilikActivity" />
         <activity android:name=".ActivityChatDetails" />
         <activity android:name=".ActivitySelectFriend" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
@@ -57,7 +58,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".MyFirebaseInstanceIdService"
             android:exported="false">
@@ -65,6 +65,8 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".Bantuan"></activity>
     </application>
 
 </manifest>

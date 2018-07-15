@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -78,6 +79,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Marker marker;
     int markerIndex = 0;
     int position = 0 ;
+   public double lng,lat;
+    public ProgressBar progressBar;
     Button tambah,tampil;
     public float jarak=0;
     TextView ban,kendaraan,numradius;
@@ -116,7 +119,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         radius = (SeekBar)findViewById(R.id.radius);
         numradius = (TextView)findViewById(R.id.numradius);
         initToolbar();
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
 
+        progressBar.setVisibility(View.GONE);
         radius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -150,8 +155,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 // kelas yang akan dijalankan ketika tombol Create/Insert Data diklik
                 //refreshmap();
+                progressBar.setVisibility(View.VISIBLE);
                 lingkaran = Float.valueOf(numradius.getText().toString());
-                updateWithNewLocation(location);
+                refreshmap(lat,lng);
+
             }
         });
 
@@ -263,11 +270,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void updateWithNewLocation(Location location) {
         mMap.clear();
         if (location != null && provider != null) {
-            double lng = location.getLongitude();
-            double lat = location.getLatitude();
+            lng = location.getLongitude();
+            lat = location.getLatitude();
 
             //addBoundaryToCurrentPosition(lat, lng);
-            refreshmap(lat,lng);
+
 
             CameraPosition camPosition = new CameraPosition.Builder()
                     .target(new LatLng(lat, lng)).zoom(getZoomLevel(circle)).build();
@@ -310,6 +317,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (item.getItemId() == R.id.menu_login) {
             view = "login";
             startActivity(LoginUserActivity.getActIntent(MapsActivity.this));
+        }if (item.getItemId() == R.id.menu_help) {
+            view = "bantuan";
+            startActivity(Bantuan.getActIntent(MapsActivity.this));
         }
         return true;
     }
@@ -369,6 +379,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void refreshmap(final double lat, final double lang){
+        progressBar.setVisibility(View.INVISIBLE);
         mMap.clear();
         final DecimalFormat formatDesimal = new DecimalFormat("#.##");
         saatIni.setLatitude(lat);
@@ -430,7 +441,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
+        progressBar.setVisibility(View.INVISIBLE);
         mUserContactsRef.orderByChild("ban").equalTo("3").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -488,7 +499,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-
+        progressBar.setVisibility(View.INVISIBLE);
         mUserContactsRef.orderByChild("ban").equalTo("3").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -543,7 +554,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
+        progressBar.setVisibility(View.INVISIBLE);
         mUserContactsRef.orderByChild("kendaraan").equalTo("3").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {

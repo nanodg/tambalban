@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -21,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,17 +28,21 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.example.nanodg.tambalban.Adapter.AdapterTambalRecyclerView;
 import com.example.nanodg.tambalban.Adapter.WorkaroundMapFragment;
 import com.example.nanodg.tambalban.Model.Tambah;
-import com.example.nanodg.tambalban.network.ApiServices;
-import com.example.nanodg.tambalban.network.InitLibrary;
-import com.example.nanodg.tambalban.response.Distance;
-import com.example.nanodg.tambalban.response.Duration;
-import com.example.nanodg.tambalban.response.LegsItem;
-import com.example.nanodg.tambalban.response.ReponseRoute;
+import com.google.android.gms.maps.GoogleMap;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.nanodg.tambalban.ir.apend.slider.model.Slide;
+import com.example.nanodg.tambalban.ir.apend.slider.ui.Slider;
+import android.graphics.Color;
+
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -47,13 +51,19 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.PolyUtil;
+import com.example.nanodg.tambalban.network.ApiServices;
+import com.example.nanodg.tambalban.network.InitLibrary;
+import com.example.nanodg.tambalban.response.Distance;
+import com.example.nanodg.tambalban.response.Duration;
+import com.example.nanodg.tambalban.response.LegsItem;
+import com.example.nanodg.tambalban.response.ReponseRoute;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.example.nanodg.tambalban.ir.apend.slider.model.Slide;
-import com.example.nanodg.tambalban.ir.apend.slider.ui.Slider;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,27 +71,27 @@ import retrofit2.Response;
 import static android.text.TextUtils.isEmpty;
 
 
-/**
- * Created by Hafizh Herdi on 10/15/2017.
- */
-
-public class FirebaseDBReadSingleActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
+public class FirebaseDBReadSingleActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener,View.OnClickListener  {
 
     //    private Button bttlpn,btsms;
-    TextView nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,tvbiasa,tvtubles,tvmotor,tvmobil,tvverif;
+    public static final String DATA = "com.example.nanodg.tambalban";
+    TextView nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,tvbiasa,tvtubles,tvmotor,tvmobil,tvverif,hsl3,status,status1,info,alat;
     EditText lat,lon;
     private TextView uri1,uri2,uri3;
-    private Slider slider;;
+    private Slider slider;
     private GoogleMap mMap;
+    public String idkey,email;
     LocationManager mLocationManager = null;
     String provider = null;
     Marker mCurrentPosition = null;
     ScrollView mScrollView;
     String hasil,verif;
+
     ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil,stbuka,sttutup;
     ImageButton bttlpn,btsms;
+    Button aduan,chat;
     private ActionBar actionBar;
-    double lng,laat;
+    double lng=0,laat=0;
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
 
 
@@ -91,13 +101,17 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dtltambal);
-        final ProgressDialog loading = ProgressDialog.show(this, "Mengambil data", "Tunggu Sebentar...", false, false);
+
         nama = (TextView) findViewById(R.id.et_namatambal);
         tlp = (TextView) findViewById(R.id.et_nohp);
         jmbuka = (TextView) findViewById(R.id.et_jambuka);
         hsl2 = (TextView) findViewById(R.id.et_hsl2);
         alamat = (TextView) findViewById(R.id.et_alamat);
         lat = (EditText) findViewById(R.id.et_lat);
+        aduan = (Button) findViewById(R.id.aduan);
+        chat = (Button) findViewById(R.id.chat);
+        alat = (TextView) findViewById(R.id.alat);
+        info = (TextView) findViewById(R.id.info);
         lon = (EditText) findViewById(R.id.et_long);
         uri1 = (TextView) findViewById(R.id.uri1);
         uri2 = (TextView) findViewById(R.id.uri2);
@@ -106,9 +120,9 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
         tvtubles = (TextView) findViewById(R.id.tvtubles);
         tvmotor = (TextView) findViewById(R.id.tvmotor);
         tvmobil = (TextView) findViewById(R.id.tvmobil);
+        tvverif = (TextView) findViewById(R.id.tvverif);
         stbuka = (ImageView) findViewById(R.id.stbuka);
         sttutup= (ImageView) findViewById(R.id.sttutup);
-        tvverif = (TextView) findViewById(R.id.tvverif);
         bttlpn = (ImageButton) findViewById(R.id.tlpn);
         btsms = (ImageButton) findViewById(R.id.sms);
         slider = (Slider) findViewById(R.id.slider);
@@ -117,146 +131,176 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
         imgtub = (ImageView) findViewById(R.id.imgtub);
         imgmotor = (ImageView) findViewById(R.id.imgmotor);
         imgmobil = (ImageView) findViewById(R.id.imgmobil);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
-        actionBar.setTitle("Tambal Ban");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                finish();
-                onBackPressed();
-
-            }
-        });
+        initToolbar();
 
 //        lat.setText("-7.248651474442163");
 //        lon.setText("112.62898944318295");
 
+        aduan.setOnClickListener(this);
+        chat.setOnClickListener(this);
 
-        Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
-        if (tambah != null) {
+        //btSubmit.setVisibility(View.GONE);
 
-            nama.setText(tambah.getNama());
-            tlp.setText(tambah.getNo());
-            jmbuka.setText(tambah.getBuka() + " s/d " + (tambah.getTutup()));
-            //jmtutup.setText(tambah.getTutup());
+        //Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
+        Intent intent = getIntent();
+        hasil = intent.getStringExtra(AdapterTambalRecyclerView.DATA);
+        DatabaseReference mUserContactsRef = FirebaseDatabase.getInstance().getReference().child("tambah");
+        mUserContactsRef.orderByChild("nama").equalTo(hasil).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+
+                //Log.e("barang1", dataSnapshot.toString());
+                for (DataSnapshot userContact : dataSnapshot.getChildren()) {
+
+                    Tambah tambah = userContact.getValue(Tambah.class);
+
+                    idkey = userContact.getKey();
+                    nama.setText(tambah.getNama());
+                    email = tambah.getPembuat();
+                    tlp.setText(tambah.getNo());
+                    jmbuka.setText(tambah.getBuka()+" s/d "+(tambah.getTutup()));
+                    //jmtutup.setText(tambah.getTutup());
 //                        hsl1.setText(tambah.getBan());
 //                        hsl2.setText(tambah.getKendaraan());
-            alamat.setText(tambah.getAlamat());
-            lat.setText(Double.toString(tambah.getLat()));
-            lon.setText(Double.toString(tambah.getLongt()));
-            if(lat.getText() != null && lon.getText() !=null){
-                actionRoute(laat,lng);
-            }
-            uri1.setText(tambah.getFoto1());
-            uri2.setText(tambah.getFoto2());
-            uri3.setText(tambah.getFoto3());
-            verif = tambah.getVerif();
-            if (tambah.getVerif().equals("0")) {
-                imgverif.setVisibility(View.GONE);
-                tvverif.setVisibility(View.GONE);
-            }
-            if (tambah.getVerif().equals("1")) {
-                imgverif.setVisibility(View.VISIBLE);
-                tvverif.setVisibility(View.VISIBLE);
-            }
-            if (tambah.getBan().equals("1")) {
-                imgtub.setVisibility(View.GONE);
-                tvtubles.setVisibility(View.GONE);
-            }
-            if (tambah.getBan().equals("2")) {
-                imgbiasa.setVisibility(View.GONE);
-                tvbiasa.setVisibility(View.GONE);
-            }
-            if (tambah.getBan().equals("3")) {
-                imgbiasa.setVisibility(View.VISIBLE);
-                tvbiasa.setVisibility(View.VISIBLE);
-                imgtub.setVisibility(View.VISIBLE);
-                tvtubles.setVisibility(View.VISIBLE);
-            }
-            if (tambah.getKendaraan().equals("1")) {
-                imgmobil.setVisibility(View.GONE);
-                tvmobil.setVisibility(View.GONE);
-            }
-            if (tambah.getKendaraan().equals("2")) {
-                imgmotor.setVisibility(View.GONE);
-                tvmotor.setVisibility(View.GONE);
-            }
-            if (tambah.getKendaraan().equals("3")) {
-                imgmotor.setVisibility(View.VISIBLE);
-                tvmotor.setVisibility(View.VISIBLE);
-                imgmobil.setVisibility(View.VISIBLE);
-                tvmobil.setVisibility(View.VISIBLE);
-            }if(tambah.getStatus().equals("1")){
-                stbuka.setVisibility(View.VISIBLE);
-                sttutup.setVisibility(View.GONE);
-            }if(tambah.getStatus().equals("0")){
-                stbuka.setVisibility(View.GONE);
-                sttutup.setVisibility(View.VISIBLE);
-            }
-            //coba(la1,lo2);
+                    alamat.setText(tambah.getAlamat());
 
-            final List<Slide> slideList = new ArrayList<>();
-            final ArrayList<Slide> imageList = new ArrayList<>();
-            imageList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-            imageList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-            imageList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    lat.setText(Double.toString(tambah.getLat()));
+                    lon.setText(Double.toString(tambah.getLongt()));
 
-            slideList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-            slideList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-            slideList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    if(lat.getText() != null && lon.getText() !=null){
+                        actionRoute(laat,lng);
 
-            slider.setItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    //do what you want
-                    Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
-
-                    Intent intent = new Intent(FirebaseDBReadSingleActivity.this,
-                            DtlImgActivity.class);
-                    intent.putExtra(DtlImgActivity.IMAGE_LIST,
-                            imageList);
-                    intent.putExtra(DtlImgActivity.CURRENT_ITEM, 3);
-                    startActivity(intent);
-
-                }
-            });
-            slider.addSlides(slideList);
-
-            //TLPN
-            bttlpn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String phoneNo = tlp.getText().toString();
-                    if (isEmpty(tlp.getText().toString())) {
-                        Toast.makeText(FirebaseDBReadSingleActivity.this, "Tidak Dapat Melakukan Panggilan", Toast.LENGTH_SHORT).show();
-                    } else {
-                        String dial = "tel:" + phoneNo;
-                        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
                     }
-                }
-            });
-            //SMS
-            btsms.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //String message = messagetEt.getText().toString();
-                    String phoneNo = tlp.getText().toString();
-                    if (isEmpty(tlp.getText().toString())) {
-                        Toast.makeText(FirebaseDBReadSingleActivity.this, "Tidak Dapat Melakukan Sms", Toast.LENGTH_SHORT).show();
-                    }else{
-                        Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNo));
-                        smsIntent.putExtra("sms_body", "");
-                        startActivity(smsIntent);
+                    uri1.setText(tambah.getFoto1());
+                    uri2.setText(tambah.getFoto2());
+                    uri3.setText(tambah.getFoto3());
+
+                    verif = tambah.getVerif();
+                    if(tambah.getVerif().equals("0")){
+                        imgverif.setVisibility(View.GONE);
+                        tvverif.setVisibility(View.GONE);
+                    } if(tambah.getVerif().equals("1")) {
+                        imgverif.setVisibility(View.VISIBLE);
+                        tvverif.setVisibility(View.VISIBLE);
+                    }if(tambah.getBan().equals("1")){
+                        imgtub.setVisibility(View.GONE);
+                        tvtubles.setVisibility(View.GONE);
+                        imgbiasa.setVisibility(View.VISIBLE);
+                        tvbiasa.setVisibility(View.VISIBLE);
+                    }if(tambah.getBan().equals("2")){
+                        imgbiasa.setVisibility(View.GONE);
+                        tvbiasa.setVisibility(View.GONE);
+                        imgtub.setVisibility(View.VISIBLE);
+                        tvtubles.setVisibility(View.VISIBLE);
+                    }if(tambah.getBan().equals("3")){
+                        imgbiasa.setVisibility(View.VISIBLE);
+                        tvbiasa.setVisibility(View.VISIBLE);
+                        imgtub.setVisibility(View.VISIBLE);
+                        tvtubles.setVisibility(View.VISIBLE);
+                    }if(tambah.getKendaraan().equals("1")){
+                        imgmobil.setVisibility(View.GONE);
+                        tvmobil.setVisibility(View.GONE);
+                        imgmotor.setVisibility(View.VISIBLE);
+                        tvmotor.setVisibility(View.VISIBLE);
+                    }if(tambah.getKendaraan().equals("2")){
+                        imgmotor.setVisibility(View.GONE);
+                        tvmotor.setVisibility(View.GONE);
+                        imgmobil.setVisibility(View.VISIBLE);
+                        tvmobil.setVisibility(View.VISIBLE);
+                    }if(tambah.getKendaraan().equals("3")){
+                        imgmotor.setVisibility(View.VISIBLE);
+                        tvmotor.setVisibility(View.VISIBLE);
+                        imgmobil.setVisibility(View.VISIBLE);
+                        tvmobil.setVisibility(View.VISIBLE);
+                    }if(tambah.getStatus().equals("1")){
+                        stbuka.setVisibility(View.VISIBLE);
+                        sttutup.setVisibility(View.GONE);
+                    }if(tambah.getStatus().equals("0")){
+                        stbuka.setVisibility(View.GONE);
+                        sttutup.setVisibility(View.VISIBLE);
                     }
+                    info.setText(tambah.getInfo());
+                    //coba(la1,lo2);
+                    if(tambah.getPemilik().equals("1")){
+                        chat.setVisibility(View.VISIBLE);
+                    }
+                    if(tambah.getPemilik().equals("0")){
+                        chat.setVisibility(View.GONE);
+                    }
+                    if(tambah.getAlat().equals("1")){
+                        alat.setText("Otomatis");
+                    }if(tambah.getAlat().equals("0")){
+                        alat.setText("Manual");
+                    }
+                    final List<Slide> slideList = new ArrayList<>();
+                    final ArrayList<Slide> imageList = new ArrayList<>();
+                    imageList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    imageList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    imageList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+
+                    slideList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    slideList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    slideList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+
+                    slider.setItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            //do what you want
+                            Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(FirebaseDBReadSingleActivity.this,
+                                    DtlImgActivity.class);
+                            intent.putExtra(DtlImgActivity.IMAGE_LIST,
+                                    imageList);
+                            intent.putExtra(DtlImgActivity.CURRENT_ITEM, 3);
+                            startActivity(intent);
+
+                        }
+                    });
+                    slider.addSlides(slideList);
+
+                    //TLPN
+                    bttlpn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String phoneNo = tlp.getText().toString();
+                            if (isEmpty(tlp.getText().toString())) {
+                                Toast.makeText(FirebaseDBReadSingleActivity.this, "Tidak Dapat Melakukan Panggilan", Toast.LENGTH_SHORT).show();
+                            } else {
+                                String dial = "tel:" + phoneNo;
+                                startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
+                            }
+                        }
+                    });
+                    //SMS
+                    btsms.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //String message = messagetEt.getText().toString();
+                            String phoneNo = tlp.getText().toString();
+                            if (isEmpty(tlp.getText().toString())) {
+                                Toast.makeText(FirebaseDBReadSingleActivity.this, "Tidak Dapat Melakukan Sms", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNo));
+                                smsIntent.putExtra("sms_body", "");
+                                startActivity(smsIntent);
+                            }
+                        }
+                    });
+
+
+
                 }
-            });
-            loading.dismiss();
-        }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
 
         if (mMap == null) {
             //mMap = ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -275,8 +319,27 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
         }
 
         widgetInit();
+
+
+
     }
 
+    public void initToolbar(){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                finish();
+                onBackPressed();
+
+            }
+        });
+
+    }
     private void widgetInit() {
         tvStartAddress = (TextView)findViewById(R.id.tvStartAddress);
         tvEndAddress =(TextView) findViewById(R.id.tvEndAddress);
@@ -284,30 +347,37 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
         tvDistance = (TextView)findViewById(R.id.tvDistance);
     }
 
+    private void refresh(){
+
+    }
+
     private void actionRoute(double laat, double lang) {
+
+        // progressDialog.dismiss();
         double tujuanlat = Double.parseDouble(lat.getText().toString().trim());
         double tujuanlong = Double.parseDouble(lon.getText().toString().trim());
         final LatLng awal = new LatLng(laat, lang);
         final LatLng tujuan = new LatLng(tujuanlat,tujuanlong);
-        //Log.e("barang23", Double.toString(tujuanlat));
-       // Log.e("barang23",Double.toString(tujuanlong));
+        // Log.e("barang23", Double.toString(tujuanlat));
+        //Log.e("barang23",Double.toString(tujuanlong));
 
         String lokasiAwal = awal.latitude + "," + awal.longitude;
         String lokasiAkhir = tujuan.latitude + "," + tujuan.longitude;
 
-       // Log.e("Data snapshot","barang1"+lokasiAwal);
-       // Log.e("Data snapshot","barang2"+lokasiAkhir);
+        //Log.e("Data snapshot","barang1"+lokasiAwal);
+        //Log.e("Data snapshot","barang2"+lokasiAkhir);
 
         // Panggil Retrofit
         ApiServices api = InitLibrary.getInstance();
         // Siapkan request
         Call<ReponseRoute> routeRequest = api.request_route(lokasiAwal, lokasiAkhir, API_KEY);
         // kirim request
-       // Log.e("Data snapshot","barang3"+routeRequest);
+        //Log.e("Data snapshot","barang3"+routeRequest);
         routeRequest.enqueue(new Callback<ReponseRoute>() {
             @Override
             public void onResponse(Call<ReponseRoute> call, Response<ReponseRoute> response) {
                 mMap.clear();
+
                 if (response.isSuccessful()){
                     // tampung response ke variable
                     ReponseRoute dataDirection = response.body();
@@ -322,6 +392,10 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
                     if (dataLegs == null){
                         return;
                     }
+
+                    //loading.dismiss();
+                    //Log.e("Data snapshot","barang4"+dataLegs);
+                    // Dapatkan garis polyline
                     String polylinePoint = dataDirection.getRoutes().get(0).getOverviewPolyline().getPoints();
                     // Decode
                     List<LatLng> decodePath = PolyUtil.decode(polylinePoint);
@@ -436,7 +510,7 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
     private void updateWithNewLocation(Location location) {
 
         if (location != null && provider != null) {
-           lng = location.getLongitude();
+            lng = location.getLongitude();
             laat = location.getLatitude();
             CameraPosition camPosition = new CameraPosition.Builder()
                     .target(new LatLng(laat, lng)).zoom(15f).build();
@@ -478,7 +552,28 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
         }
     }
 
+    public void onClick(View view) {
+
+        if(view == aduan){
+
+            String id = nama.getText().toString();
+            Intent edit = new Intent(getApplicationContext(), AduanActivity.class);
+            edit.putExtra(DATA, id);
+            startActivity(edit);
+
+        }
+        if(view == chat){
+
+            String email2 = email;
+            Intent edit = new Intent(getApplicationContext(), LoginActivity.class);
+            edit.putExtra(DATA, email2);
+            startActivity(edit);
+
+        }
+
+    }
     public static Intent getActIntent(Activity activity){
         return new Intent(activity, FirebaseDBReadSingleActivity.class);
     }
+
 }

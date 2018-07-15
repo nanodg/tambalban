@@ -10,9 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Created by Bibaswann on 23-06-2017.
- */
+
 
 public class ParseFirebaseData {
     private SettingsAPI set;

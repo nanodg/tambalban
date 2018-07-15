@@ -25,7 +25,7 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="450dp"
                 android:padding="5dp">
 
                 <RelativeLayout
@@ -73,66 +73,70 @@
                         android:textColor="#696969"
                         android:textColorHint="#808080" />
                 </RelativeLayout>
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/jambuka"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rectangle_button2"
+        android:text="Jam Buka"
+        android:textColor="#ffff"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="150dp" />
 
+
+    <Button
+        android:id="@+id/jamtutup"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rectangle_button2"
+        android:text="Jam Tutup"
+        android:textColor="#ffff"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/jambuka"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="150dp" />
+
+
+    <TextView
+        android:id="@+id/tv_jambuka"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="-"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/jambuka"
+        android:layout_marginLeft="55dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_jamtutup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="-"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/jamtutup"
+        android:layout_marginRight="55dp"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>
                 <TableLayout
                     android:id="@+id/tl2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginTop="100dp">
-
-
-                    <TableRow android:layout_width="match_parent">
-
-                        <Button
-                            android:id="@+id/jambuka"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rectangle_button2"
-                            android:text="Jam Buka"
-                            android:textColor="#ffff" />
-
-                        <Button
-                            android:id="@+id/kosong"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Jam Tutup"
-                            android:visibility="invisible" />
-
-                        <Button
-                            android:id="@+id/jamtutup"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rectangle_button2"
-                            android:text="Jam Tutup"
-                            android:textColor="#ffff" />
-                    </TableRow>
-
-                    <TableRow>
-
-                        <TextView
-                            android:id="@+id/tv_jambuka"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="-" />
-
-                        <TextView
-                            android:id="@+id/tv_kosong"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:visibility="invisible" />
-
-                        <TextView
-                            android:id="@+id/tv_jamtutup"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="-" />
-
-                    </TableRow>
-
+                    android:layout_marginTop="150dp"
+                    android:padding="10dp">
 
                     <TableRow>
 
@@ -159,6 +163,7 @@
 
                         <TextView
                             android:id="@+id/hsl1"
+                            android:visibility="invisible"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginRight="30dp"
@@ -202,6 +207,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginRight="30dp"
+                            android:visibility="invisible"
                             android:textSize="15dp" />
 
                         <CheckBox
@@ -230,6 +236,7 @@
                         <TextView
                             android:text=""
                             android:id="@+id/hsl3"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textSize="15dp" />
@@ -251,6 +258,7 @@
                         <TextView
                             android:text=""
                             android:id="@+id/hsl4"
+                            android:visibility="gone"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:textSize="15dp" />
@@ -395,7 +403,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="File Name"
-                        android:visibility="visible" />
+
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/proses1"

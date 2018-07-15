@@ -24,9 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 
 
-/**
- * Created by Hafizh Herdi on 10/8/2017.
- */
+
 
 public class AdapterUserRecyclerView extends RecyclerView.Adapter<AdapterUserRecyclerView.ViewHolder>  {
 
@@ -48,11 +46,7 @@ public class AdapterUserRecyclerView extends RecyclerView.Adapter<AdapterUserRec
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        /**
-         * Inisiasi View
-         * Di tutorial ini kita hanya menggunakan data String untuk tiap item
-         * dan juga view nya hanyalah satu TextView
-         */
+
         TextView tvemail,tvusername,tvstatus;
 
         ViewHolder(View v) {
@@ -89,9 +83,7 @@ public class AdapterUserRecyclerView extends RecyclerView.Adapter<AdapterUserRec
         kontener.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                /**
-                 *  Kodingan untuk tutorial delete dan update data
-                 */
+
                 final Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.dialog_view1);
                 dialog.setTitle("Pilih Aksi");

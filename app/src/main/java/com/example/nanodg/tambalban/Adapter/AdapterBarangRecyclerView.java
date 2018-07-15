@@ -30,9 +30,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-/**
- * Created by Hafizh Herdi on 10/8/2017.
- */
 
 public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBarangRecyclerView.ViewHolder>  {
 
@@ -54,11 +51,7 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        /**
-         * Inisiasi View
-         * Di tutorial ini kita hanya menggunakan data String untuk tiap item
-         * dan juga view nya hanyalah satu TextView
-         */
+
         TextView tvTitle,tvalamat;
 
         ViewHolder(View v) {
@@ -96,9 +89,7 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
         kontener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /**
-                 *  Kodingan untuk tutorial Read detail data
-                 */
+
                 //Log.e("Data snapshot","Fetched Name"+daftarTambah);
                 context.startActivity(FirebaseDBReadSingleActivity.getActIntent((Activity) context).putExtra("data", daftarTambah.get(position)));
             }
@@ -106,9 +97,7 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
         kontener.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                /**
-                 *  Kodingan untuk tutorial delete dan update data
-                 */
+
                 final Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.dialog_view);
                 dialog.setTitle("Pilih Aksi");

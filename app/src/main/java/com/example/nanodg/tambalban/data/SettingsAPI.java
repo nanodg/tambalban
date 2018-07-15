@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Bibaswann on 20-02-2017.
- */
+
 
 public class SettingsAPI {
     Context mContext;

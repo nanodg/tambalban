@@ -90,9 +90,9 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/circlegreen"
+                    android:background="@drawable/circleblue"
                     android:padding="5dp"
-                    android:src="@drawable/ic_add_circle_outline_black_24dp" />
+                    android:src="@drawable/ic_location_on_black_24dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -140,9 +140,9 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/circlegreen"
+                    android:background="@drawable/circlepurple"
                     android:padding="5dp"
-                    android:src="@drawable/ic_add_circle_outline_black_24dp" />
+                    android:src="@drawable/ic_person_black_24dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -179,9 +179,9 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/circlegreen"
+                    android:background="@drawable/circleyello"
                     android:padding="5dp"
-                    android:src="@drawable/ic_add_circle_outline_black_24dp" />
+                    android:src="@drawable/ic_report_black_24dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -229,9 +229,9 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/circlegreen"
+                    android:background="@drawable/circlered"
                     android:padding="5dp"
-                    android:src="@drawable/ic_add_circle_outline_black_24dp" />
+                    android:src="@drawable/ic_remove_circle_outline_black_24dp" />
 
                 <TextView
                     android:layout_width="wrap_content"

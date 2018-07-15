@@ -1,6 +1,7 @@
 package com.example.nanodg.tambalban.Adapter;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.nanodg.tambalban.ListAduanActivity;
+import com.example.nanodg.tambalban.ListAduanPemilikActivity;
 import com.example.nanodg.tambalban.Model.Aduan;
 import com.example.nanodg.tambalban.R;
 import com.google.firebase.database.DatabaseReference;
@@ -19,9 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 
 
-/**
- * Created by Hafizh Herdi on 10/8/2017.
- */
 
 public class AdapterAduanRecyclerView extends RecyclerView.Adapter<AdapterAduanRecyclerView.ViewHolder>  {
 
@@ -43,11 +42,7 @@ public class AdapterAduanRecyclerView extends RecyclerView.Adapter<AdapterAduanR
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        /**
-         * Inisiasi View
-         * Di tutorial ini kita hanya menggunakan data String untuk tiap item
-         * dan juga view nya hanyalah satu TextView
-         */
+
         TextView pembuat,namatambal,kategori;
 
         ViewHolder(View v) {
@@ -80,7 +75,14 @@ public class AdapterAduanRecyclerView extends RecyclerView.Adapter<AdapterAduanR
         final String pembuat = daftarAduan.get(position).getPembuat();
         final String namatambal = daftarAduan.get(position).getNamatambal();
         final String kategori = daftarAduan.get(position).getKategori();
+        kontener.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                //Log.e("Data snapshot","Fetched Name"+daftarTambah);
+                context.startActivity(ListAduanPemilikActivity.getActIntent((Activity) context).putExtra("data", daftarAduan.get(position)));
+            }
+        });
         kontener.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {

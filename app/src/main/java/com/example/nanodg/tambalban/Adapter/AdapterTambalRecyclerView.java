@@ -32,6 +32,7 @@ public class AdapterTambalRecyclerView extends RecyclerView.Adapter<AdapterTamba
 
     private ArrayList<Tambah> daftarTambah;
     private Context context;
+    public static final String DATA = "com.example.nanodg.tambalban";
     FirebaseDataListener listener;
     CardView kontener;
 
@@ -48,11 +49,7 @@ public class AdapterTambalRecyclerView extends RecyclerView.Adapter<AdapterTamba
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        /**
-         * Inisiasi View
-         * Di tutorial ini kita hanya menggunakan data String untuk tiap item
-         * dan juga view nya hanyalah satu TextView
-         */
+
         TextView tvTitle,tvalamat;
 
         ViewHolder(View v) {
@@ -77,7 +74,7 @@ public class AdapterTambalRecyclerView extends RecyclerView.Adapter<AdapterTamba
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         /**
          *  Menampilkan data pada view
          */
@@ -88,11 +85,10 @@ public class AdapterTambalRecyclerView extends RecyclerView.Adapter<AdapterTamba
         kontener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /**
-                 *  Kodingan untuk tutorial Read detail data
-                 */
+
                 //Log.e("Data snapshot","Fetched Name"+daftarTambah);
-                context.startActivity(FirebaseDBReadSingleActivity.getActIntent((Activity) context).putExtra("data", daftarTambah.get(position)));
+                context.startActivity(FirebaseDBReadSingleActivity.getActIntent((Activity) context).putExtra(DATA, holder.tvTitle.getText().toString()));
+
             }
         });
         kontener.setOnLongClickListener(new View.OnLongClickListener() {
@@ -115,7 +111,7 @@ public class AdapterTambalRecyclerView extends RecyclerView.Adapter<AdapterTamba
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
-                                context.startActivity(EditTambalActivity.getActIntent((Activity) context).putExtra("data", daftarTambah.get(position)));
+                                context.startActivity(EditTambalActivity.getActIntent((Activity) context).putExtra(DATA, holder.tvTitle.getText().toString()));
                             }
                         }
                 );

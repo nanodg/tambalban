@@ -105,7 +105,7 @@ public class AduanActivity extends AppCompatActivity implements View.OnClickList
                 if(!isEmpty(pembuat.getText().toString()) && !isEmpty(hsl.getText().toString()) && !isEmpty(keterangan.getText().toString()))
                     submitBarang(new Aduan(pembuat.getText().toString(), tgl.getText().toString(), keterangan.getText().toString(), uri1.getText().toString(), hsl.getText().toString(), nama.getText().toString(),pemilik.getText().toString(),status.toString()));
                 else
-                    Snackbar.make(findViewById(R.id.simpan), "Data barang tidak boleh kosong", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(R.id.simpan), "Data Aduan tidak boleh kosong", Snackbar.LENGTH_LONG).show();
 
                 InputMethodManager imm = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);

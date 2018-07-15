@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.nanodg.tambalban.Adapter.AdapterTambalRecyclerView;
 import com.example.nanodg.tambalban.Adapter.WorkaroundMapFragment;
 import com.example.nanodg.tambalban.Model.Tambah;
 import com.example.nanodg.tambalban.Model.User;
@@ -88,7 +89,7 @@ public class EditTambalActivity extends AppCompatActivity implements OnMapReadyC
     Marker mCurrentPosition = null;
     ScrollView mScrollView;
     Switch sw_verif;
-
+    String hasil;
     FirebaseAuth firebaseAuth;
     private ActionBar actionBar;
 
@@ -113,7 +114,7 @@ public class EditTambalActivity extends AppCompatActivity implements OnMapReadyC
         // mengambil referensi ke Firebase Database
         database = FirebaseDatabase.getInstance().getReference();
         simpan = (Button) findViewById(R.id.simpan);
-        final Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
+        //final Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -208,48 +209,71 @@ public class EditTambalActivity extends AppCompatActivity implements OnMapReadyC
         pilih3.setOnClickListener(this);
         //simpan.setOnClickListener(this);
 
+        Intent intent = getIntent();
+        hasil = intent.getStringExtra(AdapterTambalRecyclerView.DATA);
+        DatabaseReference mUserContactsRef = FirebaseDatabase.getInstance().getReference().child("tambah");
+        mUserContactsRef.orderByChild("nama").equalTo(hasil).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
 
-        if (tambah != null) {
-            pembuat.setText(tambah.getPembuat());
-            nama.setText(tambah.getNama());
-            alamat.setText(tambah.getAlamat());
-            no.setText(tambah.getNo());
-            tvjambuka.setText(tambah.getBuka());
-            tvjamtutup.setText(tambah.getTutup());
-            hsl1.setText(tambah.getBan());
-            hsl2.setText(tambah.getKendaraan());
-            uri1.setText(tambah.getFoto1());
-            uri2.setText(tambah.getFoto2());
-            uri3.setText(tambah.getFoto3());
-            lat.setText(tambah.getLat().toString());
-            longt.setText(tambah.getLongt().toString());
-            pemilik.setText(tambah.getPemilik());
-            hsl3.setText(tambah.getVerif());
-            edinfo.setText(tambah.getInfo());
-            simpan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    tambah.setPembuat(pembuat.getText().toString());
-                    tambah.setNama(nama.getText().toString());
-                    tambah.setNo(no.getText().toString());
-                    tambah.setBuka(tvjambuka.getText().toString());
-                    tambah.setTutup(tvjamtutup.getText().toString());
-                    tambah.setBan(hsl1.getText().toString());
-                    tambah.setKendaraan(hsl2.getText().toString());
-                    tambah.setLat(Double.parseDouble(lat.getText().toString()));
-                    tambah.setLongt(Double.parseDouble(longt.getText().toString()));
-                    tambah.setFoto1(uri1.getText().toString());
-                    tambah.setFoto2(uri2.getText().toString());
-                    tambah.setFoto3(uri3.getText().toString());
-                    tambah.setPemilik(pemilik.getText().toString());
-                    tambah.setVerif(hsl3.getText().toString());
-                    tambah.setInfo(edinfo.getText().toString());
+                //Log.e("barang1", dataSnapshot.toString());
+                for (DataSnapshot userContact : dataSnapshot.getChildren()) {
+
+                    final Tambah tambah = userContact.getValue(Tambah.class);
+
+                    pembuat.setText(tambah.getPembuat());
+                    nama.setText(tambah.getNama());
+                    alamat.setText(tambah.getAlamat());
+                    no.setText(tambah.getNo());
+                    tvjambuka.setText(tambah.getBuka());
+                    tvjamtutup.setText(tambah.getTutup());
+                    hsl1.setText(tambah.getBan());
+                    hsl2.setText(tambah.getKendaraan());
+                    uri1.setText(tambah.getFoto1());
+                    uri2.setText(tambah.getFoto2());
+                    uri3.setText(tambah.getFoto3());
+                    lat.setText(tambah.getLat().toString());
+                    longt.setText(tambah.getLongt().toString());
+                    pemilik.setText(tambah.getPemilik());
+                    hsl3.setText(tambah.getVerif());
+                    edinfo.setText(tambah.getInfo());
+                    simpan.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            tambah.setPembuat(pembuat.getText().toString());
+                            tambah.setNama(nama.getText().toString());
+                            tambah.setNo(no.getText().toString());
+                            tambah.setBuka(tvjambuka.getText().toString());
+                            tambah.setTutup(tvjamtutup.getText().toString());
+                            tambah.setBan(hsl1.getText().toString());
+                            tambah.setKendaraan(hsl2.getText().toString());
+                            tambah.setAlamat(alamat.getText().toString());
+                            tambah.setLat(Double.parseDouble(lat.getText().toString()));
+                            tambah.setLongt(Double.parseDouble(longt.getText().toString()));
+                            tambah.setFoto1(uri1.getText().toString());
+                            tambah.setFoto2(uri2.getText().toString());
+                            tambah.setFoto3(uri3.getText().toString());
+                            tambah.setPemilik(pemilik.getText().toString());
+                            tambah.setVerif(hsl3.getText().toString());
+                            tambah.setInfo(edinfo.getText().toString());
 
 
-                    updateTambah(tambah);
+                            updateTambah(tambah);
+                        }
+                    });
+
+
                 }
-            });
-        }
+
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
 
         sw_verif.setOnClickListener(new View.OnClickListener() {
             @Override

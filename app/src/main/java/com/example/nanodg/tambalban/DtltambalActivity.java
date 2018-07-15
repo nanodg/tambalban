@@ -85,11 +85,12 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     Marker mCurrentPosition = null;
     ScrollView mScrollView;
     String hasil,verif;
+
     ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil,stbuka,sttutup;
     ImageButton bttlpn,btsms;
     Button aduan,chat;
     private ActionBar actionBar;
-    double lng,laat;
+    double lng=0,laat=0;
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
 
 
@@ -99,7 +100,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dtltambal);
-        final ProgressDialog loading = ProgressDialog.show(this,"Mengambil data","Tunggu Sebentar...",false,false);
+
         nama = (TextView) findViewById(R.id.et_namatambal);
         tlp = (TextView) findViewById(R.id.et_nohp);
         jmbuka = (TextView) findViewById(R.id.et_jambuka);
@@ -167,6 +168,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
                         if(lat.getText() != null && lon.getText() !=null){
                             actionRoute(laat,lng);
+
                         }
                         uri1.setText(tambah.getFoto1());
                         uri2.setText(tambah.getFoto2());
@@ -243,7 +245,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 //do what you want
-                               // Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
 
                                 Intent intent = new Intent(DtltambalActivity.this,
                                         DtlImgActivity.class);
@@ -314,7 +316,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                     });
 
         }
-        loading.dismiss();
+
         widgetInit();
 
 
@@ -344,9 +346,13 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         tvDistance = (TextView)findViewById(R.id.tvDistance);
     }
 
-    private void actionRoute(double laat, double lang) {
-        //final ProgressDialog loading = ProgressDialog.show(this,"Mengambil data Rute","Tunggu Sebentar...",false,false);
+    private void refresh(){
 
+    }
+
+    private void actionRoute(double laat, double lang) {
+
+       // progressDialog.dismiss();
         double tujuanlat = Double.parseDouble(lat.getText().toString().trim());
         double tujuanlong = Double.parseDouble(lon.getText().toString().trim());
         final LatLng awal = new LatLng(laat, lang);
@@ -370,6 +376,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onResponse(Call<ReponseRoute> call, Response<ReponseRoute> response) {
                 mMap.clear();
+
                 if (response.isSuccessful()){
                     // tampung response ke variable
                     ReponseRoute dataDirection = response.body();
@@ -384,6 +391,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                     if (dataLegs == null){
                         return;
                     }
+
                     //loading.dismiss();
                     //Log.e("Data snapshot","barang4"+dataLegs);
                     // Dapatkan garis polyline

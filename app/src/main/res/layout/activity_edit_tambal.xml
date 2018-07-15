@@ -13,7 +13,8 @@
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="admin"/>
+    android:text="admin"
+    android:visibility="invisible"/>
 
     <ScrollView
         android:id="@+id/scrollView"

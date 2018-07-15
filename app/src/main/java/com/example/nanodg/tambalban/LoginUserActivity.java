@@ -127,15 +127,14 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
         //if the email and password are not empty
         //displaying a progress dialog
 
-        progressDialog.setMessage("Login Please Wait...");
-        progressDialog.show();
+        progressDialog.show(this,"Login","Tunggu Sebentar...",false,false);
 
         //logging in the user
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
+
 
                         if(task.isSuccessful()){
 
@@ -174,6 +173,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                                             startActivity(new Intent(getApplicationContext(), PnlAdminActivity.class));
                                             //Log.e("Data snapshot", "barang1" + user.getPemilik());
                                             finish();
+                                            progressDialog.dismiss();
                                         }
                                     }
                                 }
@@ -183,6 +183,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                             });
                         }else{
                             //display some message here
+                            progressDialog.dismiss();
                             TastyToast.makeText(getApplicationContext(), "Login Gagal", TastyToast.LENGTH_LONG, TastyToast.WARNING);
                         }
                     }
