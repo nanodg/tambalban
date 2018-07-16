@@ -220,7 +220,8 @@ public class EditTambalActivity extends AppCompatActivity implements OnMapReadyC
                 for (DataSnapshot userContact : dataSnapshot.getChildren()) {
 
                     final Tambah tambah = userContact.getValue(Tambah.class);
-
+                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("tambah").child(userContact.getKey().toString());
+                    mDatabase.child("key").setValue(userContact.getKey());
                     pembuat.setText(tambah.getPembuat());
                     nama.setText(tambah.getNama());
                     alamat.setText(tambah.getAlamat());

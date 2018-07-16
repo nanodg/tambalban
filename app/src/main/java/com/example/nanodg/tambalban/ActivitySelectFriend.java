@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import com.example.nanodg.tambalban.Adapter.FriendsListAdapter;
@@ -80,12 +81,13 @@ public class ActivitySelectFriend extends AppCompatActivity {
 
         Intent intent = getIntent();
         String hslnama = intent.getStringExtra(LoginActivity.DATA);
-
+        //Log.e("barang1", hslnama.toString());
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(USERS_CHILD);
         ref.orderByChild("email").equalTo(hslnama).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
                 String totalData = dataSnapshot.getValue().toString();
                 // TODO: 25-05-2017 if number of items is 0 then show something else
                 mAdapter = new FriendsListAdapter(ActivitySelectFriend.this, pfbd.getUserList(totalData));

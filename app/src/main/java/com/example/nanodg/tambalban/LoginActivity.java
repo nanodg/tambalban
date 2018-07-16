@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.example.nanodg.tambalban.Model.User;
 import com.example.nanodg.tambalban.data.SettingsAPI;
@@ -31,6 +32,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     DatabaseReference users;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+    ProgressBar progressBar;
     EditText edemail,edpswd;
     Button btnlogin,btnsignup;
     SettingsAPI set;
@@ -46,10 +48,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         firebaseAuth = FirebaseAuth.getInstance();
         edemail = (EditText) findViewById(R.id.edemail);
         edpswd = (EditText) findViewById(R.id.edpswd);
-        progressDialog = new ProgressDialog(this);
+//        progressDialog = new ProgressDialog(this);
         btnlogin = (Button) findViewById(R.id.btnlogin);
         btnlogin.setOnClickListener(this);
         btnsignup = (Button) findViewById(R.id.btnsignup);
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        progressBar.setVisibility(View.GONE);
         btnsignup.setOnClickListener(this);
         set = new SettingsAPI(this);
         Intent intent = getIntent();
@@ -93,6 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //method for user login
     private void userLogin(){
+        progressBar.setVisibility(View.VISIBLE);
         final String email = edemail.getText().toString().trim();
         String password  = edpswd.getText().toString().trim();
 
@@ -111,15 +116,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //if the email and password are not empty
         //displaying a progress dialog
 
-        progressDialog.setMessage("Login Please Wait...");
-        progressDialog.show();
+//        progressDialog.setMessage("Login Please Wait...");
+//        progressDialog.show();
 
         //logging in the user
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
+
 
                         if(task.isSuccessful()){
 
@@ -137,12 +142,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         Log.e("barang2", usrId);
                                         set.addUpdateSettings("myid", usrId);
                                         set.addUpdateSettings("myname", usrNm);
+//
+//                                        String email2 = hslnama;
+//                                        Intent edit = new Intent(getApplicationContext(), ActivitySelectFriend.class);
+//                                        edit.putExtra(DATA, email2);
+//                                        startActivity(edit);
+//
+//                                        finish();
 
                                         String email2 = hslnama;
                                         Intent edit = new Intent(getApplicationContext(), ActivitySelectFriend.class);
                                         edit.putExtra(DATA, email2);
                                         startActivity(edit);
                                         finish();
+//                                        progressDialog.dismiss();
                                     }
                                 }
                                 @Override
@@ -151,7 +164,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             });
                         }else{
                             //display some message here
+                            progressBar.setVisibility(View.GONE);
                             TastyToast.makeText(getApplicationContext(), "Login Gagal", TastyToast.LENGTH_LONG, TastyToast.WARNING);
+//                            progressDialog.dismiss();
                         }
                     }
                 });

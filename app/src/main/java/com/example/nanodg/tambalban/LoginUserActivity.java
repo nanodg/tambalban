@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 
 import com.example.nanodg.tambalban.data.SettingsAPI;
@@ -35,7 +36,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
     EditText edemail,edpswd;
     Button btnlogin,btnsignup;
     SettingsAPI set;
-
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +48,14 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
         firebaseAuth = FirebaseAuth.getInstance();
         edemail = (EditText) findViewById(R.id.edemail);
         edpswd = (EditText) findViewById(R.id.edpswd);
-        progressDialog = new ProgressDialog(this);
+//        progressDialog = new ProgressDialog(this);
         btnlogin = (Button) findViewById(R.id.btnlogin);
         btnlogin.setOnClickListener(this);
         btnsignup = (Button) findViewById(R.id.btnsignup);
         btnsignup.setOnClickListener(this);
         set = new SettingsAPI(this);
-
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        progressBar.setVisibility(View.GONE);
         if(firebaseAuth.getCurrentUser() != null){
             FirebaseUser user = firebaseAuth.getCurrentUser();
             String tvemail;
@@ -109,6 +111,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
 
     //method for user login
     private void userLogin(){
+        progressBar.setVisibility(View.VISIBLE);
         final String email = edemail.getText().toString().trim();
         String password  = edpswd.getText().toString().trim();
 
@@ -127,7 +130,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
         //if the email and password are not empty
         //displaying a progress dialog
 
-        progressDialog.show(this,"Login","Tunggu Sebentar...",false,false);
+//        progressDialog.show(this,"Login","Tunggu Sebentar...",false,false);
 
         //logging in the user
         firebaseAuth.signInWithEmailAndPassword(email, password)
@@ -155,6 +158,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                                             TastyToast.makeText(getApplicationContext(), "User", TastyToast.LENGTH_LONG, TastyToast.INFO);
                                             startActivity(new Intent(getApplicationContext(), PnlUserActivity.class));
                                             finish();
+                                            progressBar.setVisibility(View.GONE);
                                         } if(user.getPemilik().equals("1")) {
                                             final String usrNm = user.getUsername();
                                             final String usrId = user.getKey();
@@ -164,6 +168,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                                             startActivity(new Intent(getApplicationContext(), PnlPemilikActivity.class));
                                            // Log.e("Data snapshot", "barang1" + user.getPemilik());
                                             finish();
+                                            progressBar.setVisibility(View.GONE);
                                         }if(user.getPemilik().equals("2")) {
                                             final String usrNm = user.getUsername();
                                             final String usrId = user.getKey();
@@ -173,7 +178,7 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                                             startActivity(new Intent(getApplicationContext(), PnlAdminActivity.class));
                                             //Log.e("Data snapshot", "barang1" + user.getPemilik());
                                             finish();
-                                            progressDialog.dismiss();
+                                            progressBar.setVisibility(View.GONE);
                                         }
                                     }
                                 }
@@ -183,8 +188,8 @@ public class LoginUserActivity extends AppCompatActivity implements View.OnClick
                             });
                         }else{
                             //display some message here
-                            progressDialog.dismiss();
                             TastyToast.makeText(getApplicationContext(), "Login Gagal", TastyToast.LENGTH_LONG, TastyToast.WARNING);
+                            progressBar.setVisibility(View.GONE);
                         }
                     }
                 });

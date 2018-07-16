@@ -336,6 +336,7 @@ public class TambahActivity extends AppCompatActivity implements OnMapReadyCallb
                     tambah.setInfo(edinfo.getText().toString());
                     tambah.setStatus(hsl3.getText().toString());
                     tambah.setAlat(hsl4.getText().toString());
+                    tambah.setAlamat(alamat.getText().toString());
 
 
                     updateTambah(tambah);

@@ -24,9 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 
 
-/**
- * Created by Hafizh Herdi on 10/8/2017.
- */
 
 public class AdapterTambalRecyclerView extends RecyclerView.Adapter<AdapterTambalRecyclerView.ViewHolder>  {
 

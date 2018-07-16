@@ -88,7 +88,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
     ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil,stbuka,sttutup;
     ImageButton bttlpn,btsms;
-    Button aduan,chat;
+    Button aduan,chat,maps;
     private ActionBar actionBar;
     double lng=0,laat=0;
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
@@ -130,6 +130,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         imgtub = (ImageView) findViewById(R.id.imgtub);
         imgmotor = (ImageView) findViewById(R.id.imgmotor);
         imgmobil = (ImageView) findViewById(R.id.imgmobil);
+        maps= (Button) findViewById(R.id.maps);
         initToolbar();
 
 //        lat.setText("-7.248651474442163");
@@ -213,9 +214,9 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                             tvmobil.setVisibility(View.VISIBLE);
                         }if(tambah.getStatus().equals("1")){
                             stbuka.setVisibility(View.VISIBLE);
-                            sttutup.setVisibility(View.GONE);
+                            sttutup.setVisibility(View.INVISIBLE);
                         }if(tambah.getStatus().equals("0")){
-                            stbuka.setVisibility(View.GONE);
+                            stbuka.setVisibility(View.INVISIBLE);
                             sttutup.setVisibility(View.VISIBLE);
                         }
                         info.setText(tambah.getInfo());
@@ -284,6 +285,22 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                                     smsIntent.putExtra("sms_body", "");
                                     startActivity(smsIntent);
                                 }
+                            }
+                        });
+                        //open maps
+                        maps.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                double latitude = Double.parseDouble(lat.getText().toString().trim());
+                                double longitude = Double.parseDouble(lon.getText().toString().trim());
+                                String label = "Tambal Ban "+nama.getText().toString();
+                                String uriBegin = "geo:" + latitude + "," + longitude;
+                                String query = latitude + "," + longitude + "(" + label + ")";
+                                String encodedQuery = Uri.encode(query);
+                                String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
+                                Uri uri = Uri.parse(uriString);
+                                Intent mapIntent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                                startActivity(mapIntent);
                             }
                         });
 
@@ -414,7 +431,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                     tvStartAddress.setText("Lokasi Awal : " + dataLegs.getStartAddress().toString());
                     tvEndAddress.setText("Lokasi Tujuan : " + dataLegs.getEndAddress().toString());
 
-                    tvDistance.setText("Jarak : " + dataDistance.getText() + " (" + dataDistance.getValue() + ")");
+                    //tvDistance.setText("Jarak : " + dataDistance.getText() + " (" + dataDistance.getValue() + ")");
                     tvDuration.setText("Waktu : " + dataDuration.getText() + " (" + dataDuration.getValue() + ")");
                     /** START
                      * Logic untuk membuat layar berada ditengah2 dua koordinat

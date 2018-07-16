@@ -122,9 +122,10 @@ public class PnlPemilikActivity extends AppCompatActivity implements View.OnClic
             //logging out the user
             firebaseAuth.signOut();
             //closing activity
-            finish();
+
             //starting login activity
             startActivity(new Intent(this, LoginUserActivity.class));
+            finish();
         }
     }
     public static Intent getActIntent(Activity activity) {

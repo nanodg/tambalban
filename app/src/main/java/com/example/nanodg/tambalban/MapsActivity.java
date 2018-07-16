@@ -1,6 +1,7 @@
 package com.example.nanodg.tambalban;
 
 import android.*;
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,10 +14,12 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -100,6 +103,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     SeekBar radius;
     private ActionBar actionBar;
     private String view;
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+    String[] permissions = new String[]{
+            android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+    private static final int REQUEST_MULTIPLE_PERMISSIONS = 117;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
@@ -120,7 +131,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         numradius = (TextView)findViewById(R.id.numradius);
         initToolbar();
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
-
+//        getPermissions();
+        checkPermissions();
         progressBar.setVisibility(View.GONE);
         radius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -208,6 +220,80 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
  * ==============================================================SPINNER
  */
 
+    }
+
+    /**
+     *
+     * Permision
+     */
+//    public void getPermissions() {
+//        /* Check and Request permission */
+//        if (ContextCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(MapsActivity.this,
+//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+//        }if (ContextCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(MapsActivity.this,
+//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+//        }
+//    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
+//                // If request is cancelled, the result arrays are empty.
+//                if (grantResults.length > 0
+//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//
+//                    // permission was granted, yay! Do the
+//                    // contacts-related task you need to do.
+//
+//                } else {
+//
+//                    // permission denied, boo! Disable the
+//                    // functionality that depends on this permission..
+//                    Toast.makeText(MapsActivity.this, "Permission denied to get Account", Toast.LENGTH_SHORT).show();
+//
+//                }
+//                return;
+//            }
+//
+//            // other 'case' lines to check for other
+//            // permissions this app might request
+//        }
+//    }
+    private boolean checkPermissions() {
+        int result;
+        List<String> listPermissionsNeeded = new ArrayList<>();
+        for (String p : permissions) {
+            result = ContextCompat.checkSelfPermission(this, p);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(p);
+            }
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_MULTIPLE_PERMISSIONS);
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_MULTIPLE_PERMISSIONS: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //granted
+                } else {
+                    finish();
+                    Toast.makeText(MapsActivity.this, "Izinkan Semua Akses", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
     }
 
     @Override

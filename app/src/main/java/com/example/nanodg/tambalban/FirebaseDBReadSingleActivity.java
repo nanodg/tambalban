@@ -214,9 +214,9 @@ public class FirebaseDBReadSingleActivity extends AppCompatActivity implements O
                         tvmobil.setVisibility(View.VISIBLE);
                     }if(tambah.getStatus().equals("1")){
                         stbuka.setVisibility(View.VISIBLE);
-                        sttutup.setVisibility(View.GONE);
+                        sttutup.setVisibility(View.INVISIBLE);
                     }if(tambah.getStatus().equals("0")){
-                        stbuka.setVisibility(View.GONE);
+                        stbuka.setVisibility(View.INVISIBLE);
                         sttutup.setVisibility(View.VISIBLE);
                     }
                     info.setText(tambah.getInfo());

@@ -37,7 +37,7 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
     private Context context;
     FirebaseDataListener listener;
     CardView kontener;
-
+    public static final String DATA = "com.example.nanodg.tambalban";
     private DatabaseReference database;
 
     public AdapterBarangRecyclerView(ArrayList<Tambah> tambahs, Context ctx){
@@ -76,7 +76,7 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         /**
          *  Menampilkan data pada view
          */
@@ -91,7 +91,7 @@ public class AdapterBarangRecyclerView extends RecyclerView.Adapter<AdapterBaran
             public void onClick(View view) {
 
                 //Log.e("Data snapshot","Fetched Name"+daftarTambah);
-                context.startActivity(FirebaseDBReadSingleActivity.getActIntent((Activity) context).putExtra("data", daftarTambah.get(position)));
+                context.startActivity(FirebaseDBReadSingleActivity.getActIntent((Activity) context).putExtra(DATA, holder.tvTitle.getText().toString()));
             }
         });
         kontener.setOnLongClickListener(new View.OnLongClickListener() {
