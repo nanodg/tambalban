@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class PnlAdminActivity extends AppCompatActivity implements View.OnClickListener{
 
-    CardView btntambah,btntambal,btnuser,btnaduan,btnlogout;
+    CardView btntambah,btntambal,btnuser,btnaduan,btnlogout,btnbengkel,btnaksesoris;
     FirebaseAuth firebaseAuth;
     TextView tvslmt;
     private ActionBar actionBar;
@@ -30,6 +30,8 @@ public class PnlAdminActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_pnl_admin);
 
         btntambah = (CardView)findViewById(R.id.btntambah);
+        btnbengkel = (CardView)findViewById(R.id.btnbengkel);
+        btnaksesoris = (CardView)findViewById(R.id.btnaksesoris);
         btntambal = (CardView) findViewById(R.id.btntambal);
         btnuser = (CardView) findViewById(R.id.btnuser);
         btnaduan = (CardView) findViewById(R.id.btnaduan);
@@ -37,6 +39,8 @@ public class PnlAdminActivity extends AppCompatActivity implements View.OnClickL
         tvslmt = (TextView) findViewById(R.id.tvslmt);
         initToolbar();
         btnlogout.setOnClickListener(this);
+        btnbengkel.setOnClickListener(this);
+        btnaksesoris.setOnClickListener(this);
         btnaduan.setOnClickListener(this);
         btnuser.setOnClickListener(this);
         btntambah.setOnClickListener(this);
@@ -94,7 +98,12 @@ public class PnlAdminActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-
+        if (view == btnbengkel) {
+            startActivity(new Intent(this, TambahBengkelActivity.class));
+        }
+        if (view == btnaksesoris) {
+            startActivity(new Intent(this, TambahAksesorisActivity.class));
+        }
         if (view == btntambah) {
             startActivity(new Intent(this, TambahActivity.class));
         }if (view == btnlogout) {

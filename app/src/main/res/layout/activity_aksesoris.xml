@@ -37,17 +37,6 @@
                 android:layout_marginTop="10dp"
                 app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-            <TextView
-                android:id="@+id/jenisban"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Jenis Ban :"
-                android:textColor="#ffff"
-                android:textSize="16dp"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="24dp"
-                app:layout_constraintLeft_toLeftOf="parent" />
             <ProgressBar
                 android:id="@+id/progressbar"
                 android:layout_width="44dp"
@@ -66,34 +55,18 @@
                 android:textSize="16dp"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="5dp"
-                app:layout_constraintLeft_toRightOf="@+id/jenisban"
-                android:layout_marginLeft="97dp"
-                android:layout_marginRight="8dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintHorizontal_bias="0.214" />
-
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/jenisban"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="24dp"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
             <Spinner
                 android:id="@+id/spinner2"
-                android:layout_width="150dp"
+                android:layout_width="217dp"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@+id/jeniskendaraan"
-                app:layout_constraintLeft_toRightOf="@+id/spinner"
-                android:layout_marginLeft="23dp"
-                android:layout_marginRight="24dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintHorizontal_bias="0.923" />
+                android:layout_marginLeft="24dp"
+                app:layout_constraintLeft_toLeftOf="parent" />
             <SeekBar
                 android:id="@+id/radius"
                 android:layout_width="166dp"
@@ -102,10 +75,10 @@
                 android:backgroundTint="#ffff"
                 android:progressBackgroundTint="#ffff"
                 android:progressTint="@color/colorPrimary"
-                android:layout_marginTop="4dp"
-                app:layout_constraintTop_toBottomOf="@+id/spinner"
                 app:layout_constraintLeft_toRightOf="@+id/textView7"
-                android:layout_marginLeft="8dp" />
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/spinner2" />
 
             <Button
                 android:id="@+id/tampil"
@@ -128,7 +101,7 @@
                 android:layout_marginLeft="24dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+                app:layout_constraintTop_toBottomOf="@+id/spinner2" />
 
             <TextView
                 android:layout_width="wrap_content"

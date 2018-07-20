@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.example.nanodg.tambalban.Model.Aksesoris;
 import com.example.nanodg.tambalban.Model.Tambah;
 import com.example.nanodg.tambalban.Model.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -71,26 +72,25 @@ import android.view.WindowManager;
 
 import static com.example.nanodg.tambalban.R.layout.toolbar;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,LocationListener,GoogleMap.OnMarkerClickListener{
+public class AksesorisActivity extends AppCompatActivity implements OnMapReadyCallback,LocationListener,GoogleMap.OnMarkerClickListener{
 
     public static final String DATA = "com.example.nanodg.tambalban";
     private GoogleMap mMap;
     DatabaseReference mTambah;
-    private ArrayList<Tambah> daftarTambal = new ArrayList<> ();
+    private ArrayList<Aksesoris> daftarAksesoris = new ArrayList<> ();
     private Map<Marker, Integer> markersOrderNumbers = new HashMap<>();
     private ArrayList<Integer> list = new ArrayList<>();
     Marker marker;
     int markerIndex = 0;
     int position = 0 ;
-   public double lng,lat;
+    public double lng,lat;
     public ProgressBar progressBar;
-    Button tambah,tampil;
+    Button tampil;
     public float jarak=0;
-    TextView ban,kendaraan,numradius;
-    Spinner spinner1,spinner2;
-    String[] jenisban = {"Biasa","Tubles"};
+    TextView kendaraan,numradius;
+    Spinner spinner2;
     String[] jeniskendaraan = {"Motor","Mobil"};
-    String jnban,jnkendaraan;
+    String jnkendaraan;
     String provider = null;
     Marker mCurrentPosition = null;
     LocationManager mLocationManager = null;
@@ -109,17 +109,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(@Nullable Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_aksesoris);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mTambah= FirebaseDatabase.getInstance().getReference();
         mTambah.push().setValue(marker);
-        tambah = (Button) findViewById(R.id.tambah);
         tampil = (Button)findViewById(R.id.tampil);
-        spinner1 = (Spinner) findViewById(R.id.spinner);
         spinner2 = (Spinner)findViewById(R.id.spinner2);
-        ban = (TextView)findViewById(R.id.jenisban);
         kendaraan = (TextView)findViewById(R.id.jeniskendaraan);
         radius = (SeekBar)findViewById(R.id.radius);
         numradius = (TextView)findViewById(R.id.numradius);
@@ -148,13 +145,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         lingkaran = Float.valueOf(numradius.getText().toString());
-        tambah.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // kelas yang akan dijalankan ketika tombol Create/Insert Data diklik
-                startActivity(LoginUserActivity.getActIntent(MapsActivity.this));
-            }
-        });
+
 
         tampil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,28 +163,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 /**
  * =========================================SPINNER
  */
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MapsActivity.this, R.layout.simple_list_item,R.id.test, jenisban);
-        spinner1.setAdapter(adapter);
 
 
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(MapsActivity.this, R.layout.simple_list_item,R.id.test, jeniskendaraan);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(AksesorisActivity.this, R.layout.simple_list_item,R.id.test, jeniskendaraan);
         spinner2.setAdapter(adapter2);
-
-        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (spinner1.getSelectedItem()==("Biasa")){
-                    jnban = ("1");
-                }
-                if (spinner1.getSelectedItem()==("Tubles")){
-                    jnban = ("2");
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-            }
-        });
 
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -216,47 +189,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    /**
-     *
-     * Permision
-     */
-//    public void getPermissions() {
-//        /* Check and Request permission */
-//        if (ContextCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(MapsActivity.this,
-//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-//                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-//        }if (ContextCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(MapsActivity.this,
-//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-//                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-//        }
-//    }
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
-//                // If request is cancelled, the result arrays are empty.
-//                if (grantResults.length > 0
-//                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//
-//                    // permission was granted, yay! Do the
-//                    // contacts-related task you need to do.
-//
-//                } else {
-//
-//                    // permission denied, boo! Disable the
-//                    // functionality that depends on this permission..
-//                    Toast.makeText(MapsActivity.this, "Permission denied to get Account", Toast.LENGTH_SHORT).show();
-//
-//                }
-//                return;
-//            }
-//
-//            // other 'case' lines to check for other
-//            // permissions this app might request
-//        }
-//    }
+
 
 
     @Override
@@ -366,44 +299,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.bantuan, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.menu_help) {
-            view = "bantuan";
-            startActivity(Bantuan.getActIntent(MapsActivity.this));
-        }
-        return true;
-    }
-
-//    private void addBoundaryToCurrentPosition(double lat, double lang) {
-//
-//        MarkerOptions mMarkerOptions = new MarkerOptions();
-//        mMarkerOptions.position(new LatLng(lat, lang));
-//        mMarkerOptions.icon(BitmapDescriptorFactory
-//                .fromResource(R.drawable.ic_place_black_24dp));
-//        mMarkerOptions.anchor(0.5f, 0.5f);
-//        mMarkerOptions.title("ini lokasi anda");
-//        mMarkerOptions.snippet("anda sekarang ada disini");
-//
-//        mOptions = new CircleOptions()
-//                .center(new LatLng(lat, lang)).radius(lingkaran)
-//                .strokeColor(0x110000FF).strokeWidth(1).fillColor(0x110000FF);
-//        circle = mMap.addCircle(mOptions);
-//        mMap.addCircle(mOptions);
-//        if (mCurrentPosition != null)
-//            mCurrentPosition.remove();
-//        mCurrentPosition = mMap.addMarker(mMarkerOptions);
-//    }
-
-
-
-    @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         switch (status) {
             case LocationProvider.OUT_OF_SERVICE:
@@ -432,7 +327,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
     public static Intent getActIntent(Activity activity) {
         // kode untuk pengambilan Intent
-        return new Intent(activity, MapsActivity.class);
+        return new Intent(activity, AksesorisActivity.class);
     }
 
     private void refreshmap(final double lat, final double lang){
@@ -442,28 +337,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         saatIni.setLatitude(lat);
         saatIni.setLongitude(lang);
         final MarkerOptions mPosisi = new MarkerOptions();
-        DatabaseReference  mUserContactsRef =  FirebaseDatabase.getInstance().getReference().child("tambah");
-        mUserContactsRef.orderByChild("ban").equalTo(jnban).addValueEventListener(new ValueEventListener() {
+        DatabaseReference  mUserContactsRef =  FirebaseDatabase.getInstance().getReference().child("aksesoris");
+        mUserContactsRef.orderByChild("kendaraan").equalTo(jnkendaraan).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 //Log.e("barang1", dataSnapshot.toString());
                 for (DataSnapshot s : dataSnapshot.getChildren()){
-                    final Tambah tambah = s.getValue(Tambah.class);
-                    if(tambah.getKendaraan().equals(jnkendaraan)){
+                    final Aksesoris aksesoris = s.getValue(Aksesoris.class);
+//                    if(aksesoris.getKendaraan().equals(jnkendaraan)){
 
-                        daftarTambal.add(tambah);
-                        final Object row = (Object) tambah.getNama();
+                        daftarAksesoris.add(aksesoris);
+                        final Object row = (Object) aksesoris.getNama();
 //                    Log.e("Data snapshot","barang1"+daftarTambal);
-                        LatLng location = new LatLng(tambah.getLat(), tambah.getLongt());
-                        lokMarker.setLatitude(tambah.getLat());
-                        lokMarker.setLongitude(tambah.getLongt());
+                        LatLng location = new LatLng(aksesoris.getLat(), aksesoris.getLongt());
+                        lokMarker.setLatitude(aksesoris.getLat());
+                        lokMarker.setLongitude(aksesoris.getLongt());
                         jarak = saatIni.distanceTo(lokMarker);
                         if(lingkaran >= jarak){
                             jarak = saatIni.distanceTo(lokMarker) / 1000;
                             mPosisi.position(location);
                             mPosisi.anchor(0.3f, 0.3f);
-                            mPosisi.title(tambah.getNama());
-                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
+                            mPosisi.title(aksesoris.getNama());
+                            mPosisi.snippet("Alamat : " +aksesoris.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
                             mMap.addMarker(mPosisi);
                             //mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
@@ -474,7 +369,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             public void onInfoWindowClick(Marker marker) {
                                 String id = marker.getTitle().toString();
                                 //Log.e("Data snapshot", "barang45" + id);
-                                Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
+                                Intent edit = new Intent(getApplicationContext(), DtlAksesoriss.class);
                                 //String reference = mMarkerPlaceLink.get(id);
                                 //daftarBarang.add(barang);
                                 //Integer index = markersOrderNumbers.get(marker);
@@ -490,120 +385,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
 
                         });
-                    }
-                }
 
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-        progressBar.setVisibility(View.INVISIBLE);
-        mUserContactsRef.orderByChild("ban").equalTo("3").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                //Log.e("barang1", dataSnapshot.toString());
-                for (DataSnapshot s : dataSnapshot.getChildren()){
-                    final Tambah tambah = s.getValue(Tambah.class);
-                    if(tambah.getKendaraan().equals("3")){
-
-                        daftarTambal.add(tambah);
-                        final Object row = (Object) tambah.getNama();
-
-//                    Log.e("Data snapshot","barang1"+daftarTambal);
-                        LatLng location = new LatLng(tambah.getLat(), tambah.getLongt());
-                        lokMarker.setLatitude(tambah.getLat());
-                        lokMarker.setLongitude(tambah.getLongt());
-                        jarak = saatIni.distanceTo(lokMarker);
-                        if(lingkaran >= jarak){
-                            jarak = saatIni.distanceTo(lokMarker) / 1000;
-                            mPosisi.position(location);
-                            mPosisi.anchor(0.3f, 0.3f);
-                            mPosisi.title(tambah.getNama());
-                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
-                            mMap.addMarker(mPosisi);
-                            // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-
-                        }
-
-
-                        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-
-                            public void onInfoWindowClick(Marker marker) {
-                                String id = marker.getTitle().toString();
-                               // Log.e("Data snapshot", "barang45" + id);
-                                Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
-                                //String reference = mMarkerPlaceLink.get(id);
-                                //daftarBarang.add(barang);
-                                //Integer index = markersOrderNumbers.get(marker);
-//                                edit.putExtra("data", daftarTambal.get(index));
-                                edit.putExtra(DATA, id);
-
-
-                                //Log.e("Data snapshot","barang1"+daftarBarang.get(position));
-                                //Log.e("Data snapshot","barang2"+daftarBarang);
-                                startActivity(edit);
-
-                            }
-
-                        });
-                    }
-                }
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-        progressBar.setVisibility(View.INVISIBLE);
-        mUserContactsRef.orderByChild("ban").equalTo("3").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                //Log.e("barang1", dataSnapshot.toString());
-                for (DataSnapshot s : dataSnapshot.getChildren()){
-                    final Tambah tambah = s.getValue(Tambah.class);
-                        if(tambah.getKendaraan().equals(jnkendaraan)) {
-                            daftarTambal.add(tambah);
-                            final Object row = (Object) tambah.getNama();
-
-//                    Log.e("Data snapshot","barang1"+daftarTambal);
-                            LatLng location = new LatLng(tambah.getLat(), tambah.getLongt());
-                            lokMarker.setLatitude(tambah.getLat());
-                            lokMarker.setLongitude(tambah.getLongt());
-                            jarak = saatIni.distanceTo(lokMarker);
-                            if (lingkaran >= jarak) {
-                                jarak = saatIni.distanceTo(lokMarker) / 1000;
-                                mPosisi.position(location);
-                                mPosisi.anchor(0.3f, 0.3f);
-                                mPosisi.title(tambah.getNama());
-                                mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
-                                mMap.addMarker(mPosisi);
-                                // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-
-                            }
-
-                            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-
-                                public void onInfoWindowClick(Marker marker) {
-                                    String id = marker.getTitle().toString();
-                                    //Log.e("Data snapshot", "barang45" + id);
-                                    Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
-                                    //String reference = mMarkerPlaceLink.get(id);
-                                    //daftarBarang.add(barang);
-                                    //Integer index = markersOrderNumbers.get(marker);
-//                                edit.putExtra("data", daftarTambal.get(index));
-                                    edit.putExtra(DATA, id);
-
-
-                                    //Log.e("Data snapshot","barang1"+daftarBarang.get(position));
-                                    //Log.e("Data snapshot","barang2"+daftarBarang);
-                                    startActivity(edit);
-
-                                }
-
-                            });
-                        }
                 }
 
             }
@@ -616,23 +398,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 //Log.e("barang1", dataSnapshot.toString());
-                for (DataSnapshot s : dataSnapshot.getChildren()) {
-                    final Tambah tambah = s.getValue(Tambah.class);
-                    if (tambah.getBan().equals(jnban)) {
-                        daftarTambal.add(tambah);
-                        final Object row = (Object) tambah.getNama();
+                for (DataSnapshot s : dataSnapshot.getChildren()){
+                    final Aksesoris aksesoris = s.getValue(Aksesoris.class);
+//                    if(aksesoris.getKendaraan().equals("3")){
+
+                        daftarAksesoris.add(aksesoris);
+                        final Object row = (Object) aksesoris.getNama();
 
 //                    Log.e("Data snapshot","barang1"+daftarTambal);
-                        LatLng location = new LatLng(tambah.getLat(), tambah.getLongt());
-                        lokMarker.setLatitude(tambah.getLat());
-                        lokMarker.setLongitude(tambah.getLongt());
+                        LatLng location = new LatLng(aksesoris.getLat(), aksesoris.getLongt());
+                        lokMarker.setLatitude(aksesoris.getLat());
+                        lokMarker.setLongitude(aksesoris.getLongt());
                         jarak = saatIni.distanceTo(lokMarker);
-                        if (lingkaran >= jarak) {
+                        if(lingkaran >= jarak){
                             jarak = saatIni.distanceTo(lokMarker) / 1000;
                             mPosisi.position(location);
                             mPosisi.anchor(0.3f, 0.3f);
-                            mPosisi.title(tambah.getNama());
-                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
+                            mPosisi.title(aksesoris.getNama());
+                            mPosisi.snippet("Alamat : " +aksesoris.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
                             mMap.addMarker(mPosisi);
                             // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
@@ -643,16 +426,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                             public void onInfoWindowClick(Marker marker) {
                                 String id = marker.getTitle().toString();
-                                //Log.e("Data snapshot", "barang45" + id);
-                                Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
+                                // Log.e("Data snapshot", "barang45" + id);
+                                Intent edit = new Intent(getApplicationContext(), DtlAksesoriss.class);
+                                //String reference = mMarkerPlaceLink.get(id);
+                                //daftarBarang.add(barang);
+                                //Integer index = markersOrderNumbers.get(marker);
+//                                edit.putExtra("data", daftarTambal.get(index));
                                 edit.putExtra(DATA, id);
+
+
+                                //Log.e("Data snapshot","barang1"+daftarBarang.get(position));
+                                //Log.e("Data snapshot","barang2"+daftarBarang);
                                 startActivity(edit);
 
                             }
 
                         });
 
-                    }
                 }
 
             }

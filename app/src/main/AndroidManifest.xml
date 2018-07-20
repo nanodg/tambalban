@@ -17,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MapsActivity">
+        <activity android:name=".MenuUtama">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,6 +33,7 @@
         <activity android:name=".FirebaseDBReadSingleActivity" />
         <activity android:name=".AduanActivity" />
         <activity android:name=".PnlUserActivity" />
+        <activity android:name=".MapsActivity" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -66,7 +67,12 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Bantuan"></activity>
+        <activity android:name=".Bantuan" />
+        <activity android:name=".BengkelActivity" />
+        <activity android:name=".AksesorisActivity" />
+        <activity android:name=".TambahBengkelActivity" />
+        <activity android:name=".TambahAksesorisActivity" />
+        <activity android:name=".DtlAksesoriss"></activity>
     </application>
 
 </manifest>

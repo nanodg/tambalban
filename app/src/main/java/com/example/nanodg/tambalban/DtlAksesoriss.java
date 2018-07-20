@@ -32,7 +32,7 @@ import android.widget.Toast;
 
 
 import com.example.nanodg.tambalban.Adapter.WorkaroundMapFragment;
-import com.example.nanodg.tambalban.Model.Tambah;
+import com.example.nanodg.tambalban.Model.Aksesoris;
 import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
@@ -72,11 +72,11 @@ import retrofit2.Response;
 import static android.text.TextUtils.isEmpty;
 
 
-public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener,View.OnClickListener  {
+public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallback, LocationListener,View.OnClickListener  {
 
-//    private Button bttlpn,btsms;
+    //    private Button bttlpn,btsms;
     public static final String DATA = "com.example.nanodg.tambalban";
-    TextView nama,tlp,jmbuka,jmtutup,hsl1,hsl2,alamat,tvbiasa,tvtubles,tvmotor,tvmobil,tvverif,hsl3,status,status1,info,alat;
+    TextView nama,tlp,jmbuka,hsl2,alamat,tvmotor,tvmobil,tvverif,status,info,alat;
     EditText lat,lon;
     private TextView uri1,uri2,uri3;
     private Slider slider;
@@ -88,7 +88,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     ScrollView mScrollView;
     String hasil,verif;
     private String view;
-    ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil,stbuka,sttutup;
+    ImageView imgverif,imgmotor,imgmobil,stbuka,sttutup;
     ImageButton bttlpn,btsms;
     Button aduan,chat,maps;
     private ActionBar actionBar;
@@ -101,7 +101,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dtltambal);
+        setContentView(R.layout.activity_dtl_aksesoriss);
 
         nama = (TextView) findViewById(R.id.et_namatambal);
         tlp = (TextView) findViewById(R.id.et_nohp);
@@ -117,8 +117,6 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         uri1 = (TextView) findViewById(R.id.uri1);
         uri2 = (TextView) findViewById(R.id.uri2);
         uri3 = (TextView) findViewById(R.id.uri3);
-        tvbiasa = (TextView) findViewById(R.id.tvbiasa);
-        tvtubles = (TextView) findViewById(R.id.tvtubles);
         tvmotor = (TextView) findViewById(R.id.tvmotor);
         tvmobil = (TextView) findViewById(R.id.tvmobil);
         tvverif = (TextView) findViewById(R.id.tvverif);
@@ -128,8 +126,6 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
         btsms = (ImageButton) findViewById(R.id.sms);
         slider = (Slider) findViewById(R.id.slider);
         imgverif = (ImageView) findViewById(R.id.imgverif);
-        imgbiasa = (ImageView) findViewById(R.id.imgbiasa);
-        imgtub = (ImageView) findViewById(R.id.imgtub);
         imgmotor = (ImageView) findViewById(R.id.imgmotor);
         imgmobil = (ImageView) findViewById(R.id.imgmobil);
         maps= (Button) findViewById(R.id.maps);
@@ -143,181 +139,157 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
         //btSubmit.setVisibility(View.GONE);
 
-        //Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
+        //Aksesoris aksesoris = (Aksesoris) getIntent().getSerializableExtra("data");
         Intent intent = getIntent();
         hasil = intent.getStringExtra(MapsActivity.DATA);
-            DatabaseReference mUserContactsRef = FirebaseDatabase.getInstance().getReference().child("tambah");
-            mUserContactsRef.orderByChild("nama").equalTo(hasil).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(final DataSnapshot dataSnapshot) {
+        DatabaseReference mUserContactsRef = FirebaseDatabase.getInstance().getReference().child("aksesoris");
+        mUserContactsRef.orderByChild("nama").equalTo(hasil).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
 
-                    //Log.e("barang1", dataSnapshot.toString());
-                    for (DataSnapshot userContact : dataSnapshot.getChildren()) {
+                //Log.e("barang1", dataSnapshot.toString());
+                for (DataSnapshot userContact : dataSnapshot.getChildren()) {
 
-                        Tambah tambah = userContact.getValue(Tambah.class);
+                    Aksesoris aksesoris = userContact.getValue(Aksesoris.class);
 
-                        idkey = userContact.getKey();
-                        nama.setText(tambah.getNama());
-                        email = tambah.getPembuat();
-                        tlp.setText(tambah.getNo());
-                        jmbuka.setText(tambah.getBuka()+" s/d "+(tambah.getTutup()));
-                        //jmtutup.setText(tambah.getTutup());
-//                        hsl1.setText(tambah.getBan());
-//                        hsl2.setText(tambah.getKendaraan());
-                        alamat.setText(tambah.getAlamat());
+                    idkey = userContact.getKey();
+                    nama.setText(aksesoris.getNama());
+                    email = aksesoris.getPembuat();
+                    tlp.setText(aksesoris.getNo());
+                    jmbuka.setText(aksesoris.getBuka()+" s/d "+(aksesoris.getTutup()));
+                    alamat.setText(aksesoris.getAlamat());
+                    lat.setText(Double.toString(aksesoris.getLat()));
+                    lon.setText(Double.toString(aksesoris.getLongt()));
 
-                        lat.setText(Double.toString(tambah.getLat()));
-                        lon.setText(Double.toString(tambah.getLongt()));
-
-                        if(lat.getText() != null && lon.getText() !=null){
-                            actionRoute(laat,lng);
-
-                        }
-                        uri1.setText(tambah.getFoto1());
-                        uri2.setText(tambah.getFoto2());
-                        uri3.setText(tambah.getFoto3());
-
-                        verif = tambah.getVerif();
-                        if(tambah.getVerif().equals("0")){
-                           imgverif.setVisibility(View.GONE);
-                            tvverif.setVisibility(View.GONE);
-                        } if(tambah.getVerif().equals("1")) {
-                            imgverif.setVisibility(View.VISIBLE);
-                            tvverif.setVisibility(View.VISIBLE);
-                        }if(tambah.getBan().equals("1")){
-                            imgtub.setVisibility(View.GONE);
-                            tvtubles.setVisibility(View.GONE);
-                            imgbiasa.setVisibility(View.VISIBLE);
-                            tvbiasa.setVisibility(View.VISIBLE);
-                        }if(tambah.getBan().equals("2")){
-                            imgbiasa.setVisibility(View.GONE);
-                            tvbiasa.setVisibility(View.GONE);
-                            imgtub.setVisibility(View.VISIBLE);
-                            tvtubles.setVisibility(View.VISIBLE);
-                        }if(tambah.getBan().equals("3")){
-                            imgbiasa.setVisibility(View.VISIBLE);
-                            tvbiasa.setVisibility(View.VISIBLE);
-                            imgtub.setVisibility(View.VISIBLE);
-                            tvtubles.setVisibility(View.VISIBLE);
-                        }if(tambah.getKendaraan().equals("1")){
-                            imgmobil.setVisibility(View.GONE);
-                            tvmobil.setVisibility(View.GONE);
-                            imgmotor.setVisibility(View.VISIBLE);
-                            tvmotor.setVisibility(View.VISIBLE);
-                        }if(tambah.getKendaraan().equals("2")){
-                            imgmotor.setVisibility(View.GONE);
-                            tvmotor.setVisibility(View.GONE);
-                            imgmobil.setVisibility(View.VISIBLE);
-                            tvmobil.setVisibility(View.VISIBLE);
-                        }if(tambah.getKendaraan().equals("3")){
-                            imgmotor.setVisibility(View.VISIBLE);
-                            tvmotor.setVisibility(View.VISIBLE);
-                            imgmobil.setVisibility(View.VISIBLE);
-                            tvmobil.setVisibility(View.VISIBLE);
-                        }if(tambah.getStatus().equals("1")){
-                            stbuka.setVisibility(View.VISIBLE);
-                            sttutup.setVisibility(View.INVISIBLE);
-                        }if(tambah.getStatus().equals("0")){
-                            stbuka.setVisibility(View.INVISIBLE);
-                            sttutup.setVisibility(View.VISIBLE);
-                        }
-                        info.setText(tambah.getInfo());
-                        //coba(la1,lo2);
-                        if(tambah.getPemilik().equals("1")){
-                            chat.setVisibility(View.VISIBLE);
-                        }
-                        if(tambah.getPemilik().equals("0")){
-                            chat.setVisibility(View.GONE);
-                        }
-                        if(tambah.getAlat().equals("1")){
-                            alat.setText("Otomatis");
-                        }if(tambah.getAlat().equals("0")){
-                            alat.setText("Manual");
-                        }
-                        final List<Slide> slideList = new ArrayList<>();
-                        final ArrayList<Slide> imageList = new ArrayList<>();
-                        imageList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-                        imageList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-                        imageList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-
-                        slideList.add(new Slide(0,tambah.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-                        slideList.add(new Slide(1,tambah.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-                        slideList.add(new Slide(2,tambah.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-
-                        slider.setItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                //do what you want
-                                //Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
-
-                                Intent intent = new Intent(DtltambalActivity.this,
-                                        DtlImgActivity.class);
-                                intent.putExtra(DtlImgActivity.IMAGE_LIST,
-                                        imageList);
-                                intent.putExtra(DtlImgActivity.CURRENT_ITEM, 1);
-                                startActivity(intent);
-
-                            }
-                        });
-                        slider.addSlides(slideList);
-
-                        //TLPN
-                        bttlpn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                String phoneNo = tlp.getText().toString();
-                                if (isEmpty(tlp.getText().toString())) {
-                                    Toast.makeText(DtltambalActivity.this, "Tidak Dapat Melakukan Panggilan", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    String dial = "tel:" + phoneNo;
-                                    startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
-                                }
-                            }
-                        });
-                        //SMS
-                        btsms.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //String message = messagetEt.getText().toString();
-                                String phoneNo = tlp.getText().toString();
-                                if (isEmpty(tlp.getText().toString())) {
-                                    Toast.makeText(DtltambalActivity.this, "Tidak Dapat Melakukan Sms", Toast.LENGTH_SHORT).show();
-                                }else{
-                                    Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNo));
-                                    smsIntent.putExtra("sms_body", "");
-                                    startActivity(smsIntent);
-                                }
-                            }
-                        });
-                        //open maps
-                        maps.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                double latitude = Double.parseDouble(lat.getText().toString().trim());
-                                double longitude = Double.parseDouble(lon.getText().toString().trim());
-                                String label = "Tambal Ban "+nama.getText().toString();
-                                String uriBegin = "geo:" + latitude + "," + longitude;
-                                String query = latitude + "," + longitude + "(" + label + ")";
-                                String encodedQuery = Uri.encode(query);
-                                String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
-                                Uri uri = Uri.parse(uriString);
-                                Intent mapIntent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-                                startActivity(mapIntent);
-                            }
-                        });
-
-
+                    if(lat.getText() != null && lon.getText() !=null){
+                        actionRoute(laat,lng);
 
                     }
+                    uri1.setText(aksesoris.getFoto1());
+                    uri2.setText(aksesoris.getFoto2());
+                    uri3.setText(aksesoris.getFoto3());
+
+                    verif = aksesoris.getVerif();
+                    if(aksesoris.getVerif().equals("0")){
+                        imgverif.setVisibility(View.GONE);
+                        tvverif.setVisibility(View.GONE);
+                    } if(aksesoris.getVerif().equals("1")) {
+                        imgverif.setVisibility(View.VISIBLE);
+                        tvverif.setVisibility(View.VISIBLE);
+                    }if(aksesoris.getKendaraan().equals("1")){
+                        imgmobil.setVisibility(View.GONE);
+                        tvmobil.setVisibility(View.GONE);
+                        imgmotor.setVisibility(View.VISIBLE);
+                        tvmotor.setVisibility(View.VISIBLE);
+                    }if(aksesoris.getKendaraan().equals("2")){
+                        imgmotor.setVisibility(View.GONE);
+                        tvmotor.setVisibility(View.GONE);
+                        imgmobil.setVisibility(View.VISIBLE);
+                        tvmobil.setVisibility(View.VISIBLE);
+                    }if(aksesoris.getKendaraan().equals("3")){
+                        imgmotor.setVisibility(View.VISIBLE);
+                        tvmotor.setVisibility(View.VISIBLE);
+                        imgmobil.setVisibility(View.VISIBLE);
+                        tvmobil.setVisibility(View.VISIBLE);
+                    }if(aksesoris.getStatus().equals("1")){
+                        stbuka.setVisibility(View.VISIBLE);
+                        sttutup.setVisibility(View.INVISIBLE);
+                    }if(aksesoris.getStatus().equals("0")){
+                        stbuka.setVisibility(View.INVISIBLE);
+                        sttutup.setVisibility(View.VISIBLE);
+                    }
+                    info.setText(aksesoris.getInfo());
+                    //coba(la1,lo2);
+                    if(aksesoris.getPemilik().equals("1")){
+                        chat.setVisibility(View.VISIBLE);
+                    }
+                    if(aksesoris.getPemilik().equals("0")){
+                        chat.setVisibility(View.GONE);
+                    }
+                    final List<Slide> slideList = new ArrayList<>();
+                    final ArrayList<Slide> imageList = new ArrayList<>();
+                    imageList.add(new Slide(0,aksesoris.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    imageList.add(new Slide(1,aksesoris.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    imageList.add(new Slide(2,aksesoris.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+
+                    slideList.add(new Slide(0,aksesoris.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    slideList.add(new Slide(1,aksesoris.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    slideList.add(new Slide(2,aksesoris.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+
+                    slider.setItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            //do what you want
+                            //Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(DtlAksesoriss.this,
+                                    DtlImgActivity.class);
+                            intent.putExtra(DtlImgActivity.IMAGE_LIST,
+                                    imageList);
+                            intent.putExtra(DtlImgActivity.CURRENT_ITEM, 1);
+                            startActivity(intent);
+
+                        }
+                    });
+                    slider.addSlides(slideList);
+
+                    //TLPN
+                    bttlpn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String phoneNo = tlp.getText().toString();
+                            if (isEmpty(tlp.getText().toString())) {
+                                Toast.makeText(DtlAksesoriss.this, "Tidak Dapat Melakukan Panggilan", Toast.LENGTH_SHORT).show();
+                            } else {
+                                String dial = "tel:" + phoneNo;
+                                startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
+                            }
+                        }
+                    });
+                    //SMS
+                    btsms.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //String message = messagetEt.getText().toString();
+                            String phoneNo = tlp.getText().toString();
+                            if (isEmpty(tlp.getText().toString())) {
+                                Toast.makeText(DtlAksesoriss.this, "Tidak Dapat Melakukan Sms", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNo));
+                                smsIntent.putExtra("sms_body", "");
+                                startActivity(smsIntent);
+                            }
+                        }
+                    });
+                    //open maps
+                    maps.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            double latitude = Double.parseDouble(lat.getText().toString().trim());
+                            double longitude = Double.parseDouble(lon.getText().toString().trim());
+                            String label = "Tempat Variasi "+nama.getText().toString();
+                            String uriBegin = "geo:" + latitude + "," + longitude;
+                            String query = latitude + "," + longitude + "(" + label + ")";
+                            String encodedQuery = Uri.encode(query);
+                            String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
+                            Uri uri = Uri.parse(uriString);
+                            Intent mapIntent = new Intent(android.content.Intent.ACTION_VIEW, uri);
+                            startActivity(mapIntent);
+                        }
+                    });
 
 
 
                 }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            });
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
 
         if (mMap == null) {
@@ -372,7 +344,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
             i.putExtra(Intent.EXTRA_SUBJECT, "SkyNils | Android Blog");
-            String shareText = "Tambal ban: "+nama.getText().toString()+"\n"+ " Jam Operasional: "+jmbuka.getText().toString()+"\n" +"Alamat Tambal Ban: ";
+            String shareText = "Nama Tempat: "+nama.getText().toString()+"\n"+ " Jam Operasional: "+jmbuka.getText().toString()+"\n" +"Alamat Tempat Variasi: ";
             shareText = shareText + "http://maps.google.com/maps?daddr="+lat.getText().toString()+","+lon.getText().toString();
             i.putExtra(Intent.EXTRA_TEXT, shareText);
             startActivity(Intent.createChooser(i, "Share via"));
@@ -392,12 +364,12 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
     private void actionRoute(double laat, double lang) {
 
-       // progressDialog.dismiss();
+        // progressDialog.dismiss();
         double tujuanlat = Double.parseDouble(lat.getText().toString().trim());
         double tujuanlong = Double.parseDouble(lon.getText().toString().trim());
         final LatLng awal = new LatLng(laat, lang);
         final LatLng tujuan = new LatLng(tujuanlat,tujuanlong);
-       // Log.e("barang23", Double.toString(tujuanlat));
+        // Log.e("barang23", Double.toString(tujuanlat));
         //Log.e("barang23",Double.toString(tujuanlong));
 
         String lokasiAwal = awal.latitude + "," + awal.longitude;
@@ -423,7 +395,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                     LegsItem dataLegs = null;
 
                     try {
-                       dataLegs = dataDirection.getRoutes().get(0).getLegs().get(0);
+                        dataLegs = dataDirection.getRoutes().get(0).getLegs().get(0);
                     }catch (Exception e) {
                         Log.d("Data snapshot", "barang3" + e.toString());
                     }
@@ -443,7 +415,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
                             .width(8f).color(Color.argb(255, 56, 167, 252)))
                             .setGeodesic(true);
 
-                    // Tambah Marker
+                    // Aksesoris Marker
                     mMap.addMarker(new MarkerOptions().position(awal).title("Lokasi Awal"));
                     mMap.addMarker(new MarkerOptions().position(tujuan).title("Lokasi Akhir"));
                     // Dapatkan jarak dan waktu
@@ -612,7 +584,7 @@ public class DtltambalActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
     public static Intent getActIntent(Activity activity){
-        return new Intent(activity, DtltambalActivity.class);
+        return new Intent(activity, DtlAksesoriss.class);
     }
 
 }
