@@ -35,12 +35,15 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.example.nanodg.tambalban.Adapter.CustomInfoWindowAdapter;
 import com.example.nanodg.tambalban.Model.Aksesoris;
+import com.example.nanodg.tambalban.Model.Bengkel;
 import com.example.nanodg.tambalban.Model.Tambah;
 import com.example.nanodg.tambalban.Model.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -86,6 +89,7 @@ public class AksesorisActivity extends AppCompatActivity implements OnMapReadyCa
     public double lng,lat;
     public ProgressBar progressBar;
     Button tampil;
+    Switch semua;
     public float jarak=0;
     TextView kendaraan,numradius;
     Spinner spinner2;
@@ -113,6 +117,7 @@ public class AksesorisActivity extends AppCompatActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        semua = (Switch)findViewById(R.id.semua);
         mTambah= FirebaseDatabase.getInstance().getReference();
         mTambah.push().setValue(marker);
         tampil = (Button)findViewById(R.id.tampil);
@@ -145,6 +150,58 @@ public class AksesorisActivity extends AppCompatActivity implements OnMapReadyCa
 
 
         lingkaran = Float.valueOf(numradius.getText().toString());
+
+        semua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(semua.isChecked()) {
+                    mMap.clear();
+                    mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(AksesorisActivity.this));
+                    final MarkerOptions mPosisi = new MarkerOptions();
+
+                    DatabaseReference database;
+                    database = FirebaseDatabase.getInstance().getReference();
+                    database.child("aksesoris").orderByChild("nama").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            for (DataSnapshot s : dataSnapshot.getChildren()){
+                                final Aksesoris aksesoris = s.getValue(Aksesoris.class);
+                                daftarAksesoris.add(aksesoris);
+                                LatLng location = new LatLng(aksesoris.getLat(), aksesoris.getLongt());
+                                mPosisi.position(location);
+                                mPosisi.title(aksesoris.getNama());
+                                mPosisi.snippet("Alamat : " +aksesoris.getAlamat() +"\n" +
+                                        "Jam Operasional : " +aksesoris.getBuka()+" s/d "+aksesoris.getTutup()+"\n"+
+                                        "Deskripsi : "+"\n"+aksesoris.getInfo());
+                                mMap.addMarker(mPosisi);
+                                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                                    public void onInfoWindowClick(Marker marker) {
+                                        String id = marker.getTitle().toString();
+                                        Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
+                                        edit.putExtra(DATA, id);
+                                        startActivity(edit);
+                                    }
+
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            System.out.println(databaseError.getDetails()+" "+databaseError.getMessage());
+                        }
+                    });
+
+                }
+                else {
+
+                    mMap.clear();
+                }
+            }
+        });
 
 
         tampil.setOnClickListener(new View.OnClickListener() {
@@ -286,6 +343,7 @@ public class AksesorisActivity extends AppCompatActivity implements OnMapReadyCa
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+        actionBar.setTitle("Variasi");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -333,6 +391,7 @@ public class AksesorisActivity extends AppCompatActivity implements OnMapReadyCa
     private void refreshmap(final double lat, final double lang){
         progressBar.setVisibility(View.INVISIBLE);
         mMap.clear();
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(AksesorisActivity.this));
         final DecimalFormat formatDesimal = new DecimalFormat("#.##");
         saatIni.setLatitude(lat);
         saatIni.setLongitude(lang);
@@ -358,7 +417,9 @@ public class AksesorisActivity extends AppCompatActivity implements OnMapReadyCa
                             mPosisi.position(location);
                             mPosisi.anchor(0.3f, 0.3f);
                             mPosisi.title(aksesoris.getNama());
-                            mPosisi.snippet("Alamat : " +aksesoris.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
+                            mPosisi.snippet("Alamat : " +aksesoris.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda" +"\n" +
+                                    "Jam Operasional : " +aksesoris.getBuka()+" s/d "+aksesoris.getTutup()+"\n"+
+                                    "Deskripsi : "+"\n"+aksesoris.getInfo());
                             mMap.addMarker(mPosisi);
                             //mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
@@ -415,7 +476,9 @@ public class AksesorisActivity extends AppCompatActivity implements OnMapReadyCa
                             mPosisi.position(location);
                             mPosisi.anchor(0.3f, 0.3f);
                             mPosisi.title(aksesoris.getNama());
-                            mPosisi.snippet("Alamat : " +aksesoris.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
+                            mPosisi.snippet("Alamat : " +aksesoris.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda" +"\n" +
+                                    "Jam Operasional : " +aksesoris.getBuka()+" s/d "+aksesoris.getTutup()+"\n"+
+                                    "Deskripsi : "+"\n"+aksesoris.getInfo());
                             mMap.addMarker(mPosisi);
                             // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 

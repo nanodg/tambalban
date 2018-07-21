@@ -72,7 +72,14 @@
         <activity android:name=".AksesorisActivity" />
         <activity android:name=".TambahBengkelActivity" />
         <activity android:name=".TambahAksesorisActivity" />
-        <activity android:name=".DtlAksesoriss"></activity>
+        <activity android:name=".DtlAksesoriss" />
+        <activity android:name=".DtlBengkelActivity" />
+        <activity android:name=".InfoDataAnctivity"/>
+        <activity android:name=".FirebaseDBReadBengkelActivity"/>
+        <activity android:name=".FirebaseDBReadSingleBengkelActivity"/>
+        <activity android:name=".FirebaseDBReadAksesorisActivity"/>
+        <activity android:name=".FirebaseDBReadSingleAksesorisActivity"/>
+        <activity android:name=".CariTambalActivity"/>
     </application>
 
 </manifest>

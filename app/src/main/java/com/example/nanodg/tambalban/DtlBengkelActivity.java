@@ -32,7 +32,7 @@ import android.widget.Toast;
 
 
 import com.example.nanodg.tambalban.Adapter.WorkaroundMapFragment;
-import com.example.nanodg.tambalban.Model.Aksesoris;
+import com.example.nanodg.tambalban.Model.Bengkel;
 import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
@@ -72,7 +72,7 @@ import retrofit2.Response;
 import static android.text.TextUtils.isEmpty;
 
 
-public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallback, LocationListener,View.OnClickListener  {
+public class DtlBengkelActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener,View.OnClickListener  {
 
     //    private Button bttlpn,btsms;
     public static final String DATA = "com.example.nanodg.tambalban";
@@ -101,7 +101,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dtl_aksesoriss);
+        setContentView(R.layout.activity_dtl_bengkel);
 
         nama = (TextView) findViewById(R.id.et_namatambal);
         tlp = (TextView) findViewById(R.id.et_nohp);
@@ -139,10 +139,10 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
 
         //btSubmit.setVisibility(View.GONE);
 
-        //Aksesoris aksesoris = (Aksesoris) getIntent().getSerializableExtra("data");
+        //Bengkel bengkel = (Bengkel) getIntent().getSerializableExtra("data");
         Intent intent = getIntent();
         hasil = intent.getStringExtra(MapsActivity.DATA);
-        DatabaseReference mUserContactsRef = FirebaseDatabase.getInstance().getReference().child("aksesoris");
+        DatabaseReference mUserContactsRef = FirebaseDatabase.getInstance().getReference().child("bengkel");
         mUserContactsRef.orderByChild("nama").equalTo(hasil).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -150,71 +150,71 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                 //Log.e("barang1", dataSnapshot.toString());
                 for (DataSnapshot userContact : dataSnapshot.getChildren()) {
 
-                    Aksesoris aksesoris = userContact.getValue(Aksesoris.class);
+                    Bengkel bengkel = userContact.getValue(Bengkel.class);
 
                     idkey = userContact.getKey();
-                    nama.setText(aksesoris.getNama());
-                    email = aksesoris.getPembuat();
-                    tlp.setText(aksesoris.getNo());
-                    jmbuka.setText(aksesoris.getBuka()+" s/d "+(aksesoris.getTutup()));
-                    alamat.setText(aksesoris.getAlamat());
-                    lat.setText(Double.toString(aksesoris.getLat()));
-                    lon.setText(Double.toString(aksesoris.getLongt()));
+                    nama.setText(bengkel.getNama());
+                    email = bengkel.getPembuat();
+                    tlp.setText(bengkel.getNo());
+                    jmbuka.setText(bengkel.getBuka()+" s/d "+(bengkel.getTutup()));
+                    alamat.setText(bengkel.getAlamat());
+                    lat.setText(Double.toString(bengkel.getLat()));
+                    lon.setText(Double.toString(bengkel.getLongt()));
 
                     if(lat.getText() != null && lon.getText() !=null){
                         actionRoute(laat,lng);
 
                     }
-                    uri1.setText(aksesoris.getFoto1());
-                    uri2.setText(aksesoris.getFoto2());
-                    uri3.setText(aksesoris.getFoto3());
+                    uri1.setText(bengkel.getFoto1());
+                    uri2.setText(bengkel.getFoto2());
+                    uri3.setText(bengkel.getFoto3());
 
-                    verif = aksesoris.getVerif();
-                    if(aksesoris.getVerif().equals("0")){
+                    verif = bengkel.getVerif();
+                    if(bengkel.getVerif().equals("0")){
                         imgverif.setVisibility(View.GONE);
                         tvverif.setVisibility(View.GONE);
-                    } if(aksesoris.getVerif().equals("1")) {
+                    } if(bengkel.getVerif().equals("1")) {
                         imgverif.setVisibility(View.VISIBLE);
                         tvverif.setVisibility(View.VISIBLE);
-                    }if(aksesoris.getKendaraan().equals("1")){
+                    }if(bengkel.getKendaraan().equals("1")){
                         imgmobil.setVisibility(View.GONE);
                         tvmobil.setVisibility(View.GONE);
                         imgmotor.setVisibility(View.VISIBLE);
                         tvmotor.setVisibility(View.VISIBLE);
-                    }if(aksesoris.getKendaraan().equals("2")){
+                    }if(bengkel.getKendaraan().equals("2")){
                         imgmotor.setVisibility(View.GONE);
                         tvmotor.setVisibility(View.GONE);
                         imgmobil.setVisibility(View.VISIBLE);
                         tvmobil.setVisibility(View.VISIBLE);
-                    }if(aksesoris.getKendaraan().equals("3")){
+                    }if(bengkel.getKendaraan().equals("3")){
                         imgmotor.setVisibility(View.VISIBLE);
                         tvmotor.setVisibility(View.VISIBLE);
                         imgmobil.setVisibility(View.VISIBLE);
                         tvmobil.setVisibility(View.VISIBLE);
-                    }if(aksesoris.getStatus().equals("1")){
+                    }if(bengkel.getStatus().equals("1")){
                         stbuka.setVisibility(View.VISIBLE);
                         sttutup.setVisibility(View.INVISIBLE);
-                    }if(aksesoris.getStatus().equals("0")){
+                    }if(bengkel.getStatus().equals("0")){
                         stbuka.setVisibility(View.INVISIBLE);
                         sttutup.setVisibility(View.VISIBLE);
                     }
-                    info.setText(aksesoris.getInfo());
+                    info.setText(bengkel.getInfo());
                     //coba(la1,lo2);
-                    if(aksesoris.getPemilik().equals("1")){
+                    if(bengkel.getPemilik().equals("1")){
                         chat.setVisibility(View.VISIBLE);
                     }
-                    if(aksesoris.getPemilik().equals("0")){
+                    if(bengkel.getPemilik().equals("0")){
                         chat.setVisibility(View.GONE);
                     }
                     final List<Slide> slideList = new ArrayList<>();
                     final ArrayList<Slide> imageList = new ArrayList<>();
-                    imageList.add(new Slide(0,aksesoris.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-                    imageList.add(new Slide(1,aksesoris.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-                    imageList.add(new Slide(2,aksesoris.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    imageList.add(new Slide(0,bengkel.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    imageList.add(new Slide(1,bengkel.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    imageList.add(new Slide(2,bengkel.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
 
-                    slideList.add(new Slide(0,aksesoris.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-                    slideList.add(new Slide(1,aksesoris.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
-                    slideList.add(new Slide(2,aksesoris.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    slideList.add(new Slide(0,bengkel.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    slideList.add(new Slide(1,bengkel.getFoto2() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
+                    slideList.add(new Slide(2,bengkel.getFoto3(), getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
 
                     slider.setItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
@@ -222,7 +222,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                             //do what you want
                             //Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(DtlAksesoriss.this,
+                            Intent intent = new Intent(DtlBengkelActivity.this,
                                     DtlImgActivity.class);
                             intent.putExtra(DtlImgActivity.IMAGE_LIST,
                                     imageList);
@@ -239,7 +239,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                         public void onClick(View view) {
                             String phoneNo = tlp.getText().toString();
                             if (isEmpty(tlp.getText().toString())) {
-                                Toast.makeText(DtlAksesoriss.this, "Tidak Dapat Melakukan Panggilan", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DtlBengkelActivity.this, "Tidak Dapat Melakukan Panggilan", Toast.LENGTH_SHORT).show();
                             } else {
                                 String dial = "tel:" + phoneNo;
                                 startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
@@ -253,7 +253,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                             //String message = messagetEt.getText().toString();
                             String phoneNo = tlp.getText().toString();
                             if (isEmpty(tlp.getText().toString())) {
-                                Toast.makeText(DtlAksesoriss.this, "Tidak Dapat Melakukan Sms", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DtlBengkelActivity.this, "Tidak Dapat Melakukan Sms", Toast.LENGTH_SHORT).show();
                             }else{
                                 Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNo));
                                 smsIntent.putExtra("sms_body", "");
@@ -320,7 +320,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
-        actionBar.setTitle("Aksesoris");
+        actionBar.setTitle("Bengkel");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -345,7 +345,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
             i.putExtra(Intent.EXTRA_SUBJECT, "SkyNils | Android Blog");
-            String shareText = "Nama Tempat: "+nama.getText().toString()+"\n"+ " Jam Operasional: "+jmbuka.getText().toString()+"\n" +"Alamat Tempat Variasi: ";
+            String shareText = "Nama Bengkel: "+nama.getText().toString()+"\n"+ " Jam Operasional: "+jmbuka.getText().toString()+"\n" +"Alamat Bengkel: ";
             shareText = shareText + "http://maps.google.com/maps?daddr="+lat.getText().toString()+","+lon.getText().toString();
             i.putExtra(Intent.EXTRA_TEXT, shareText);
             startActivity(Intent.createChooser(i, "Share via"));
@@ -416,7 +416,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                             .width(8f).color(Color.argb(255, 56, 167, 252)))
                             .setGeodesic(true);
 
-                    // Aksesoris Marker
+                    // Bengkel Marker
                     mMap.addMarker(new MarkerOptions().position(awal).title("Lokasi Awal"));
                     mMap.addMarker(new MarkerOptions().position(tujuan).title("Lokasi Akhir"));
                     // Dapatkan jarak dan waktu
@@ -585,7 +585,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
 
     }
     public static Intent getActIntent(Activity activity){
-        return new Intent(activity, DtlAksesoriss.class);
+        return new Intent(activity, DtlBengkelActivity.class);
     }
 
 }

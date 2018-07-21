@@ -1,10 +1,10 @@
 package com.example.nanodg.tambalban;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,10 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -30,20 +27,22 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.example.nanodg.tambalban.Adapter.AdapterAksesorisRecyclerView;
+import com.example.nanodg.tambalban.Adapter.AdapterBengkelRecyclerView;
 import com.example.nanodg.tambalban.Adapter.WorkaroundMapFragment;
 import com.example.nanodg.tambalban.Model.Aksesoris;
-import com.google.android.gms.maps.GoogleMap;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.example.nanodg.tambalban.Model.Bengkel;
 import com.example.nanodg.tambalban.ir.apend.slider.model.Slide;
 import com.example.nanodg.tambalban.ir.apend.slider.ui.Slider;
-import android.graphics.Color;
-
+import com.example.nanodg.tambalban.network.ApiServices;
+import com.example.nanodg.tambalban.network.InitLibrary;
+import com.example.nanodg.tambalban.response.Distance;
+import com.example.nanodg.tambalban.response.Duration;
+import com.example.nanodg.tambalban.response.LegsItem;
+import com.example.nanodg.tambalban.response.ReponseRoute;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -58,12 +57,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.PolyUtil;
-import com.example.nanodg.tambalban.network.ApiServices;
-import com.example.nanodg.tambalban.network.InitLibrary;
-import com.example.nanodg.tambalban.response.Distance;
-import com.example.nanodg.tambalban.response.Duration;
-import com.example.nanodg.tambalban.response.LegsItem;
-import com.example.nanodg.tambalban.response.ReponseRoute;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,11 +68,11 @@ import retrofit2.Response;
 import static android.text.TextUtils.isEmpty;
 
 
-public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallback, LocationListener,View.OnClickListener  {
+public class FirebaseDBReadSingleAksesorisActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener,View.OnClickListener  {
 
     //    private Button bttlpn,btsms;
     public static final String DATA = "com.example.nanodg.tambalban";
-    TextView nama,tlp,jmbuka,hsl2,alamat,tvmotor,tvmobil,tvverif,status,info,alat;
+    TextView nama,tlp,jmbuka,hsl2,alamat,tvmotor,tvmobil,tvverif,hsl3,status,status1,info;
     EditText lat,lon;
     private TextView uri1,uri2,uri3;
     private Slider slider;
@@ -87,10 +83,10 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
     Marker mCurrentPosition = null;
     ScrollView mScrollView;
     String hasil,verif;
-    private String view;
-    ImageView imgverif,imgmotor,imgmobil,stbuka,sttutup;
+
+    ImageView imgverif,imgbiasa,imgtub,imgmotor,imgmobil,stbuka,sttutup;
     ImageButton bttlpn,btsms;
-    Button aduan,chat,maps;
+    Button aduan,chat;
     private ActionBar actionBar;
     double lng=0,laat=0;
     private String API_KEY = "AIzaSyBu1ueAsgh5rVX5GNxjogBa3J_afkCuXxw";
@@ -111,7 +107,6 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
         lat = (EditText) findViewById(R.id.et_lat);
         aduan = (Button) findViewById(R.id.aduan);
         chat = (Button) findViewById(R.id.chat);
-        alat = (TextView) findViewById(R.id.alat);
         info = (TextView) findViewById(R.id.info);
         lon = (EditText) findViewById(R.id.et_long);
         uri1 = (TextView) findViewById(R.id.uri1);
@@ -126,9 +121,10 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
         btsms = (ImageButton) findViewById(R.id.sms);
         slider = (Slider) findViewById(R.id.slider);
         imgverif = (ImageView) findViewById(R.id.imgverif);
+        imgbiasa = (ImageView) findViewById(R.id.imgbiasa);
+        imgtub = (ImageView) findViewById(R.id.imgtub);
         imgmotor = (ImageView) findViewById(R.id.imgmotor);
         imgmobil = (ImageView) findViewById(R.id.imgmobil);
-        maps= (Button) findViewById(R.id.maps);
         initToolbar();
 
 //        lat.setText("-7.248651474442163");
@@ -139,9 +135,9 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
 
         //btSubmit.setVisibility(View.GONE);
 
-        //Aksesoris aksesoris = (Aksesoris) getIntent().getSerializableExtra("data");
+        //Tambah tambah = (Tambah) getIntent().getSerializableExtra("data");
         Intent intent = getIntent();
-        hasil = intent.getStringExtra(MapsActivity.DATA);
+        hasil = intent.getStringExtra(AdapterAksesorisRecyclerView.DATA);
         DatabaseReference mUserContactsRef = FirebaseDatabase.getInstance().getReference().child("aksesoris");
         mUserContactsRef.orderByChild("nama").equalTo(hasil).addValueEventListener(new ValueEventListener() {
             @Override
@@ -157,7 +153,11 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                     email = aksesoris.getPembuat();
                     tlp.setText(aksesoris.getNo());
                     jmbuka.setText(aksesoris.getBuka()+" s/d "+(aksesoris.getTutup()));
+                    //jmtutup.setText(tambah.getTutup());
+//                        hsl1.setText(tambah.getBan());
+//                        hsl2.setText(tambah.getKendaraan());
                     alamat.setText(aksesoris.getAlamat());
+
                     lat.setText(Double.toString(aksesoris.getLat()));
                     lon.setText(Double.toString(aksesoris.getLongt()));
 
@@ -206,6 +206,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                     if(aksesoris.getPemilik().equals("0")){
                         chat.setVisibility(View.GONE);
                     }
+
                     final List<Slide> slideList = new ArrayList<>();
                     final ArrayList<Slide> imageList = new ArrayList<>();
                     imageList.add(new Slide(0,aksesoris.getFoto1() , getResources().getDimensionPixelSize(R.dimen.slider_image_corner)));
@@ -220,13 +221,13 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             //do what you want
-                            //Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "you clicked image " + (i+1), Toast.LENGTH_LONG).show();
 
-                            Intent intent = new Intent(DtlAksesoriss.this,
+                            Intent intent = new Intent(FirebaseDBReadSingleAksesorisActivity.this,
                                     DtlImgActivity.class);
                             intent.putExtra(DtlImgActivity.IMAGE_LIST,
                                     imageList);
-                            intent.putExtra(DtlImgActivity.CURRENT_ITEM, 1);
+                            intent.putExtra(DtlImgActivity.CURRENT_ITEM, 3);
                             startActivity(intent);
 
                         }
@@ -239,7 +240,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                         public void onClick(View view) {
                             String phoneNo = tlp.getText().toString();
                             if (isEmpty(tlp.getText().toString())) {
-                                Toast.makeText(DtlAksesoriss.this, "Tidak Dapat Melakukan Panggilan", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FirebaseDBReadSingleAksesorisActivity.this, "Tidak Dapat Melakukan Panggilan", Toast.LENGTH_SHORT).show();
                             } else {
                                 String dial = "tel:" + phoneNo;
                                 startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
@@ -253,28 +254,12 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                             //String message = messagetEt.getText().toString();
                             String phoneNo = tlp.getText().toString();
                             if (isEmpty(tlp.getText().toString())) {
-                                Toast.makeText(DtlAksesoriss.this, "Tidak Dapat Melakukan Sms", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FirebaseDBReadSingleAksesorisActivity.this, "Tidak Dapat Melakukan Sms", Toast.LENGTH_SHORT).show();
                             }else{
                                 Intent smsIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNo));
                                 smsIntent.putExtra("sms_body", "");
                                 startActivity(smsIntent);
                             }
-                        }
-                    });
-                    //open maps
-                    maps.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            double latitude = Double.parseDouble(lat.getText().toString().trim());
-                            double longitude = Double.parseDouble(lon.getText().toString().trim());
-                            String label = "Tempat Variasi "+nama.getText().toString();
-                            String uriBegin = "geo:" + latitude + "," + longitude;
-                            String query = latitude + "," + longitude + "(" + label + ")";
-                            String encodedQuery = Uri.encode(query);
-                            String uriString = uriBegin + "?q=" + encodedQuery + "&z=16";
-                            Uri uri = Uri.parse(uriString);
-                            Intent mapIntent = new Intent(android.content.Intent.ACTION_VIEW, uri);
-                            startActivity(mapIntent);
                         }
                     });
 
@@ -330,27 +315,6 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_save_share, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_share) {
-            view = "Share";
-            Intent i = new Intent(Intent.ACTION_SEND);
-            i.setType("text/plain");
-            i.putExtra(Intent.EXTRA_SUBJECT, "SkyNils | Android Blog");
-            String shareText = "Nama Tempat: "+nama.getText().toString()+"\n"+ " Jam Operasional: "+jmbuka.getText().toString()+"\n" +"Alamat Tempat Variasi: ";
-            shareText = shareText + "http://maps.google.com/maps?daddr="+lat.getText().toString()+","+lon.getText().toString();
-            i.putExtra(Intent.EXTRA_TEXT, shareText);
-            startActivity(Intent.createChooser(i, "Share via"));
-        }
-        return true;
     }
     private void widgetInit() {
         tvStartAddress = (TextView)findViewById(R.id.tvStartAddress);
@@ -416,7 +380,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                             .width(8f).color(Color.argb(255, 56, 167, 252)))
                             .setGeodesic(true);
 
-                    // Aksesoris Marker
+                    // Tambah Marker
                     mMap.addMarker(new MarkerOptions().position(awal).title("Lokasi Awal"));
                     mMap.addMarker(new MarkerOptions().position(tujuan).title("Lokasi Akhir"));
                     // Dapatkan jarak dan waktu
@@ -427,7 +391,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
                     tvStartAddress.setText("Lokasi Awal : " + dataLegs.getStartAddress().toString());
                     tvEndAddress.setText("Lokasi Tujuan : " + dataLegs.getEndAddress().toString());
 
-                    //tvDistance.setText("Jarak : " + dataDistance.getText() + " (" + dataDistance.getValue() + ")");
+                    tvDistance.setText("Jarak : " + dataDistance.getText() + " (" + dataDistance.getValue() + ")");
                     tvDuration.setText("Waktu : " + dataDuration.getText() + " (" + dataDuration.getValue() + ")");
                     /** START
                      * Logic untuk membuat layar berada ditengah2 dua koordinat
@@ -585,7 +549,7 @@ public class DtlAksesoriss extends AppCompatActivity implements OnMapReadyCallba
 
     }
     public static Intent getActIntent(Activity activity){
-        return new Intent(activity, DtlAksesoriss.class);
+        return new Intent(activity, FirebaseDBReadSingleAksesorisActivity.class);
     }
 
 }

@@ -31,15 +31,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.example.nanodg.tambalban.Adapter.AdapterTambalRecyclerView;
+import com.example.nanodg.tambalban.Adapter.CustomInfoWindowAdapter;
 import com.example.nanodg.tambalban.Model.Tambah;
 import com.example.nanodg.tambalban.Model.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -85,6 +89,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
    public double lng,lat;
     public ProgressBar progressBar;
     Button tambah,tampil;
+    Switch semua;
     public float jarak=0;
     TextView ban,kendaraan,numradius;
     Spinner spinner1,spinner2;
@@ -120,6 +125,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         spinner1 = (Spinner) findViewById(R.id.spinner);
         spinner2 = (Spinner)findViewById(R.id.spinner2);
         ban = (TextView)findViewById(R.id.jenisban);
+        semua = (Switch)findViewById(R.id.semua);
         kendaraan = (TextView)findViewById(R.id.jeniskendaraan);
         radius = (SeekBar)findViewById(R.id.radius);
         numradius = (TextView)findViewById(R.id.numradius);
@@ -168,6 +174,59 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+
+
+        semua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(semua.isChecked()) {
+                    mMap.clear();
+                    mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MapsActivity.this));
+                    final MarkerOptions mPosisi = new MarkerOptions();
+
+                    DatabaseReference database;
+                    database = FirebaseDatabase.getInstance().getReference();
+                    database.child("tambah").orderByChild("nama").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            for (DataSnapshot s : dataSnapshot.getChildren()){
+                                final Tambah tambah = s.getValue(Tambah.class);
+                                daftarTambal.add(tambah);
+                                LatLng location = new LatLng(tambah.getLat(), tambah.getLongt());
+                                    mPosisi.position(location);
+                                    mPosisi.title(tambah.getNama());
+                                    mPosisi.snippet("Alamat : " +tambah.getAlamat() +"\n" +
+                                            "Jam Operasional : " +tambah.getBuka()+" s/d "+tambah.getTutup()+"\n"+
+                                            "Deskripsi : "+"\n"+tambah.getInfo());
+                                    mMap.addMarker(mPosisi);
+                                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                                    public void onInfoWindowClick(Marker marker) {
+                                        String id = marker.getTitle().toString();
+                                        Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
+                                        edit.putExtra(DATA, id);
+                                        startActivity(edit);
+                                    }
+
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            System.out.println(databaseError.getDetails()+" "+databaseError.getMessage());
+                        }
+                    });
+
+                }
+                else {
+
+                    mMap.clear();
+                }
+            }
+        });
 
 /**
  * =========================================SPINNER
@@ -377,6 +436,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (item.getItemId() == R.id.menu_help) {
             view = "bantuan";
             startActivity(Bantuan.getActIntent(MapsActivity.this));
+        } if (item.getItemId() == R.id.menu_cari) {
+            view = "cari";
+            startActivity(CariTambalActivity.getActIntent(MapsActivity.this));
         }
         return true;
     }
@@ -438,6 +500,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void refreshmap(final double lat, final double lang){
         progressBar.setVisibility(View.INVISIBLE);
         mMap.clear();
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MapsActivity.this));
         final DecimalFormat formatDesimal = new DecimalFormat("#.##");
         saatIni.setLatitude(lat);
         saatIni.setLongitude(lang);
@@ -463,7 +526,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             mPosisi.position(location);
                             mPosisi.anchor(0.3f, 0.3f);
                             mPosisi.title(tambah.getNama());
-                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
+                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda" +"\n" +
+                                    "Jam Operasional : " +tambah.getBuka()+" s/d "+tambah.getTutup()+"\n"+
+                                    "Deskripsi : "+"\n"+tambah.getInfo());
                             mMap.addMarker(mPosisi);
                             //mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
@@ -520,7 +585,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             mPosisi.position(location);
                             mPosisi.anchor(0.3f, 0.3f);
                             mPosisi.title(tambah.getNama());
-                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
+                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda" +"\n" +
+                                    "Jam Operasional : " +tambah.getBuka()+" s/d "+tambah.getTutup()+"\n"+
+                                    "Deskripsi : "+"\n"+tambah.getInfo());
                             mMap.addMarker(mPosisi);
                             // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
@@ -577,7 +644,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 mPosisi.position(location);
                                 mPosisi.anchor(0.3f, 0.3f);
                                 mPosisi.title(tambah.getNama());
-                                mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
+                                mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda" +"\n" +
+                                        "Jam Operasional : " +tambah.getBuka()+" s/d "+tambah.getTutup()+"\n"+
+                                        "Deskripsi : "+"\n"+tambah.getInfo());
                                 mMap.addMarker(mPosisi);
                                 // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 
@@ -632,7 +701,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             mPosisi.position(location);
                             mPosisi.anchor(0.3f, 0.3f);
                             mPosisi.title(tambah.getNama());
-                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda");
+                            mPosisi.snippet("Alamat : " +tambah.getAlamat()+" - " + formatDesimal.format(jarak) + " km dari anda" +"\n" +
+                                    "Jam Operasional : " +tambah.getBuka()+" s/d "+tambah.getTutup()+"\n"+
+                                    "Deskripsi : "+"\n"+tambah.getInfo());
                             mMap.addMarker(mPosisi);
                             // mMap.addMarker(new MarkerOptions().position(location).title(tambah.getNama())).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 

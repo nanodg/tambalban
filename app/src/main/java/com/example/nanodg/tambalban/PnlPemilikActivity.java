@@ -27,7 +27,7 @@ import com.sdsmdg.tastytoast.TastyToast;
 public class PnlPemilikActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView tvslmt;
-    CardView tambah,btnlogout,btnlihat,btnaduan,btnpesan;
+    CardView tambah,btnlogout,btnlihat,btnaduan,btnpesan,btnbengkel,btnaksesoris;
     FirebaseAuth firebaseAuth;
     String alias;
     private ActionBar actionBar;
@@ -42,6 +42,10 @@ public class PnlPemilikActivity extends AppCompatActivity implements View.OnClic
         btnpesan = (CardView)findViewById(R.id.btnpesan);
         btnlihat = (CardView)findViewById(R.id.btnlihat);
         btnaduan = (CardView)findViewById(R.id.btnaduan);
+        btnbengkel = (CardView)findViewById(R.id.btnbengkel);
+        btnaksesoris = (CardView)findViewById(R.id.btnaksesoris);
+        btnbengkel.setOnClickListener(this);
+        btnaksesoris.setOnClickListener(this);
         btnlogout.setOnClickListener(this);
         btnlihat.setOnClickListener(this);
         tambah.setOnClickListener(this);
@@ -101,6 +105,14 @@ public class PnlPemilikActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
+        if(view == btnbengkel){
+
+            startActivity(new Intent(this, TambahBengkelActivity.class));
+        }
+        if(view == btnaksesoris){
+
+            startActivity(new Intent(this, TambahAksesorisActivity.class));
+        }
 
         if(view == tambah){
 
@@ -112,7 +124,7 @@ public class PnlPemilikActivity extends AppCompatActivity implements View.OnClic
         }
         if(view == btnlihat){
 
-            startActivity(new Intent(this, FirebaseDBReadActivity.class));
+            startActivity(new Intent(this, InfoDataAnctivity.class));
         }
         if(view == btnaduan){
 
