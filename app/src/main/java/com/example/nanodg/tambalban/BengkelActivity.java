@@ -177,7 +177,7 @@ public class BengkelActivity extends AppCompatActivity implements OnMapReadyCall
 
                                     public void onInfoWindowClick(Marker marker) {
                                         String id = marker.getTitle().toString();
-                                        Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
+                                        Intent edit = new Intent(getApplicationContext(), DtlBengkelActivity.class);
                                         edit.putExtra(DATA, id);
                                         startActivity(edit);
                                     }

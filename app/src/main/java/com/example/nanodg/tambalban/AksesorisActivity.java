@@ -180,7 +180,7 @@ public class AksesorisActivity extends AppCompatActivity implements OnMapReadyCa
 
                                     public void onInfoWindowClick(Marker marker) {
                                         String id = marker.getTitle().toString();
-                                        Intent edit = new Intent(getApplicationContext(), DtltambalActivity.class);
+                                        Intent edit = new Intent(getApplicationContext(), DtlAksesoriss.class);
                                         edit.putExtra(DATA, id);
                                         startActivity(edit);
                                     }
