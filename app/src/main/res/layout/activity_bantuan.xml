@@ -57,7 +57,7 @@
                         android:layout_marginRight="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="10dp"
-                        android:text="Tambal adalah aplikasi untuk mempermudah pengguna mencari lokasi tambal ban terdekat. Untuk dapat menemukan lokasi tambal ban, pengguna hanya perlu memilih jenis ban dan jenis kendaraan yang dipakai saat ini."
+                        android:text="One Stop Services adalah aplikasi untuk mempermudah pengguna mencari lokasi bengkel, variasi dan tambal ban terdekat. Untuk dapat menemukan lokasi services, pengguna hanya perlu memilih jenis ban dan jenis kendaraan yang dipakai saat ini."
                         android:textAlignment="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"

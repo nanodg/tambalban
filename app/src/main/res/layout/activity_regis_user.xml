@@ -68,7 +68,7 @@
         android:id="@+id/pemilik"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pemilik Tambal Ban"
+        android:text="Pemilik"
         android:onClick="itemClicked"
         android:textColor="#ffff"
         android:textSize="16dp"

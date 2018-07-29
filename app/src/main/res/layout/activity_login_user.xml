@@ -33,7 +33,7 @@
             android:layout_width="296dp"
             android:layout_height="138dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/ban"
+            app:srcCompat="@drawable/logoo"
             android:layout_weight="0.14" />
 
         <EditText
